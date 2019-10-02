@@ -5,6 +5,8 @@ package Components;
  * @author Yukang Li
  *
  */
+
+//Comment added for checking the push request on git
 public class CC {
 	private int size = 4;
 	private int value;
