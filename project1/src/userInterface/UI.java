@@ -1,4 +1,4 @@
-package UserInterface;
+package userInterface;
 /**
  *
  * @author Yukang Li
@@ -31,9 +31,13 @@ import javax.swing.JTextArea;
 public class UI {
 	
 	public static int memory[] = new int[2048];
+	//0 MAR / 1 PC / 2 MB / 3 MFR / 4 IR / 5 CC / 6 R0
+	//7 R1 / 8 R2 / 9 R3 / 10 IX1 / 11 IX2 / 12 IX3
+	public static int NewValue[] = new int[20];
+	public static int OldValue[] = new int[20];
 	private Tools tools = new Tools();
 
-	public static JFrame frame;
+	public JFrame frame;
 	public static JTextField MAR_textField;
 	public static JTextField PC_textField;
 	public static JTextField MBR_textField;
@@ -69,8 +73,7 @@ public class UI {
 	private JButton IPL;
 	private JButton Save;
 	
-	private static PC pc = new PC();
-
+	public static PC pc = new PC();
 	public static MAR mar = new MAR();
 	public static MBR mbr = new MBR();
 	public static MFR mfr = new MFR();
