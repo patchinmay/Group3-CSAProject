@@ -30,25 +30,25 @@ import javax.swing.JTextArea;
 
 public class UI {
 	
-	private static int memory[] = new int[2048];
+	public static int memory[] = new int[2048];
 	private Tools tools = new Tools();
 
-	private JFrame frame;
-	private JTextField MAR_textField;
-	private JTextField PC_textField;
-	private JTextField MBR_textField;
-	private JTextField MFR_textField;
-	private JTextField IR_textField;
-	private JTextField CC_textField;
-	private JTextField R0_textField;
-	private JTextField R1_textField;
-	private JTextField R2_textField;
-	private JTextField R3_textField;
-	private JTextField IX1_textField;
-	private JTextField IX2_textField;
-	private JTextField IX3_textField;
-	private JTextField Addr_textField;
-	private JTextField Value_textField;
+	public static JFrame frame;
+	public static JTextField MAR_textField;
+	public static JTextField PC_textField;
+	public static JTextField MBR_textField;
+	public static JTextField MFR_textField;
+	public static JTextField IR_textField;
+	public static JTextField CC_textField;
+	public static JTextField R0_textField;
+	public static JTextField R1_textField;
+	public static JTextField R2_textField;
+	public static JTextField R3_textField;
+	public static JTextField IX1_textField;
+	public static JTextField IX2_textField;
+	public static JTextField IX3_textField;
+	public static JTextField Addr_textField;
+	public static JTextField Value_textField;
 	
 	private JButton PCStore;
 	private JButton MARStore;
@@ -71,15 +71,15 @@ public class UI {
 	
 	private static PC pc = new PC();
 
-	private static MAR mar = new MAR();
-	private static MBR mbr = new MBR();
-	private static MFR mfr = new MFR();
-	private static IR ir = new IR(); 
-	private static CC cc = new CC();
-	private static Register[] r = new Register[4];
-	private static IX[] ix = new IX[4];
-	private JTextArea Instr_textArea;
-	private JTextArea LogtextArea;
+	public static MAR mar = new MAR();
+	public static MBR mbr = new MBR();
+	public static MFR mfr = new MFR();
+	public static IR ir = new IR(); 
+	public static CC cc = new CC();
+	public static Register[] r = new Register[4];
+	public static IX[] ix = new IX[4];
+	public static JTextArea Instr_textArea;
+	public static JTextArea LogtextArea;
 	private JButton Singlestep;
 
 	/**
@@ -793,23 +793,23 @@ public class UI {
     	switch (opCode) {
 		case 1:
 			//01 -- LDR
-			LDR(r, ix, i, address);
+			Instr.LDR(r, ix, i, address);
 			break;
 		case 2:
 			//02 -- STR
-			STR(r, ix, i, address);
+			Instr.STR(r, ix, i, address);
 			break;
 		case 3:
 			//03 -- LDA
-			LDA(r, ix, i, address);
+			Instr.LDA(r, ix, i, address);
 			break;
 		case 41:
 			//41 -- LDX
-			LDX(ix, i, address);
+			Instr.LDX(ix, i, address);
 			break;
 		case 42:
 			//42 -- STX
-			STX(ix, i, address);
+			Instr.STX(ix, i, address);
 			break;
 		case 00:
 			//00 -- HLT
@@ -821,260 +821,7 @@ public class UI {
     	return status;
     }
     
-    /**
-     * LDR instr. -- Load Register From Memory
-     * @author Yukang Li
-     * @param r
-     * @param ix
-     * @param i
-     * @param address
-     */
-	public void LDR(int r, int ix, int i, int address) {
-		//Get OpCode, R, IX, I, Address
-		//analysis the Effective function first
-		//determine using the indrect addressing
-		if(i == 0) {
-			//determine using the index register 
-			if(ix <=3 && ix>=1) {
-				address = UI.ix[ix].getValue() + address;
-			}
-		}else {
-			//indirect addressing
-		}
-		//1. Get the address of data [IR]
-		IR_textField.setText(Integer.toString(address));
-		ir.setValue(address);
-		//2. Transmit address to [MAR]
-		MAR_textField.setText(Integer.toString(address));
-		mar.setValue(address);
-		//3. Get data from memory and put it to [MBR]
-		int value = memory[address];
-		MBR_textField.setText(Integer.toString(value));
-		mbr.setValue(value);
-		int MAR1 = mar.getValue();
-		int MBR1 = mbr.getValue();
-		System.out.println(MAR1);
-		LogtextArea.append("MAR:"+ MAR1 + "->" + address+"\n");
-		LogtextArea.append("MBR:"+ MBR1 + "->" + value+"\n");
-		//4. Put data to the specified [Register]
-		switch (r) {
-		case 0:
-			int aa = UI.r[0].getValue();
-			R0_textField.setText(Integer.toString(value));
-			UI.r[0].setValue(value);
-			LogtextArea.append("R0:"+aa+"->"+value+"\n");
-			break;
-		case 1:
-			int a1 = UI.r[1].getValue();
-			R1_textField.setText(Integer.toString(value));
-			UI.r[1].setValue(value);
-			LogtextArea.append("R1:"+a1+"->"+value+"\n");
-			break;
-		case 2:
-			int a2 = UI.r[2].getValue();
-			R2_textField.setText(Integer.toString(value));
-			UI.r[2].setValue(value);
-			LogtextArea.append("R2:"+a2+"->"+value+"\n");
-			break;
-		case 3:
-			int a3 = UI.r[3].getValue();
-			R3_textField.setText(Integer.toString(value));
-			UI.r[3].setValue(value);
-			LogtextArea.append("R3:"+a3+"->"+value+"\n");
-			break;
 
-		default:
-			break;
-		}
-	}
-	
-	/**
-	 * STR instr. -- Store Register To Memory
-	 * @author Yukang Li
-	 * @param r
-	 * @param ix
-	 * @param i
-	 * @param address
-	 */
-	public void STR(int r, int ix, int i, int address) {
-        //Get the address(where to store data) [IR]
-		IR_textField.setText(Integer.toString(address));
-		ir.setValue(address);
-        //Transmit address to [MAR]
-		MAR_textField.setText(Integer.toString(address));
-		mar.setValue(address);
-        //Get data from [Register] and put it to [MBR]
-		int value = 0;
-		int MAR1 = mar.getValue();
-		LogtextArea.append("MAR:"+ MAR1 + "->" + address+"\n");
-		int MBR1 = mbr.getValue();
-		LogtextArea.append("MBR:"+ MBR1 + "->" + address+"\n");
-		switch (r) {
-		case 0:
-			int OriginDataR0 = UI.r[0].getValue();
-			value = UI.r[0].getValue();
-			MBR_textField.setText(Integer.toString(value));
-			mbr.setValue(value);
-			LogtextArea.append("R0:"+ OriginDataR0 + "->" + value+"\n");
-			break;
-		case 1:
-			int OriginDataR1 = UI.r[1].getValue();
-			value = UI.r[1].getValue();
-			MBR_textField.setText(Integer.toString(value));
-			mbr.setValue(value);
-			LogtextArea.append("R1:"+ OriginDataR1 + "->" + value+"\n");
-			break;
-		case 2:
-			int OriginDataR2 = UI.r[2].getValue();
-			value = UI.r[2].getValue();
-			MBR_textField.setText(Integer.toString(value));
-			mbr.setValue(value);
-			LogtextArea.append("R2:"+ OriginDataR2 + "->" + value+"\n");
-			break;
-		case 3:
-			int OriginDataR3 = UI.r[3].getValue();
-			value = UI.r[3].getValue();
-			MBR_textField.setText(Integer.toString(value));
-			mbr.setValue(value);
-			LogtextArea.append("R3:"+ OriginDataR3 + "->" + value+"\n");
-			break;
-
-		default:
-			break;
-		}
-		//Put data to the memory
-		memory[address] = value;
-	}
-	
-	/**
-	 * LDA instr. -- Load Register with Address
-	 * @author Yukang Li
-	 * @param r
-	 * @param ix
-	 * @param i
-	 * @param address
-	 */
-	public void LDA (int r, int ix, int i, int address) {
-        //Get the address [IR]
-		IR_textField.setText(Integer.toString(address));
-		ir.setValue(address);
-        //Transmit address to [MBR]
-		MBR_textField.setText(Integer.toString(address));
-		mbr.setValue(address);
-        //Put the data to the specified [Register]
-		int MBR1 = mbr.getValue();
-		LogtextArea.append("MBR:"+ MBR1 + "->" + address+"\n");
-		switch (r) {
-		case 0:
-			UI.r[0].setValue(address);
-			R0_textField.setText(Integer.toString(address));
-			break;
-		case 1:
-			UI.r[1].setValue(address);
-			R1_textField.setText(Integer.toString(address));
-			break;
-		case 2:
-			UI.r[2].setValue(address);
-			R2_textField.setText(Integer.toString(address));
-			break;
-		case 3:
-			UI.r[3].setValue(address);
-			R3_textField.setText(Integer.toString(address));
-			break;
-
-		default:
-			break;
-		}
-	}
-	
-	/**
-	 * LDX instr. -- Load Index Register from Memory
-	 * @author Yukang Li
-	 * @param ix
-	 * @param i
-	 * @param address
-	 */
-	public void LDX(int ix, int i, int address) {
-        //Get the address of data [IR]
-		IR_textField.setText(Integer.toString(address));
-		ir.setValue(address);
-        //Transmit address to [MAR]
-		MAR_textField.setText(Integer.toString(address));
-		mar.setValue(address);
-        //Get data and put it to [MBR]
-		int value = memory[address];
-		MBR_textField.setText(Integer.toString(value));
-		mbr.setValue(value);
-		int MAR1 = mar.getValue();
-		int MBR1 = mbr.getValue();
-
-		LogtextArea.append("MAR:"+ MAR1 + "->" + address+"\n");
-		LogtextArea.append("MBR:"+ MBR1 + "->" + value+"\n");
-        //Put data to the specified [Index Register]
-		switch (ix) {
-		case 1:
-			UI.ix[1].setValue(value);
-			IX1_textField.setText(Integer.toString(value));
-			break;
-		case 2:
-			UI.ix[2].setValue(value);
-			IX2_textField.setText(Integer.toString(value));
-			break;
-		case 3:
-			UI.ix[2].setValue(value);
-			IX2_textField.setText(Integer.toString(value));
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	/**
-	 * STX instr. -- Store Index Register to Memory
-	 * @author Yukang Li
-	 * @param ix
-	 * @param i
-	 * @param address
-	 */
-	public void STX(int ix, int i, int address) {
-
-        //Get the address(where to store data) [IR]
-		IR_textField.setText(Integer.toString(address));
-		ir.setValue(address);
-        //Transmit address to [MAR]
-		MAR_textField.setText(Integer.toString(address));
-		mar.setValue(address);
-		
-		int MAR1 = mar.getValue();
-		LogtextArea.append("MAR:"+ MAR1 + "->" + address+"\n");
-        //Get data from [Index Register] and put it to [MBR]
-		int value = 0;
-		switch (ix) {
-		case 1:
-			value = UI.ix[1].getValue();
-			MBR_textField.setText(Integer.toString(value));
-			mbr.setValue(value);
-			break;
-		case 2:
-			value = UI.ix[2].getValue();
-			MBR_textField.setText(Integer.toString(value));
-			mbr.setValue(value);
-			break;
-		case 3:
-			value = UI.ix[3].getValue();
-			MBR_textField.setText(Integer.toString(value));
-			mbr.setValue(value);
-			break;
-
-		default:
-			break;
-		}
-        //Put data to the memory
-		memory[address] = value;
-	}
-	
-	
 	/**
 	 * this function mainly get the instr.s and the address,
 	 * then store those instr.s to the memory
