@@ -76,10 +76,11 @@ public class UI {
 	private static MFR mfr = new MFR();
 	private static IR ir = new IR(); 
 	private static CC cc = new CC();
-	private static Register r0 = new Register();
-	private static Register r1 = new Register();
-	private static Register r2 = new Register();
-	private static Register r3 = new Register();
+//	private static Register r0 = new Register();
+//	private static Register r1 = new Register();
+//	private static Register r2 = new Register();
+//	private static Register r3 = new Register();
+	private static Register[] r = new Register[4];
 	//private static IX ix[] = new IX[3];
 	private static IX[] ix = new IX[4];
 	private JTextArea Instr_textArea;
@@ -117,37 +118,9 @@ public class UI {
 		for(int i=0;i<4;i++){
 		       ix[i]=new IX();
 		 }
-//		  ix[1].setValue(1024);
-//		  ix[2].setValue(25);
-//		  ix[3].setValue(331);
-//		  memory[1024] = 24;
-//		  memory[1025] = 25;
-//		  memory[1026] = 26;
-//	
-//		  memory[1028] = 28;
-//		  memory[1029] = 29;
-//	
-//		  memory[1030] = 30;
-//		  memory[1031] = 31;
-//	
-//		  memory[1032] = 32;
-//		  memory[1033] = 33;
-//	
-//		  memory[1034] = 34;
-//		  memory[1035] = 35;
-//	
-//		  memory[1036] = 36;
-//		  memory[1037] = 37;
-//	
-//		  memory[25] = 1025;
-//		  memory[26] = 1026;
-//		  memory[30] = 1030;
-//		  memory[34] = 1034;
-//		  memory[36] = 1036;
-//		  memory[37] = 1037;
-//	
-//		  memory[331] = 1331;
-//		  memory[335] = 1335;
+		for(int j=0;j<4;j++) {
+			r[j] = new Register();
+		}
 		pc.setValue(2000);
 		ix[1].setValue(100);
 	    ix[2].setValue(200);
@@ -239,25 +212,25 @@ public class UI {
 		R0_textField.setColumns(10);
 		R0_textField.setBounds(364, 80, 130, 26);
 		frame.getContentPane().add(R0_textField);
-		R0_textField.setText(Integer.toString(r0.getValue()));
+		R0_textField.setText(Integer.toString(r[0].getValue()));
 		
 		R1_textField = new JTextField();
 		R1_textField.setColumns(10);
 		R1_textField.setBounds(364, 118, 130, 26);
 		frame.getContentPane().add(R1_textField);
-		R1_textField.setText(Integer.toString(r1.getValue()));
+		R1_textField.setText(Integer.toString(r[1].getValue()));
 		
 		R2_textField = new JTextField();
 		R2_textField.setColumns(10);
 		R2_textField.setBounds(364, 156, 130, 26);
 		frame.getContentPane().add(R2_textField);
-		R2_textField.setText(Integer.toString(r2.getValue()));
+		R2_textField.setText(Integer.toString(r[2].getValue()));
 		
 		R3_textField = new JTextField();
 		R3_textField.setColumns(10);
 		R3_textField.setBounds(364, 194, 130, 26);
 		frame.getContentPane().add(R3_textField);
-		R3_textField.setText(Integer.toString(r3.getValue()));
+		R3_textField.setText(Integer.toString(r[3].getValue()));
 		
 		IX1_textField = new JTextField();
 		IX1_textField.setColumns(10);
@@ -574,8 +547,8 @@ public class UI {
 				String r0String = R0_textField.getText();
 				if(r0String != null) {
 					int value = Integer.parseInt(r0String);
-					r0.setValue(value);
-					R0_textField.setText(Integer.toString(r0.getValue()));
+					r[0].setValue(value);
+					R0_textField.setText(Integer.toString(r[0].getValue()));
 				}
 			}
 		});
@@ -587,8 +560,8 @@ public class UI {
 				String r1String = R1_textField.getText();
 				if(r1String != null) {
 					int value = Integer.parseInt(r1String);
-					r1.setValue(value);
-					R1_textField.setText(Integer.toString(r1.getValue()));
+					r[1].setValue(value);
+					R1_textField.setText(Integer.toString(r[1].getValue()));
 				}
 			}
 		});
@@ -600,8 +573,8 @@ public class UI {
 				String r2String = R2_textField.getText();
 				if(r2String != null) {
 					int value = Integer.parseInt(r2String);
-					r2.setValue(value);
-					R2_textField.setText(Integer.toString(r2.getValue()));
+					r[2].setValue(value);
+					R2_textField.setText(Integer.toString(r[2].getValue()));
 				}
 			}
 		});
@@ -613,8 +586,8 @@ public class UI {
 				String r3String = R3_textField.getText();
 				if(r3String != null) {
 					int value = Integer.parseInt(r3String);
-					r3.setValue(value);
-					R3_textField.setText(Integer.toString(r3.getValue()));
+					r[3].setValue(value);
+					R3_textField.setText(Integer.toString(r[3].getValue()));
 				}
 			}
 		});
@@ -891,27 +864,27 @@ public class UI {
 		//4. Put data to the specified [Register]
 		switch (r) {
 		case 0:
-			int aa = r0.getValue();
+			int aa = UI.r[0].getValue();
 			R0_textField.setText(Integer.toString(value));
-			r0.setValue(value);
+			UI.r[0].setValue(value);
 			LogtextArea.append("R0:"+aa+"->"+value+"\n");
 			break;
 		case 1:
-			int a1 = r1.getValue();
+			int a1 = UI.r[1].getValue();
 			R1_textField.setText(Integer.toString(value));
-			r1.setValue(value);
+			UI.r[1].setValue(value);
 			LogtextArea.append("R1:"+a1+"->"+value+"\n");
 			break;
 		case 2:
-			int a2 = r2.getValue();
+			int a2 = UI.r[2].getValue();
 			R2_textField.setText(Integer.toString(value));
-			r2.setValue(value);
+			UI.r[2].setValue(value);
 			LogtextArea.append("R2:"+a2+"->"+value+"\n");
 			break;
 		case 3:
-			int a3 = r3.getValue();
+			int a3 = UI.r[3].getValue();
 			R3_textField.setText(Integer.toString(value));
-			r3.setValue(value);
+			UI.r[3].setValue(value);
 			LogtextArea.append("R3:"+a3+"->"+value+"\n");
 			break;
 
@@ -943,29 +916,29 @@ public class UI {
 		LogtextArea.append("MBR:"+ MBR1 + "->" + address+"\n");
 		switch (r) {
 		case 0:
-			int OriginDataR0 = r0.getValue();
-			value = r0.getValue();
+			int OriginDataR0 = UI.r[0].getValue();
+			value = UI.r[0].getValue();
 			MBR_textField.setText(Integer.toString(value));
 			mbr.setValue(value);
 			LogtextArea.append("R0:"+ OriginDataR0 + "->" + value+"\n");
 			break;
 		case 1:
-			int OriginDataR1 = r1.getValue();
-			value = r1.getValue();
+			int OriginDataR1 = UI.r[1].getValue();
+			value = UI.r[1].getValue();
 			MBR_textField.setText(Integer.toString(value));
 			mbr.setValue(value);
 			LogtextArea.append("R1:"+ OriginDataR1 + "->" + value+"\n");
 			break;
 		case 2:
-			int OriginDataR2 = r2.getValue();
-			value = r2.getValue();
+			int OriginDataR2 = UI.r[2].getValue();
+			value = UI.r[2].getValue();
 			MBR_textField.setText(Integer.toString(value));
 			mbr.setValue(value);
 			LogtextArea.append("R2:"+ OriginDataR2 + "->" + value+"\n");
 			break;
 		case 3:
-			int OriginDataR3 = r3.getValue();
-			value = r3.getValue();
+			int OriginDataR3 = UI.r[3].getValue();
+			value = UI.r[3].getValue();
 			MBR_textField.setText(Integer.toString(value));
 			mbr.setValue(value);
 			LogtextArea.append("R3:"+ OriginDataR3 + "->" + value+"\n");
@@ -998,19 +971,19 @@ public class UI {
 		LogtextArea.append("MBR:"+ MBR1 + "->" + address+"\n");
 		switch (r) {
 		case 0:
-			r0.setValue(address);
+			UI.r[0].setValue(address);
 			R0_textField.setText(Integer.toString(address));
 			break;
 		case 1:
-			r1.setValue(address);
+			UI.r[1].setValue(address);
 			R1_textField.setText(Integer.toString(address));
 			break;
 		case 2:
-			r2.setValue(address);
+			UI.r[2].setValue(address);
 			R2_textField.setText(Integer.toString(address));
 			break;
 		case 3:
-			r3.setValue(address);
+			UI.r[3].setValue(address);
 			R3_textField.setText(Integer.toString(address));
 			break;
 
