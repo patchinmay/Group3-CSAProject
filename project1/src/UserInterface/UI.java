@@ -76,12 +76,7 @@ public class UI {
 	private static MFR mfr = new MFR();
 	private static IR ir = new IR(); 
 	private static CC cc = new CC();
-//	private static Register r0 = new Register();
-//	private static Register r1 = new Register();
-//	private static Register r2 = new Register();
-//	private static Register r3 = new Register();
 	private static Register[] r = new Register[4];
-	//private static IX ix[] = new IX[3];
 	private static IX[] ix = new IX[4];
 	private JTextArea Instr_textArea;
 	private JTextArea LogtextArea;
