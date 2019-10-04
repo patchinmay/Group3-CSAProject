@@ -134,7 +134,7 @@ public class UI {
 		for(int j=0;j<4;j++) {
 			r[j] = new Register();
 		}
-		pc.setValue(2000);
+		pc.setValue(2000, PC_index);
 		ix[1].setValue(100, IX1_index);
 	    ix[2].setValue(200, IX2_index);
 	    ix[3].setValue(300, IX3_index);
@@ -486,7 +486,7 @@ public class UI {
 				if(PCContent != null) {
 					int value = Integer.parseInt(PCContent);
 					//if it's not blank, store data to the PC
-					pc.setValue(value);
+					pc.setValue(value,PC_index);
 					//PC_textField.setText(Integer.toString(pc.getValue()));
 				}
 			}
@@ -522,7 +522,7 @@ public class UI {
 				String mfrString = MFR_textField.getText();
 				if(mfrString != null) {
 					int value = Integer.parseInt(mfrString);
-					mfr.setValue(value);
+					mfr.setValue(value,MFR_index);
 					MFR_textField.setText(Integer.toString(mfr.getValue()));
 				}
 			}
@@ -547,7 +547,7 @@ public class UI {
 				String ccString = CC_textField.getText();
 				if(ccString != null) {
 					int value = Integer.parseInt(ccString);
-					cc.setValue(value);
+					cc.setValue(value,CC_index);
 					CC_textField.setText(Integer.toString(cc.getValue()));
 				}
 			}
@@ -771,7 +771,7 @@ public class UI {
     	if(i == 1) {
     		return false;
     	}
-    	pc.setValue(pc.getValue()+1);
+    	pc.setValue(pc.getValue()+1,PC_index);
     	PC_textField.setText(Integer.toString(pc.getValue()));
     	return true;
     }

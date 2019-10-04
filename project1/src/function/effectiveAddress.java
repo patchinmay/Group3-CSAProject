@@ -4,7 +4,7 @@ import userInterface.UI;
 import Components.*;
 
 public class effectiveAddress {
-	public int EA(int address, int ix, int i){
+	public static int EA(int address, int ix, int i){
 	    int value = 0;
 	    address = address + UI.ix[ix].getValue();
 

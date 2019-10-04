@@ -7,23 +7,12 @@ package Components;
  *
  */
 
-public class PC {
+public class PC extends Register{
 	
 	//size of PC is 12 bits
 	private int size = 12;
 	private int value;
-	public int getSize() {
-		return size;
-	}
-	public void setSize(int size) {
-		this.size = size;
-	}
-	public int getValue() {
-		return value;
-	}
-	public void setValue(int value) {
-		this.value = value;
-	}
+	
 	public PC() {
 		super();
 	}

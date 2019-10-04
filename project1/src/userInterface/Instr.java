@@ -1,5 +1,5 @@
 package userInterface;
-
+import function.effectiveAddress;
 
 
 public class Instr {
@@ -29,6 +29,7 @@ public class Instr {
 					UI.MAR_textField.setText(Integer.toString(NewValue[0]));
 					//append the logArea
 					UI.LogtextArea.append("MAR:"+ OldValue[0] + "->" + NewValue[0]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//PC
 				case 1:
@@ -38,6 +39,7 @@ public class Instr {
 					UI.PC_textField.setText(Integer.toString(NewValue[1]));
 					//append the logArea
 					UI.LogtextArea.append("PC:"+ OldValue[1] + "->" + NewValue[1]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//MBR
 				case 2:
@@ -47,6 +49,7 @@ public class Instr {
 					UI.MBR_textField.setText(Integer.toString(NewValue[2]));
 					//append the logArea
 					UI.LogtextArea.append("MBR:"+ OldValue[2] + "->" + NewValue[2]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//MFR
 				case 3:
@@ -56,6 +59,7 @@ public class Instr {
 					UI.MFR_textField.setText(Integer.toString(NewValue[3]));
 					//append the logArea
 					UI.LogtextArea.append("MFR:"+ OldValue[3] + "->" + NewValue[3]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//IR
 				case 4:
@@ -65,6 +69,7 @@ public class Instr {
 					UI.IR_textField.setText(Integer.toString(NewValue[4]));
 					//append the logArea
 					UI.LogtextArea.append("IR:"+ OldValue[4] + "->" + NewValue[4]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//CC
 				case 5:
@@ -74,6 +79,7 @@ public class Instr {
 					UI.CC_textField.setText(Integer.toString(NewValue[5]));
 					//append the logArea
 					UI.LogtextArea.append("CC:"+ OldValue[5] + "->" + NewValue[5]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//R0
 				case 6:
@@ -83,6 +89,7 @@ public class Instr {
 					UI.R0_textField.setText(Integer.toString(NewValue[6]));
 					//append the logArea
 					UI.LogtextArea.append("R0:"+ OldValue[6] + "->" + NewValue[6]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//R1
 				case 7:
@@ -92,6 +99,7 @@ public class Instr {
 					UI.R1_textField.setText(Integer.toString(NewValue[7]));
 					//append the logArea
 					UI.LogtextArea.append("R1:"+ OldValue[7] + "->" + NewValue[7]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//R2
 				case 8:
@@ -101,6 +109,7 @@ public class Instr {
 					UI.R2_textField.setText(Integer.toString(NewValue[8]));
 					//append the logArea
 					UI.LogtextArea.append("R2:"+ OldValue[8] + "->" + NewValue[8]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//R3
 				case 9:
@@ -110,6 +119,7 @@ public class Instr {
 					UI.R3_textField.setText(Integer.toString(NewValue[9]));
 					//append the logArea
 					UI.LogtextArea.append("R3:"+ OldValue[9] + "->" + NewValue[9]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//IX1
 				case 10:
@@ -119,6 +129,7 @@ public class Instr {
 					UI.IX1_textField.setText(Integer.toString(NewValue[10]));
 					//append the logArea
 					UI.LogtextArea.append("IX1:"+ OldValue[10] + "->" + NewValue[10]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//IX2
 				case 11:
@@ -128,6 +139,7 @@ public class Instr {
 					UI.IX2_textField.setText(Integer.toString(NewValue[11]));
 					//append the logArea
 					UI.LogtextArea.append("IX2:"+ OldValue[11] + "->" + NewValue[11]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				//IX3
 				case 12:
@@ -137,6 +149,7 @@ public class Instr {
 					UI.IX3_textField.setText(Integer.toString(NewValue[12]));
 					//append the logArea
 					UI.LogtextArea.append("IX3:"+ OldValue[12] + "->" + NewValue[12]+"\n");
+					OldValue[i] = NewValue[i];
 					break;
 				default:
 					break;
@@ -165,21 +178,13 @@ public class Instr {
 		}else {
 			//indirect addressing
 		}
-		//1. Get the address of data [IR], put the new data into the NewValue[]
-		UI.OldValue[4] = UI.ir.getValue();
-		UI.NewValue[4] = address;
-		//2. Transmit address to [MAR]
-		UI.OldValue[0] = UI.mar.getValue();
-		UI.NewValue[0] = address;
-		//3. Get data from memory and put it to [MBR]
-		UI.OldValue[2] = UI.mbr.getValue();
-		int value = UI.memory[address];
-		UI.NewValue[2] = value;
-		//4. Put data to the specified [Register]
-		
-		UI.OldValue[RegLoc+r] = UI.r[0].getValue();
-		UI.NewValue[RegLoc+r] = value;
-		//5. Refresh all changed
+
+		//2. get ea
+		int value = 0;
+		value = effectiveAddress.EA(address,ix,i);
+		//3. Put data to the specified [Register]
+		UI.r[0].setValue(value,UI.R0_index);
+		//4. Refresh all changed
 		Refresh(UI.NewValue, UI.OldValue);
 	}
 	
@@ -192,18 +197,13 @@ public class Instr {
 	 * @param address
 	 */
 	public static void STR(int r, int ix, int i, int address) {
-        //Get the address(where to store data) [IR]
-		UI.OldValue[4] = UI.ir.getValue();
-		UI.NewValue[4] = address;
-        //Transmit address to [MAR]
-		UI.OldValue[0] = UI.mar.getValue();
-		UI.NewValue[0] = address;
-        //Get data from [Register] and put it to [MBR]
+        //get ea and value from r
+		int eaddress = 0;
+		eaddress = effectiveAddress.EA(address,ix,i);
 		int value = UI.r[r].getValue();
-		UI.OldValue[2] = UI.mbr.getValue();
-		UI.NewValue[2] = value;
+
 		//Put data to the memory
-		UI.memory[address] = value;
+		UI.memory[eaddress] = value;
 		//do refresh function 
 		Refresh(UI.NewValue, UI.OldValue);
 	}
@@ -217,16 +217,7 @@ public class Instr {
 	 * @param address
 	 */
 	public static void LDA (int r, int ix, int i, int address) {
-        //Get the address [IR]
-		UI.OldValue[4] = UI.ir.getValue();
-		UI.NewValue[4] = address;
-        //Transmit address to [MBR]
-		UI.OldValue[2] = UI.mbr.getValue();
-		UI.NewValue[2] = address;
-        //Put the data to the specified [Register]
-		UI.OldValue[RegLoc+r] = UI.r[r].getValue();
-		UI.NewValue[RegLoc+r] = address;
-		//do the refresh function
+		UI.r[r].setValue(UI.memory[effectiveAddress.EA(address,ix,i)], UI.R0_index + r);
 		Refresh(UI.NewValue, UI.OldValue);
 	}
 	
@@ -239,18 +230,8 @@ public class Instr {
 	 */
 	public static void LDX(int ix, int i, int address) {
         //Get the address of data [IR]
-		UI.OldValue[4] = UI.ir.getValue();
-		UI.NewValue[4] = address;
-        //Transmit address to [MAR]
-		UI.OldValue[0] = UI.mar.getValue();
-		UI.NewValue[0] = address;
-        //Get data and put it to [MBR]
-		int value = UI.memory[address];
-		UI.OldValue[2] = UI.mbr.getValue();
-		UI.NewValue[2] = value;
-		//put the data to the specific indexRegister
-		UI.OldValue[IXLoc+ix] = UI.ix[ix].getValue();
-		UI.NewValue[IXLoc+ix]= value;
+		//IR = m[UI.PC]
+		UI.ix[ix].setValue(UI.memory[effectiveAddress.EA(address,ix,i)], UI.IX1_index + ix-1);
 		Refresh(UI.NewValue, UI.OldValue);
 	}
 	
@@ -262,19 +243,7 @@ public class Instr {
 	 * @param address
 	 */
 	public static void STX(int ix, int i, int address) {
-        //Get the address(where to store data) [IR]
-		UI.OldValue[4] = UI.ir.getValue();
-		UI.NewValue[4] = address;
-        //Transmit address to [MAR]
-		UI.OldValue[0] = UI.mar.getValue();
-		UI.NewValue[0] = address;
-        //Get data from [Index Register] and put it to [MBR]
-		int value = UI.ix[ix].getValue();
-		UI.OldValue[2] = UI.mbr.getValue();
-		UI.NewValue[2] = value;
-        //Put data to the memory
-		UI.memory[address] = value;
-		//refresh all changes
+		UI.memory[effectiveAddress.EA(address,ix,i)] = UI.ix[ix].getValue();
 		Refresh(UI.NewValue, UI.OldValue);
 	}
 
