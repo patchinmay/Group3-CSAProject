@@ -21,6 +21,7 @@ import Components.MBR;
 import Components.MFR;
 import Components.PC;
 import Components.Register;
+import Components.Cache;
 import function.*;
 
 import javax.swing.JButton;
@@ -35,6 +36,19 @@ public class UI {
 	//7 R1 / 8 R2 / 9 R3 / 10 IX1 / 11 IX2 / 12 IX3
 	public static int NewValue[] = new int[20];
 	public static int OldValue[] = new int[20];
+	public static int MAR_index=0;
+	public static int PC_index=1;
+	public static int MBR_index=2;
+	public static int MFR_index=3;
+	public static int IR_index=4;
+	public static int CC_index=5;
+	public static int R0_index=6;
+	public static int R1_index=7;
+	public static int R2_index=8;
+	public static int R3_index=9;
+	public static int IX1_index=10;
+	public static int IX2_index=11;
+	public static int IX3_index=12;
 	private Tools tools = new Tools();
 
 	public JFrame frame;
@@ -83,6 +97,7 @@ public class UI {
 	public static IX[] ix = new IX[4];
 	public static JTextArea Instr_textArea;
 	public static JTextArea LogtextArea;
+	public static Cache cache = new Cache();
 	private JButton Singlestep;
 
 	/**
@@ -120,9 +135,9 @@ public class UI {
 			r[j] = new Register();
 		}
 		pc.setValue(2000);
-		ix[1].setValue(100);
-	    ix[2].setValue(200);
-	    ix[3].setValue(300);
+		ix[1].setValue(100, IX1_index);
+	    ix[2].setValue(200, IX2_index);
+	    ix[3].setValue(300, IX3_index);
 	    memory[1024] = 24;
 	    memory[1025] = 25;
 	    memory[1026] = 26;
@@ -483,7 +498,7 @@ public class UI {
 				String marString = MAR_textField.getText();
 				if(marString != null) {
 					int value = Integer.parseInt(marString);
-					mar.setValue(value);
+					mar.setValue(value, MBR_index);
 					MAR_textField.setText(Integer.toString(mar.getValue()));
 				}
 			}
@@ -495,7 +510,7 @@ public class UI {
 				String mbrString = MBR_textField.getText();
 				if(mbrString != null) {
 					int value = Integer.parseInt(mbrString);
-					mbr.setValue(value);
+					mbr.setValue(value, MBR_index);
 					MBR_textField.setText(Integer.toString(mbr.getValue()));
 				}
 			}
@@ -519,7 +534,7 @@ public class UI {
 				String irString = IR_textField.getText();
 				if(irString != null) {
 					int value = Integer.parseInt(irString);
-					ir.setValue(value);
+					ir.setValue(value, IR_index);
 					IR_textField.setText(Integer.toString(ir.getValue()));
 				}
 			}
@@ -545,7 +560,7 @@ public class UI {
 				String r0String = R0_textField.getText();
 				if(r0String != null) {
 					int value = Integer.parseInt(r0String);
-					r[0].setValue(value);
+					r[0].setValue(value, R0_index);
 					R0_textField.setText(Integer.toString(r[0].getValue()));
 				}
 			}
@@ -558,7 +573,7 @@ public class UI {
 				String r1String = R1_textField.getText();
 				if(r1String != null) {
 					int value = Integer.parseInt(r1String);
-					r[1].setValue(value);
+					r[1].setValue(value, R1_index);
 					R1_textField.setText(Integer.toString(r[1].getValue()));
 				}
 			}
@@ -571,7 +586,7 @@ public class UI {
 				String r2String = R2_textField.getText();
 				if(r2String != null) {
 					int value = Integer.parseInt(r2String);
-					r[2].setValue(value);
+					r[2].setValue(value, R2_index);
 					R2_textField.setText(Integer.toString(r[2].getValue()));
 				}
 			}
@@ -584,7 +599,7 @@ public class UI {
 				String r3String = R3_textField.getText();
 				if(r3String != null) {
 					int value = Integer.parseInt(r3String);
-					r[3].setValue(value);
+					r[3].setValue(value, R3_index);
 					R3_textField.setText(Integer.toString(r[3].getValue()));
 				}
 			}
@@ -597,7 +612,7 @@ public class UI {
 				String ix1String = IX1_textField.getText();
 				if(ix1String != null) {
 					int value = Integer.parseInt(ix1String);
-					ix[1].setValue(value);
+					ix[1].setValue(value, IX1_index);
 					IX1_textField.setText(Integer.toString(ix[1].getValue()));
 				}
 			}
@@ -610,7 +625,7 @@ public class UI {
 						String ix2String = IX2_textField.getText();
 						if(ix2String != null) {
 							int value = Integer.parseInt(ix2String);
-							ix[2].setValue(value);
+							ix[2].setValue(value, IX2_index);
 							IX2_textField.setText(Integer.toString(ix[2].getValue()));
 						}
 					}
@@ -623,7 +638,7 @@ public class UI {
 				String ix3String = IX3_textField.getText();
 				if(ix3String != null) {
 					int value = Integer.parseInt(ix3String);
-					ix[3].setValue(value);
+					ix[3].setValue(value, IX3_index);
 					IX3_textField.setText(Integer.toString(ix[3].getValue()));
 				}
 			}
@@ -743,14 +758,14 @@ public class UI {
     	//int iAddress = tools.strHexa2decimal(address);
     	//put it to mar
     	MAR_textField.setText(Integer.toString(address));
-    	mar.setValue(address);
+    	mar.setValue(address, MAR_index);
     	//value is the instr.
     	int value = memory[address];
     	//put the instr. to the mbr & ir
     	MBR_textField.setText(Integer.toString(value));
-    	mbr.setValue(value);
+    	mbr.setValue(value, MBR_index);
     	IR_textField.setText(Integer.toString(value));
-    	ir.setValue(value);
+    	ir.setValue(value, IR_index);
     	//decode & execute the instr. 
     	int  i = analysisInstr(value);
     	if(i == 1) {

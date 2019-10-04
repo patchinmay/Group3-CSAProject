@@ -8,7 +8,7 @@ public class Instr {
 	static int RegLoc = 6;
 	//record the first indexRegister location
 	static int IXLoc = 10;
-	
+
 	/**
 	 * At the end of each instr. execute the refresh function
 	 * refresh the all change at one times
@@ -24,7 +24,7 @@ public class Instr {
 				//MAR
 				case 0:
 					//change the value
-					UI.mar.setValue(NewValue[0]);
+					//UI.mar.setValue(NewValue[0]);
 					//change the TextField
 					UI.MAR_textField.setText(Integer.toString(NewValue[0]));
 					//append the logArea
@@ -33,7 +33,7 @@ public class Instr {
 				//PC
 				case 1:
 					//change the value
-					UI.pc.setValue(NewValue[1]);
+					//UI.pc.setValue(NewValue[1]);
 					//change the TextField
 					UI.PC_textField.setText(Integer.toString(NewValue[1]));
 					//append the logArea
@@ -42,7 +42,7 @@ public class Instr {
 				//MBR
 				case 2:
 					//change the value
-					UI.mbr.setValue(NewValue[2]);
+					//UI.mbr.setValue(NewValue[2]);
 					//change the TextField
 					UI.MBR_textField.setText(Integer.toString(NewValue[2]));
 					//append the logArea
@@ -51,7 +51,7 @@ public class Instr {
 				//MFR
 				case 3:
 					//change the value
-					UI.mfr.setValue(NewValue[3]);
+					//UI.mfr.setValue(NewValue[3]);
 					//change the TextField
 					UI.MFR_textField.setText(Integer.toString(NewValue[3]));
 					//append the logArea
@@ -60,7 +60,7 @@ public class Instr {
 				//IR
 				case 4:
 					//change the value
-					UI.ir.setValue(NewValue[4]);
+					//UI.ir.setValue(NewValue[4]);
 					//change the TextField
 					UI.IR_textField.setText(Integer.toString(NewValue[4]));
 					//append the logArea
@@ -69,7 +69,7 @@ public class Instr {
 				//CC
 				case 5:
 					//change the value
-					UI.cc.setValue(NewValue[5]);
+					//UI.cc.setValue(NewValue[5]);
 					//change the TextField
 					UI.CC_textField.setText(Integer.toString(NewValue[5]));
 					//append the logArea
@@ -78,7 +78,7 @@ public class Instr {
 				//R0
 				case 6:
 					//change the value
-					UI.r[0].setValue(NewValue[6]);
+					//UI.r[0].setValue(NewValue[6]);
 					//change the TextField
 					UI.R0_textField.setText(Integer.toString(NewValue[6]));
 					//append the logArea
@@ -87,7 +87,7 @@ public class Instr {
 				//R1
 				case 7:
 					//change the value
-					UI.r[1].setValue(NewValue[7]);
+					//UI.r[1].setValue(NewValue[7]);
 					//change the TextField
 					UI.R1_textField.setText(Integer.toString(NewValue[7]));
 					//append the logArea
@@ -96,7 +96,7 @@ public class Instr {
 				//R2
 				case 8:
 					//change the value
-					UI.r[2].setValue(NewValue[8]);
+					//UI.r[2].setValue(NewValue[8]);
 					//change the TextField
 					UI.R2_textField.setText(Integer.toString(NewValue[8]));
 					//append the logArea
@@ -105,7 +105,7 @@ public class Instr {
 				//R3
 				case 9:
 					//change the value
-					UI.r[3].setValue(NewValue[9]);
+					//UI.r[3].setValue(NewValue[9]);
 					//change the TextField
 					UI.R3_textField.setText(Integer.toString(NewValue[9]));
 					//append the logArea
@@ -114,7 +114,7 @@ public class Instr {
 				//IX1
 				case 10:
 					//change the value
-					UI.ix[1].setValue(NewValue[10]);
+					//UI.ix[1].setValue(NewValue[10]);
 					//change the TextField
 					UI.IX1_textField.setText(Integer.toString(NewValue[10]));
 					//append the logArea
@@ -123,7 +123,7 @@ public class Instr {
 				//IX2
 				case 11:
 					//change the value
-					UI.ix[2].setValue(NewValue[11]);
+					//UI.ix[2].setValue(NewValue[11]);
 					//change the TextField
 					UI.IX2_textField.setText(Integer.toString(NewValue[11]));
 					//append the logArea
@@ -132,7 +132,7 @@ public class Instr {
 				//IX3
 				case 12:
 					//change the value
-					UI.ix[3].setValue(NewValue[12]);
+					//UI.ix[3].setValue(NewValue[12]);
 					//change the TextField
 					UI.IX3_textField.setText(Integer.toString(NewValue[12]));
 					//append the logArea

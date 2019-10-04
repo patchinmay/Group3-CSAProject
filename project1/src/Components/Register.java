@@ -1,5 +1,5 @@
 package Components;
-
+import userInterface.UI;
 /**
  * this is package include many different components for the simulate
  * 
@@ -22,8 +22,9 @@ public class Register {
 		return value;
 	}
 	//set the value of register
-	public void setValue(int value) {
+	public void setValue(int value, int index) {
 		this.value = value;
+		UI.NewValue[index] = value;
 	}
 	//Constructor 
 	public Register() {
