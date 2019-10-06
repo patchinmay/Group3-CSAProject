@@ -245,6 +245,81 @@ public class Instr {
 	public static void STX(int ix, int i, int address) {
 		UI.memory[effectiveAddress.EA(address,ix,i)] = UI.ix[ix].getValue();
 		Refresh(UI.NewValue, UI.OldValue);
+	}	
+	public static void ORR(int rx,int ry){
+	    //or 24
+	    int result = 0;
+	    result = UI.r[rx].getValue() | UI.r[ry].getValue();
+	    UI.r[rx].setValue(result,UI.R0_index+rx);
+	    Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	public static void NOT(int r){
+	    // not 25
+	    UI.r[r].setValue(~(UI.r[r].getValue()),UI.R0_index+r);
+	    Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	public static void SRC(int r,int count,int lr,int al){
+	    // shift 31
+	    int result = 0;
+	    result = UI.r[r].getValue();
+	    if (lr==0){//left shift 
+	        result = result << count; 
+	        }
+	    else{// right
+	        if (al==0){//a
+	            int bias = 0;
+	            bias = (1<<count) - 1;
+	            result += bias;
+	            result = result >>>count;
+	        }
+	        else{//l
+	            result = result >>count;
+	        }        
+	    }
+	    UI.r[r].setValue(result,UI.R0_index+r);
+	    Refresh(UI.NewValue, UI.OldValue);
 	}
 
+	public static void RRC(int r,int count,int lr,int al){
+	    // rotate 32
+		int value = UI.r[r].getValue();
+	    String result = String.valueOf(Integer.toBinaryString(value));
+	    String result1 = "";
+	    String result2 = "";
+	    int len = result.length();
+	    if (lr==0){//left 
+	        result1 = result.substring(1,count+1);
+	        result2 = result.substring(count+1,len);
+	        result = result2 + result1;
+	        }
+	    else{// right
+	        result1 = result.substring(1,len-count+1);
+	        result2 = result.substring(len-count+1,len+1);
+	        result = result2 + result1;     
+	    }
+	    value = Integer.valueOf(result);
+	    UI.r[r].setValue(value,UI.R0_index+r);
+	    Refresh(UI.NewValue, UI.OldValue);
+	}
 }
+
+/*
+	public static void IN(int r,int devid) {
+	    //input 61
+	    UI.r[r].getValue(UI.devid[devid].getValue());
+	    Refresh(UI.NewValue, UI.OldValue);
+	}
+	public static void OUT(int r,int devid) {
+	    //output 62
+	    UI.devid[devid].getValue(UI.r[r].getValue());
+	    Refresh(UI.NewValue, UI.OldValue);  
+	}
+	public static void CHK(int r,int devid) {
+	    //check status 63
+	    UI.r[r].getValue(UI.devid[devid].getStatus());
+	    Refresh(UI.NewValue, UI.OldValue);
+	}
+*/
+
