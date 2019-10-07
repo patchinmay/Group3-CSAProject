@@ -1,6 +1,7 @@
 package userInterface;
 
 import function.effectiveAddress;
+import Components.CC;
 import function.Tools;
 import userInterface.UI;
 
@@ -384,11 +385,9 @@ public class Instr {
 
 	 */
 	public static void TRR(int rx, int ry) {
-		if(UI.r[rx].getValue() == UI.r[ry].getValue()) {
-			UI.cc.setValue(1, 4, UI.CC_index);
-		}
-		else UI.cc.setValue(0, 4,UI.CC_index);
+		Tools.eq(UI.r[rx].getValue(),UI.r[ry].getValue());
 		//refresh the UI.
+		UI.cc.setValue(UI.CC_index);
 		Refresh(UI.NewValue, UI.OldValue);
 	}
 	

@@ -1,5 +1,7 @@
 package function;
 
+import Components.CC;
+
 /**
  * 
  * @author Menbers
@@ -116,21 +118,42 @@ public class Tools {
 	    	return result;
 	    }
 	    
-	    public static int[] flow(int value) {
-	    	int[] result = new int[2];
-	    	result[1] = value;
+	    public static int flow(int value) {
+	    	int result = 0;
+	    	result = value;
 	    	if (value >= (2^11-1)) {
 	    		// overflow
-	    		result[0] = 1000;
-	    		result[1] = value - 2^12;
+	    		CC.cc[1] = 1;
+	    		CC.cc[2] = 0;
+	    		CC.cc[3] = 0;
+	    		CC.cc[4] = 0;
+	    		result = value - 2^12;
 	    	}
 	    	else if (value <= -(2^11)) {
 	    		//underflow
-	    		result[0] = 100;
-	    		result[1] = value + 2^12;
+	    		CC.cc[1] = 0;
+	    		CC.cc[2] = 1;
+	    		CC.cc[3] = 0;
+	    		CC.cc[4] = 0;
+	    		result = value + 2^12;
 	    	}
 	    	return result;
-	    }
-		
-	}
+	    }	
+	
 
+		public static void eq(int value1, int value2) {
+			if (value1 == value2){
+				CC.cc[1] = 0;
+	    		CC.cc[2] = 0;
+	    		CC.cc[3] = 0;
+	    		CC.cc[4] = 1;
+			}
+			else {
+				CC.cc[1] = 0;
+	    		CC.cc[2] = 0;
+	    		CC.cc[3] = 0;
+	    		CC.cc[4] = 0;
+			}
+		}
+
+	}
