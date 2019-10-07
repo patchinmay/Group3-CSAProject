@@ -333,7 +333,7 @@ public class Instr {
 	}
 
 	 
-	/* Limin
+	/** Limin
 	 * 20 MLT rx, ry     
 	 * Multiply Register by Register
 	 * rx, rx+1 < c(rx)*c(ry)
@@ -354,7 +354,8 @@ public class Instr {
 	}
 	
 	
-	/*  Limin
+	/**  
+	 * Limin
 	 * 21  DVD rx, ry
 	 * Divide Register by Register
 	 *rx, rx+1 <- c(rx)/ c(ry)
@@ -364,7 +365,6 @@ public class Instr {
 	 *If c(ry) = 0, set cc(3) to 1 (set DIVZERO flag)
 
 	 */
-	
 	public static void DVD(int rx, int ry) {
 		//get the result of rx/ry
 		int quotient = UI.r[rx].getValue() /  UI.r[ry].getValue();
@@ -377,11 +377,11 @@ public class Instr {
 		Refresh(UI.NewValue, UI.OldValue);
 	}
 	
-	/* Limin
+	/**
+	 * Limin
 	 * 22 TRR rx, ry
 	 * Test the Equality of Register and Register
      *If c(rx) = c(ry), set cc(4) <- 1; else, cc(4) <- 0
-
 	 */
 	public static void TRR(int rx, int ry) {
 		if(UI.r[rx].getValue() == UI.r[ry].getValue()) {
@@ -392,11 +392,11 @@ public class Instr {
 		Refresh(UI.NewValue, UI.OldValue);
 	}
 	
-	/*Limin
+	/**
+	 * Limin
 	 * 23 AND rx, ry
 	 * Logical And of Register and Register
 	 *c(rx) <- c(rx) AND c(ry)
-
 	 */
 	public static void AND(int rx, int ry) {
 		int rxValue = UI.r[rx].getValue();
