@@ -102,7 +102,6 @@ public class Tools {
 	    }
 	    
 	    public static int complementToTen(String complement) {
-	    	int ten = 0;
 	    	int len = 0;
 	    	int result = 0;
 	    	len = complement.length();
@@ -117,6 +116,21 @@ public class Tools {
 	    	return result;
 	    }
 	    
+	    public static int[] flow(int value) {
+	    	int[] result = new int[2];
+	    	result[1] = value;
+	    	if (value >= (2^11-1)) {
+	    		// overflow
+	    		result[0] = 1000;
+	    		result[1] = value - 2^12;
+	    	}
+	    	else if (value <= -(2^11)) {
+	    		//underflow
+	    		result[0] = 100;
+	    		result[1] = value + 2^12;
+	    	}
+	    	return result;
+	    }
 		
 	}
 
