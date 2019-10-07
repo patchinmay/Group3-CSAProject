@@ -1,6 +1,6 @@
 package userInterface;
 import function.effectiveAddress;
-
+import userInterface.UI;
 
 public class Instr {
 	
@@ -203,7 +203,8 @@ public class Instr {
 		int value = UI.r[r].getValue();
 
 		//Put data to the memory
-		UI.memory[eaddress] = value;
+		//UI.memory[eaddress] = value;
+		UI.cache.setValue(eaddress, value);
 		//do refresh function 
 		Refresh(UI.NewValue, UI.OldValue);
 	}
@@ -217,7 +218,14 @@ public class Instr {
 	 * @param address
 	 */
 	public static void LDA (int r, int ix, int i, int address) {
-		UI.r[r].setValue(UI.memory[effectiveAddress.EA(address,ix,i)], UI.R0_index + r);
+		//get effective address
+		int eaddress =0;
+		eaddress =  effectiveAddress.EA(address,ix,i);
+		//get the value from cache
+		int value = UI.cache.returnValue(eaddress);
+		//put the value into register
+		UI.r[r].setValue(value, UI.R0_index+r);
+		//refresh the screen
 		Refresh(UI.NewValue, UI.OldValue);
 	}
 	
@@ -229,9 +237,14 @@ public class Instr {
 	 * @param address
 	 */
 	public static void LDX(int ix, int i, int address) {
-        //Get the address of data [IR]
-		//IR = m[UI.PC]
-		UI.ix[ix].setValue(UI.memory[effectiveAddress.EA(address,ix,i)], UI.IX1_index + ix-1);
+		//get effective address
+		int eaddress =0;
+		eaddress =  effectiveAddress.EA(address,ix,i);
+		//get the value from cache
+		int value = UI.cache.returnValue(eaddress);
+		//put the value into index register
+		UI.ix[ix].setValue(value, UI.IX1_index+ix-1);
+		//refresh the screen
 		Refresh(UI.NewValue, UI.OldValue);
 	}
 	
@@ -243,8 +256,171 @@ public class Instr {
 	 * @param address
 	 */
 	public static void STX(int ix, int i, int address) {
-		UI.memory[effectiveAddress.EA(address,ix,i)] = UI.ix[ix].getValue();
+		//get effective address
+		int eaddress =0;
+		eaddress =  effectiveAddress.EA(address,ix,i);
+		//get the value from index register
+		int value = UI.ix[ix].getValue();
+		//put value into cache
+		UI.cache.setValue(eaddress, value);
+		//refresh the screen
 		Refresh(UI.NewValue, UI.OldValue);
 	}
+	
+	/**  Limin
+	 * 04 AMR r, x, addrees[, l]   Add memory to the Register, r=0,1,2,3   r<- c(r)+c(EA) 
+	 */
+	public static void AMR(int r, int ix, int i, int address) {
+		//get effective address
+		int EA = effectiveAddress.EA(address, ix, i);
+		//c(r) + c(EA)
+		int rlt = UI.r[r].getValue() + UI.cache.returnValue(EA);
+		//set the value of r1
+		UI.r[r].setValue(rlt, UI.R0_index+r);
+		//refresh the UI
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/**  Limin
+	 * 05 SMR r, x, addrees[, l]   Subtract memory from the Register, r=0,1,2,3   r<- c(r)-c(EA) 
+	 */
+	public static void SMR(int r, int ix, int i, int address) {
+		//get effective address
+		int EA = effectiveAddress.EA(address, ix, i);
+		//c(r) - c(EA)
+		int rlt = UI.r[r].getValue() - UI.cache.returnValue(EA);
+		//set the value of r[r]
+		UI.r[r].setValue(rlt, UI.R0_index+r);
+		//refresh the UI
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/**  Limin
+	 * 06 AIR r, immed 
+	 * Add Immediate to register, r = 0,1,2,3
+	 * r<-c(r)+Immediate 
+	 * Note:
+	 * 1. if Immed=0, does nothing
+	 * 2. if c(r)=0, loads r with Immed
+	 * IX and I are ignored in this instruction 
+	 */
+	public static void AIR(int r, int immed) {
+		//add c(r)+Immedd
+		int rlt = UI.r[r].getValue() + immed;
+		//set the value of r[r]
+		UI.r[r].setValue(rlt, UI.R0_index+r);
+		//refresh the UI
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/**  Limin
+	 * 07 SIR r, immed    Subtract Immediate from register. r=0...3
+	 * r<-c(r) - Immed 
+	 * Note:
+	 * 1. if Immed=0, does nothing
+	 * 2. if c(r)=0, loads r with Immed
+	 * IX and I are ignored in this instruction 
+	 */
+	public static void SIR(int r, int immed) {
+		//add c(r)-Immedd
+		int rlt = UI.r[r].getValue() - immed;
+		//set the value of r[r]
+		UI.r[r].setValue(rlt, UI.R0_index+r);
+		//refresh the UI
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	 
+	/* Limin
+	 * 20 MLT rx, ry     
+	 * Multiply Register by Register
+	 * rx, rx+1 < c(rx)*c(ry)
+	 * rx must be 0 or 2
+	 *ry must be 0 or 2
+	 *rx contains the high order bits, rx+1 contains the low order bits of the result
+     *Set OVERFLOW flag, if overflow
+	 * */
+	public static void MLT(int rx, int ry) {
+		//get the result of rx*ry
+		int rlt = UI.r[rx].getValue() *  UI.r[ry].getValue();
+		//put the high order bits into rx
+		UI.r[rx].setValue(rlt/65536, UI.R0_index+rx);
+		//put the low order bits into rx+1
+		UI.r[rx+1].setValue(rlt%65536, UI.R0_index+rx+1);
+		//refresh the UI.
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	
+	/*  Limin
+	 * 21  DVD rx, ry
+	 * Divide Register by Register
+	 *rx, rx+1 <- c(rx)/ c(ry)
+	 *rx must be 0 or 2
+	 *rx contains the quotient; rx+1 contains the remainder
+	 *ry must be 0 or 2
+	 *If c(ry) = 0, set cc(3) to 1 (set DIVZERO flag)
 
+	 */
+	
+	public static void DVD(int rx, int ry) {
+		//get the result of rx/ry
+		int quotient = UI.r[rx].getValue() /  UI.r[ry].getValue();
+		int reminder = UI.r[rx].getValue() %  UI.r[ry].getValue();
+		//put the high order bits into rx
+		UI.r[rx].setValue(quotient, UI.R0_index+rx);
+		//put the low order bits into rx+1
+		UI.r[rx+1].setValue(reminder, UI.R0_index+rx+1);
+		//refresh the UI.
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/* Limin
+	 * 22 TRR rx, ry
+	 * Test the Equality of Register and Register
+     *If c(rx) = c(ry), set cc(4) <- 1; else, cc(4) <- 0
+
+	 */
+	public static void TRR(int rx, int ry) {
+		if(UI.r[rx].getValue() == UI.r[ry].getValue()) {
+			UI.cc.setValue(1, 4, UI.CC_index);
+		}
+		else UI.cc.setValue(0, 4,UI.CC_index);
+		//refresh the UI.
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/*Limin
+	 * 23 AND rx, ry
+	 * Logical And of Register and Register
+	 *c(rx) <- c(rx) AND c(ry)
+
+	 */
+	public static void AND(int rx, int ry) {
+		int rxValue = UI.r[rx].getValue();
+		int ryValue = UI.r[ry].getValue();
+		UI.r[rx].setValue(rxValue&ryValue, UI.R0_index+rx);
+	}
+	
+	/*Limin
+	 * 24 ORR rx, ry
+	 * Logical OR of Register and Register
+	 *c(rx) <- c(rx) OR c(ry)
+
+	 */
+	public static void ORR(int rx, int ry) {
+		int rxValue = UI.r[rx].getValue();
+		int ryValue = UI.r[ry].getValue();
+		UI.r[rx].setValue(rxValue|ryValue, UI.R0_index+rx);
+	}
+	
+	/*Limin
+	 * 25  NOT rx
+	 * Logical NOT of Register
+	 *c(rx) <- c(rx) OR c(ry)
+
+	 */
+	public static void NOT(int rx) {
+		int rxValue = UI.r[rx].getValue();
+		UI.r[rx].setValue(~rxValue, UI.R0_index+rx);
+	}
 }
