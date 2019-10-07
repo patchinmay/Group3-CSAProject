@@ -1,4 +1,5 @@
 package userInterface;
+
 import function.effectiveAddress;
 
 
@@ -245,7 +246,8 @@ public class Instr {
 	public static void STX(int ix, int i, int address) {
 		UI.memory[effectiveAddress.EA(address,ix,i)] = UI.ix[ix].getValue();
 		Refresh(UI.NewValue, UI.OldValue);
-	}	
+	}
+	
 	public static void ORR(int rx,int ry){
 	    //or 24
 	    int result = 0;
@@ -303,6 +305,159 @@ public class Instr {
 	    UI.r[r].setValue(value,UI.R0_index+r);
 	    Refresh(UI.NewValue, UI.OldValue);
 	}
+	
+	/**
+	 * JZ instr. -- Jump if the content of register equal zero
+	 * ( c(r) equal 0)? pc = EA : pc = pc+1
+	 * @author Yukang Li
+	 * @param r
+	 * @param ix
+	 * @param address
+	 */
+	public static void JZ(int r, int ix, int i, int address) {
+		//judge the content of specific register is zero
+		if(UI.r[r].getValue() == 0) {
+			//calculate the EA, then put into pc
+			int value = 0;
+			value = effectiveAddress.EA(address,ix,i);
+			UI.pc.setValue(value, UI.PC_index);
+		}else {
+			//if false, PC = PC + 1;
+			int nextInstr = UI.pc.getValue();
+			UI.pc.setValue(nextInstr+1, UI.PC_index);
+		}
+	}
+	
+	/**
+	 * JNE instr. -- Jump if the content of register not equal zero
+	 * ( c(r) notEqual 0)? pc = EA : pc = pc+1
+	 * @author Yuang Li
+	 * @param r
+	 * @param x
+	 * @param address
+	 */
+	public static void JNE(int r, int ix, int i, int address) {
+		//judge the content of specific register is zero
+		if(UI.r[r].getValue() != 0) {
+			//calculate the EA, then put into pc
+			int value = 0;
+			value = effectiveAddress.EA(address,ix,i);
+			UI.pc.setValue(value, UI.PC_index);
+		}else {
+			//if false, PC = PC + 1;
+			int nextInstr = UI.pc.getValue();
+			UI.pc.setValue(nextInstr+1, UI.PC_index);
+		}
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/**
+	 * JCC instr. -- get the c(r) -> cc
+	 * (judge if equal 1)? pc = EA : pc = pc+1
+	 * @author Yukang Li
+	 * @param cc -- can we get the cc value when call this function?
+	 * @param x
+	 * @param address
+	 */
+	public static void JCC(int cc, int ix, int i, int address) {
+		//[cc] replace the [r]
+		int ccBit = UI.r[cc].getValue();
+		//if cc bit = 1, pc = EA
+		if(ccBit==1) {
+			//calculate the EA, then put into pc
+			int value = 0;
+			value = effectiveAddress.EA(address,ix,i);
+			UI.pc.setValue(value, UI.PC_index);
+		}else {
+			//if false, PC = PC + 1;
+			int nextInstr = UI.pc.getValue();
+			UI.pc.setValue(nextInstr+1, UI.PC_index);
+		}
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/**
+	 * JMA instr. -- Unconditional Jump To Address
+	 * @author Yukang Li
+	 * @param x
+	 * @param i
+	 * @param address
+	 */
+	public static void JMA(int ix, int i, int address) {
+		//calculate the EA, then put into pc
+		int value = 0;
+		value = effectiveAddress.EA(address,ix,i);
+		UI.pc.setValue(value, UI.PC_index);
+		//refresh to update UI
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/**
+	 * JSR instr. -- Jump and Save Return Address:
+	 * @author Yukang Li
+	 * @param ix
+	 * @param i
+	 * @param address
+	 */
+	public static void JSR(int ix, int i, int address) {
+		
+	}
+	
+	/**
+	 * 
+	 * @author Yukang Li
+	 */
+	public static void RFS() {
+		
+	}
+	
+	/**
+	 * SOB instr. -- Subtract One and Branch. 
+	 * @author Yukang Li
+	 * @param r
+	 * @param ix
+	 * @param i
+	 * @param address
+	 */
+	public static void SOB(int r, int ix, int i, int address) {
+		//the values of register minus 1
+		int value = UI.r[r].getValue();
+		UI.r[r].setValue(value-1, UI.R0_index+r);
+		value = UI.r[r].getValue();
+		//judge the content of specific register is zero
+		if(value > 0) {
+			//calculate the EA, then put into pc
+			int EA = 0;
+			EA = effectiveAddress.EA(address,ix,i);
+			UI.pc.setValue(EA, UI.PC_index);
+		}else {
+			//if false, PC = PC + 1;
+			int nextInstr = UI.pc.getValue();
+			UI.pc.setValue(nextInstr+1, UI.PC_index);
+		}
+	}
+	
+	/**
+	 * JGE instr. -- Jump Greater Than or Equal To zero
+	 * @author Yukang Li
+	 * @param r
+	 * @param ix
+	 * @param i
+	 * @param address
+	 */
+	public static void JGE(int r, int ix, int i, int address) {
+		//judge the content of specific register is greater than zero
+		if(UI.r[r].getValue() >= 0) {
+			//calculate the EA, then put into pc
+			int value = 0;
+			value = effectiveAddress.EA(address,ix,i);
+			UI.pc.setValue(value, UI.PC_index);
+		}else {
+			//if false, PC = PC + 1;
+			int nextInstr = UI.pc.getValue();
+			UI.pc.setValue(nextInstr+1, UI.PC_index);
+		}
+	}
 }
 
 /*
@@ -322,4 +477,6 @@ public class Instr {
 	    Refresh(UI.NewValue, UI.OldValue);
 	}
 */
+
+
 
