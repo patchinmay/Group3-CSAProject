@@ -140,7 +140,6 @@ public class Tools {
 	    	return result;
 	    }	
 	
-
 		public static void eq(int value1, int value2) {
 			if (value1 == value2){
 				CC.cc[1] = 0;
