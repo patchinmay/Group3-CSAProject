@@ -899,6 +899,11 @@ public class UI {
 				ins = "101010";
 			} else if (ins.equals("HLT")){
 				ins = "00000";
+				
+				
+				
+				
+				
 			}else {
 				ins = "00000";
 			}

@@ -1,4 +1,5 @@
 package userInterface;
+
 import function.effectiveAddress;
 import userInterface.UI;
 
@@ -329,6 +330,7 @@ public class Instr {
 		//refresh the UI
 		Refresh(UI.NewValue, UI.OldValue);
 	}
+
 	 
 	/* Limin
 	 * 20 MLT rx, ry     
@@ -401,26 +403,237 @@ public class Instr {
 		UI.r[rx].setValue(rxValue&ryValue, UI.R0_index+rx);
 	}
 	
-	/*Limin
-	 * 24 ORR rx, ry
-	 * Logical OR of Register and Register
-	 *c(rx) <- c(rx) OR c(ry)
 
-	 */
-	public static void ORR(int rx, int ry) {
-		int rxValue = UI.r[rx].getValue();
-		int ryValue = UI.r[ry].getValue();
-		UI.r[rx].setValue(rxValue|ryValue, UI.R0_index+rx);
+	
+	public static void ORR(int rx,int ry){
+	    //or 24
+	    int result = 0;
+	    result = UI.r[rx].getValue() | UI.r[ry].getValue();
+	    UI.r[rx].setValue(result,UI.R0_index+rx);
+	    Refresh(UI.NewValue, UI.OldValue);
 	}
 	
-	/*Limin
-	 * 25  NOT rx
-	 * Logical NOT of Register
-	 *c(rx) <- c(rx) OR c(ry)
+	public static void NOT(int r){
+	    // not 25
+	    UI.r[r].setValue(~(UI.r[r].getValue()),UI.R0_index+r);
+	    Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	public static void SRC(int r,int count,int lr,int al){
+	    // shift 31
+	    int result = 0;
+	    result = UI.r[r].getValue();
+	    if (lr==0){//left shift 
+	        result = result << count; 
+	        }
+	    else{// right
+	        if (al==0){//a
+	            int bias = 0;
+	            bias = (1<<count) - 1;
+	            result += bias;
+	            result = result >>>count;
+	        }
+	        else{//l
+	            result = result >>count;
+	        }        
+	    }
+	    UI.r[r].setValue(result,UI.R0_index+r);
+	    Refresh(UI.NewValue, UI.OldValue);
+	}
 
+	public static void RRC(int r,int count,int lr,int al){
+	    // rotate 32
+		int value = UI.r[r].getValue();
+	    String result = String.valueOf(Integer.toBinaryString(value));
+	    String result1 = "";
+	    String result2 = "";
+	    int len = result.length();
+	    if (lr==0){//left 
+	        result1 = result.substring(1,count+1);
+	        result2 = result.substring(count+1,len);
+	        result = result2 + result1;
+	        }
+	    else{// right
+	        result1 = result.substring(1,len-count+1);
+	        result2 = result.substring(len-count+1,len+1);
+	        result = result2 + result1;     
+	    }
+	    value = Integer.valueOf(result);
+	    UI.r[r].setValue(value,UI.R0_index+r);
+	    Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/**
+	 * JZ instr. -- Jump if the content of register equal zero
+	 * ( c(r) equal 0)? pc = EA : pc = pc+1
+	 * @author Yukang Li
+	 * @param r
+	 * @param ix
+	 * @param address
 	 */
-	public static void NOT(int rx) {
-		int rxValue = UI.r[rx].getValue();
-		UI.r[rx].setValue(~rxValue, UI.R0_index+rx);
+	public static void JZ(int r, int ix, int i, int address) {
+		//judge the content of specific register is zero
+		if(UI.r[r].getValue() == 0) {
+			//calculate the EA, then put into pc
+			int value = 0;
+			value = effectiveAddress.EA(address,ix,i);
+			UI.pc.setValue(value, UI.PC_index);
+		}else {
+			//if false, PC = PC + 1;
+			int nextInstr = UI.pc.getValue();
+			UI.pc.setValue(nextInstr+1, UI.PC_index);
+		}
+	}
+	
+	/**
+	 * JNE instr. -- Jump if the content of register not equal zero
+	 * ( c(r) notEqual 0)? pc = EA : pc = pc+1
+	 * @author Yuang Li
+	 * @param r
+	 * @param x
+	 * @param address
+	 */
+	public static void JNE(int r, int ix, int i, int address) {
+		//judge the content of specific register is zero
+		if(UI.r[r].getValue() != 0) {
+			//calculate the EA, then put into pc
+			int value = 0;
+			value = effectiveAddress.EA(address,ix,i);
+			UI.pc.setValue(value, UI.PC_index);
+		}else {
+			//if false, PC = PC + 1;
+			int nextInstr = UI.pc.getValue();
+			UI.pc.setValue(nextInstr+1, UI.PC_index);
+		}
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/**
+	 * JCC instr. -- get the c(r) -> cc
+	 * (judge if equal 1)? pc = EA : pc = pc+1
+	 * @author Yukang Li
+	 * @param cc -- can we get the cc value when call this function?
+	 * @param x
+	 * @param address
+	 */
+	public static void JCC(int cc, int ix, int i, int address) {
+		//[cc] replace the [r]
+		int ccBit = UI.r[cc].getValue();
+		//if cc bit = 1, pc = EA
+		if(ccBit==1) {
+			//calculate the EA, then put into pc
+			int value = 0;
+			value = effectiveAddress.EA(address,ix,i);
+			UI.pc.setValue(value, UI.PC_index);
+		}else {
+			//if false, PC = PC + 1;
+			int nextInstr = UI.pc.getValue();
+			UI.pc.setValue(nextInstr+1, UI.PC_index);
+		}
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/**
+	 * JMA instr. -- Unconditional Jump To Address
+	 * @author Yukang Li
+	 * @param x
+	 * @param i
+	 * @param address
+	 */
+	public static void JMA(int ix, int i, int address) {
+		//calculate the EA, then put into pc
+		int value = 0;
+		value = effectiveAddress.EA(address,ix,i);
+		UI.pc.setValue(value, UI.PC_index);
+		//refresh to update UI
+		Refresh(UI.NewValue, UI.OldValue);
+	}
+	
+	/**
+	 * JSR instr. -- Jump and Save Return Address:
+	 * @author Yukang Li
+	 * @param ix
+	 * @param i
+	 * @param address
+	 */
+	public static void JSR(int ix, int i, int address) {
+		
+	}
+	
+	/**
+	 * 
+	 * @author Yukang Li
+	 */
+	public static void RFS() {
+		
+	}
+	
+	/**
+	 * SOB instr. -- Subtract One and Branch. 
+	 * @author Yukang Li
+	 * @param r
+	 * @param ix
+	 * @param i
+	 * @param address
+	 */
+	public static void SOB(int r, int ix, int i, int address) {
+		//the values of register minus 1
+		int value = UI.r[r].getValue();
+		UI.r[r].setValue(value-1, UI.R0_index+r);
+		value = UI.r[r].getValue();
+		//judge the content of specific register is zero
+		if(value > 0) {
+			//calculate the EA, then put into pc
+			int EA = 0;
+			EA = effectiveAddress.EA(address,ix,i);
+			UI.pc.setValue(EA, UI.PC_index);
+		}else {
+			//if false, PC = PC + 1;
+			int nextInstr = UI.pc.getValue();
+			UI.pc.setValue(nextInstr+1, UI.PC_index);
+		}
+	}
+	
+	/**
+	 * JGE instr. -- Jump Greater Than or Equal To zero
+	 * @author Yukang Li
+	 * @param r
+	 * @param ix
+	 * @param i
+	 * @param address
+	 */
+	public static void JGE(int r, int ix, int i, int address) {
+		//judge the content of specific register is greater than zero
+		if(UI.r[r].getValue() >= 0) {
+			//calculate the EA, then put into pc
+			int value = 0;
+			value = effectiveAddress.EA(address,ix,i);
+			UI.pc.setValue(value, UI.PC_index);
+		}else {
+			//if false, PC = PC + 1;
+			int nextInstr = UI.pc.getValue();
+			UI.pc.setValue(nextInstr+1, UI.PC_index);
+		}
 	}
 }
+
+/*
+	public static void IN(int r,int devid) {
+	    //input 61
+	    UI.r[r].getValue(UI.devid[devid].getValue());
+	    Refresh(UI.NewValue, UI.OldValue);
+	}
+	public static void OUT(int r,int devid) {
+	    //output 62
+	    UI.devid[devid].getValue(UI.r[r].getValue());
+	    Refresh(UI.NewValue, UI.OldValue);  
+	}
+	public static void CHK(int r,int devid) {
+	    //check status 63
+	    UI.r[r].getValue(UI.devid[devid].getStatus());
+	    Refresh(UI.NewValue, UI.OldValue);
+	}
+*/
+
+
+
