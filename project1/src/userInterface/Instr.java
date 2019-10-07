@@ -1,6 +1,7 @@
 package userInterface;
 
 import function.effectiveAddress;
+import function.Tools;
 import userInterface.UI;
 
 public class Instr {
@@ -449,16 +450,16 @@ public class Instr {
 	    String result2 = "";
 	    int len = result.length();
 	    if (lr==0){//left 
-	        result1 = result.substring(1,count+1);
-	        result2 = result.substring(count+1,len);
+	        result1 = result.substring(0,count);
+	        result2 = result.substring(count,len);
 	        result = result2 + result1;
 	        }
 	    else{// right
-	        result1 = result.substring(1,len-count+1);
-	        result2 = result.substring(len-count+1,len+1);
+	        result1 = result.substring(0,len-count);
+	        result2 = result.substring(len-count,len);
 	        result = result2 + result1;     
 	    }
-	    value = Integer.valueOf(result);
+	    value = Tools.complementToTen(result);
 	    UI.r[r].setValue(value,UI.R0_index+r);
 	    Refresh(UI.NewValue, UI.OldValue);
 	}

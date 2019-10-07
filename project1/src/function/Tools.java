@@ -101,6 +101,21 @@ public class Tools {
 	        return result;
 	    }
 	    
+	    public static int complementToTen(String complement) {
+	    	int ten = 0;
+	    	int len = 0;
+	    	int result = 0;
+	    	len = complement.length();
+	    	for (int i = 0;i<len-1;i++)
+	    		if (complement.substring(i,i+1) == "1") {
+	    			result += 2^i; 
+	    		}
+	    	result +=1;
+	    	if (complement.substring(len-1, len)=="1") {
+	    		result *=-1;
+	    	}
+	    	return result;
+	    }
 	    
 		
 	}
