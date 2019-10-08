@@ -103,6 +103,12 @@ public class Tools {
 	        return result;
 	    }
 	    
+	    /**
+	     * @author Siyu
+	     * @param complement
+	     * @import String binary
+	     * @return decimal
+	     */
 	    public static int complementToTen(String complement) {
 	    	int len = 0;
 	    	int result = 0;
@@ -118,6 +124,12 @@ public class Tools {
 	    	return result;
 	    }
 	    
+	    /**
+	     * set cc[1] or cc[2] due to overflow or underflow
+	     * @author Siyu
+	     * @param value
+	     * @return
+	     */
 	    public static int flow(int value) {
 	    	int result = 0;
 	    	result = value;
@@ -139,7 +151,13 @@ public class Tools {
 	    	}
 	    	return result;
 	    }	
-	
+	    
+	    /**
+	     * change cc[4] dues to equal or not
+	     * @author Siyu
+	     * @param value1
+	     * @param value2
+	     */
 		public static void eq(int value1, int value2) {
 			if (value1 == value2){
 				CC.cc[1] = 0;
@@ -154,5 +172,18 @@ public class Tools {
 	    		CC.cc[4] = 0;
 			}
 		}
-
+		
+		/**
+		 * check the divisor is 0 or not
+		 * @author Siyu
+		 * @param value
+		 */
+		public static void div0(int value) {
+			if (value==0) {
+				CC.cc[1] = 0;
+	    		CC.cc[2] = 0;
+	    		CC.cc[3] = 1;
+	    		CC.cc[4] = 0;
+			}
+		}
 	}

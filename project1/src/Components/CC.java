@@ -4,14 +4,11 @@ import userInterface.UI;
 
 /**
  * 
- * @version 1.0 
- * @author Yukang Li
- *
+ * @version 2.0 
+ * @author Siyu
+ *	 CC setValue only need to input cc_index
  */
 
-//Comment added for checking the push request on git
-//liminsadawdawdaw
-//limin test terminal 
 public class CC extends Register{
 	private int size = 4;
 	private int value;
