@@ -344,6 +344,7 @@ public class Instr {
 	public static void MLT(int rx, int ry) {
 		//get the result of rx*ry
 		int rlt = UI.r[rx].getValue() *  UI.r[ry].getValue();
+		//rlt = flow(rlt);
 		//put the high order bits into rx
 		UI.r[rx].setValue(rlt/65536, UI.R0_index+rx);
 		//put the low order bits into rx+1
@@ -440,6 +441,7 @@ public class Instr {
 	    UI.r[r].setValue(result,UI.R0_index+r);
 	    Refresh(UI.NewValue, UI.OldValue);
 	}
+	
 
 	public static void RRC(int r,int count,int lr,int al){
 	    // rotate 32

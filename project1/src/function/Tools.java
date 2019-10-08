@@ -44,23 +44,69 @@ public class Tools {
 			 }
 		
 		/**
-		 * @author Limin Wu
+		 * @author Limin Wu  
 		 * @param instruction
 		 * @return array
 		 */
 		public int[] decodeInstr(int instruction) {
-			int[] array = new int[5];
-			int OpCode = instruction / 1024;
-			int R = instruction % 1024 / 256;
-			int IX = instruction % 256 / 64;
-			int address = instruction % 64 / 2;
-			int I = instruction % 2;
-			array[0] = OpCode;
-			array[1] = R;
-			array[2] = IX;
-			array[3] = I;
-			array[4] = address;
-			return array;
+			//The format for LOAD/STORE, Transfer and some arithmetic and logical instructions
+			int OpCode = instruction/1024;
+			if((OpCode>=1 && OpCode<=3) || (OpCode>=41 && OpCode<=42) || (OpCode>=10 && OpCode<=17)) {
+				int[] array = new int[5];
+				int R = instruction % 1024 / 256;
+				int IX = instruction % 256 / 64;
+				int address = instruction % 64 / 2;
+				int I = instruction % 2;
+				array[0] = OpCode;
+				array[1] = R;
+				array[2] = IX;
+				array[3] = I;
+				array[4] = address;
+				return array;
+			}//Certain arithmetic and logical instructions 
+			else if(OpCode>=20 && OpCode<=25) {
+				int[] array = new int[3];
+				int Rx = instruction%1024/256;
+				int Ry = instruction%256/64;
+				array[0] = OpCode;
+				array[1] = Rx;
+				array[2] = Ry;
+				return array;
+			} //The format for shift and rotate instructions
+			else if(OpCode>=31 && OpCode<=32) {
+				int[] array = new int[5];
+				int R = instruction % 1024 / 256;
+				int AL = instruction%1024/128;
+				int LR = instruction%128/64;
+				int count = instruction % 16;
+				array[0] = OpCode;
+				array[1] = R;
+				array[2] = AL;
+				array[3] = LR;
+				array[4] = count;
+				return array;
+			}//The format for I/O instructions
+			else if(OpCode>=61 && OpCode<=63) {
+				int []array = new int[3];
+				int R = instruction%1024/256;
+				int DevID = instruction%32;
+				array[0] = OpCode;
+				array[1] = R;
+				array[2] = DevID;
+				return array;
+			} 
+			else if(OpCode==36) {
+				int []array = new int[2];
+				int trapCode = instruction%16;
+				array[0] = OpCode;
+				array[1] = trapCode;
+				return array;
+			}
+			else {
+				int []array = new int[1];
+				array[0] = OpCode;
+				return array;
+			}
 		}
 		
 		/**

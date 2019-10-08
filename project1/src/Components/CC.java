@@ -24,7 +24,7 @@ public class CC extends Register{
 		this.value = value;
 	}
 	
-	public void setValue(int value, int index, int cc_index) {
+	public void setValue(int value, int index, int cc_index]) {
 		number[index] = value;
 		//ensure cc[1] is different with cc[2]
 		if(index==1) {
@@ -39,6 +39,7 @@ public class CC extends Register{
 		int rlt = 0;
 		for(int i=1; i<5; i++)
 			rlt = rlt*10+this.number[i];
+		
 		UI.NewValue[cc_index] = rlt;
 	}
 	
