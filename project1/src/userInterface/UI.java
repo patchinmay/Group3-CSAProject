@@ -804,30 +804,217 @@ public class UI {
     	//array contain opCode, register, indexRegister, indirect, address
     	int[] array = tools.decodeInstr(instr);
     	int opCode = array[0];
-    	int r = array[1];
-    	int ix = array[2];
-    	int i = array[3];
-    	int address = array[4];
+    	int r;
+    	int ix;
+    	int i;
+    	int address;
+    	int Rx;
+    	int Ry;
+    	int AL;
+    	int LR;
+    	int Count;
+    	int DevID;
+    	int cc;
+    	int immed;
+    	int trapCode;
     	switch (opCode) {
 		case 1:
 			//01 -- LDR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
 			Instr.LDR(r, ix, i, address);
 			break;
 		case 2:
 			//02 -- STR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
 			Instr.STR(r, ix, i, address);
 			break;
 		case 3:
 			//03 -- LDA
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
 			Instr.LDA(r, ix, i, address);
 			break;
 		case 41:
 			//41 -- LDX
+			ix = array[2];
+			i = array[3];
+			address = array[4];
 			Instr.LDX(ix, i, address);
 			break;
 		case 42:
 			//42 -- STX
+			ix = array[2];
+			i = array[3];
+			address = array[4];
 			Instr.STX(ix, i, address);
+			break;
+		case 10:
+			//10 -- JZ
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JZ(r, ix, i, address);
+			break;
+		case 11:
+			//11 -- JNE
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JNE(r, ix, i, address);
+			break;
+		case 12:
+			//12 -- JCC
+			cc = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JCC(cc, ix, i, address);
+			break;
+		case 13:
+			//13 -- JMA
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JMA(ix, i, address);
+			break;
+		case 14:
+			//14 --  JSR
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JSR(ix, i, address);
+			break;
+		case 15:
+			//15 -- RFS
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.RFS();
+			break;
+		case 16:
+			//16 -- SOB
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.SOB(r, ix, i, address);
+			break;
+		case 17:
+			//17 -- JGE
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JGE(r, ix, i, address);
+			break;
+		case 04:
+			//04 -- AMR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.AMR(r, ix, i, address);
+			break;
+		case 05:
+			//05 -- SMR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.SMR(r, ix, i, address);
+			break;
+		case 06:
+			//06 -- AIR
+			r = array[1];
+			immed = array[4];
+			Instr.AIR(r, immed);
+			break;
+		case 07:
+			//07 -- SIR
+			r = array[1];
+			immed = array[4];
+			Instr.SIR(r, immed);
+			break;
+		case 20:
+			//20 -- MLT
+			Rx = array[1];
+			Ry = array[2];
+			Instr.MLT(Rx, Ry);
+			break;
+		case 21:
+			//21 -- DVD
+			Rx = array[1];
+			Ry = array[2];
+			Instr.DVD(Rx, Ry);
+			break;
+		case 22:
+			//22 -- TRR
+			Rx = array[1];
+			Ry = array[2];
+			Instr.TRR(Rx, Ry);
+			break;
+		case 23:
+			//23 -- AND
+			Rx = array[1];
+			Ry = array[2];
+			Instr.AND(Rx, Ry);
+			break;
+		case 24:
+			//24 -- ORR
+			Rx = array[1];
+			Ry = array[2];
+			Instr.ORR(Rx, Ry);
+			break;
+		case 25:
+			//25 --NOT
+			Rx = array[1];
+			Instr.NOT(Rx);
+			break;
+		case 31:
+			//31 -- SRC
+			r = array[1];
+			AL = array[2];
+			LR = array[3];
+			Count = array[4];
+			Instr.SRC(r, Count, LR, AL);
+			break;
+		case 32:
+			//32 -- RRC
+			r = array[1];
+			AL = array[2];
+			LR = array[3];
+			Count = array[4];
+			Instr.RRC(r, Count, LR, AL);
+			break;
+		case 61:
+			//61 -- IN
+			r = array[1];
+			DevID = array[2];
+			break;
+		case 62:
+			//62 -- OUT
+			r = array[1];
+			DevID = array[2];
+			break;
+		case 63:
+			//63 -- CHK
+			r = array[1];
+			DevID = array[2];
+			break;
+		case 36:
+			//36 -- TRAP
+			trapCode = array[1];
 			break;
 		case 00:
 			//00 -- HLT

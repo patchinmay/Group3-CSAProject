@@ -3,6 +3,12 @@ import userInterface.Instr;
 import userInterface.UI;
 import Components.*;
 
+/**
+ * computer effective address and set the value to MAR and MBR
+ * @author Siyu
+ * @input address, number of index register, indirect or direct index
+ * @return effective address
+ */
 public class effectiveAddress {
 	public static int EA(int address, int ix, int i){
 	    int value = 0;

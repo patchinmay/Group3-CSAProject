@@ -1,5 +1,7 @@
 package function;
 
+import Components.CC;
+
 /**
  * 
  * @author Menbers
@@ -147,7 +149,90 @@ public class Tools {
 	        return result;
 	    }
 	    
+	    /**
+	     * @author Siyu
+	     * @param complement
+	     * @import String binary
+	     * @return decimal
+	     */
+	    public static int complementToTen(String complement) {
+	    	int len = 0;
+	    	int result = 0;
+	    	len = complement.length();
+	    	for (int i = 0;i<len-1;i++)
+	    		if (complement.substring(i,i+1) == "1") {
+	    			result += 2^i; 
+	    		}
+	    	result +=1;
+	    	if (complement.substring(len-1, len)=="1") {
+	    		result *=-1;
+	    	}
+	    	return result;
+	    }
 	    
+	    /**
+	     * set cc[1] or cc[2] due to overflow or underflow
+	     * @author Siyu
+	     * @param value
+	     * @return
+	     */
+	    public static int flow(int value) {
+	    	int result = 0;
+	    	result = value;
+	    	if (value >= (2^11-1)) {
+	    		// overflow
+	    		CC.cc[1] = 1;
+	    		CC.cc[2] = 0;
+	    		CC.cc[3] = 0;
+	    		CC.cc[4] = 0;
+	    		result = value - 2^12;
+	    	}
+	    	else if (value <= -(2^11)) {
+	    		//underflow
+	    		CC.cc[1] = 0;
+	    		CC.cc[2] = 1;
+	    		CC.cc[3] = 0;
+	    		CC.cc[4] = 0;
+	    		result = value + 2^12;
+	    	}
+	    	return result;
+	    }	
+	    
+	    /**
+	     * change cc[4] dues to equal or not
+	     * @author Siyu
+	     * @param value1
+	     * @param value2
+	     */
+		public static void eq(int value1, int value2) {
+			if (value1 == value2){
+				CC.cc[1] = 0;
+	    		CC.cc[2] = 0;
+	    		CC.cc[3] = 0;
+	    		CC.cc[4] = 1;
+			}
+			else {
+				CC.cc[1] = 0;
+	    		CC.cc[2] = 0;
+	    		CC.cc[3] = 0;
+	    		CC.cc[4] = 0;
+			}
+		}
 		
-	}
+		/**
+		 * check the divisor is 0 or not
+		 * @author Siyu
+		 * @param value
+		 */
+		public static boolean div0(int value) {
+			if (value==0) {
+				CC.cc[1] = 0;
+	    		CC.cc[2] = 0;
+	    		CC.cc[3] = 1;
+	    		CC.cc[4] = 0;
+	    		return false;
+			}
+			return true;
+		}
 
+	}
