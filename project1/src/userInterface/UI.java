@@ -1054,26 +1054,19 @@ public class UI {
 			//String r = "";
 			// This string variable is used for scanning the values of each line from text
 			// area.
-			String str = "";
-			String ins = "";
-			String reg = "";
-			String ireg = "";
-			String mem = "";
-			String indirectAdd = "";
-			int length = r.length();
-			if(length <15) {
-				ins = r.substring(0, 3);
-				ireg = r.substring(4, 6);
-				mem = r.substring(7, 12);
-				indirectAdd = r.substring(13); 
-			}else {
-				ins = r.substring(0, 3);
-				reg = r.substring(4, 6);
-				ireg = r.substring(7, 9);
-				mem = r.substring(10, 15);
-				indirectAdd = r.substring(16);
-			}
-			
+		String str = "";
+		String ins, ins1, reg, ireg, mem, indirectAdd,reg2;
+		ins = r.substring(0, 3);
+		ins1 = r.substring(0, 2);
+		if (ins.equals("LDR") || ins.equals("STR") || ins.equals("LDX") || ins.equals("STX") || ins.equals("LDA")) {
+			//ins = r.substring(0, 3);
+			reg = r.substring(4, 6);
+			ireg = r.substring(7, 9);
+			mem = r.substring(11, 16);
+			indirectAdd = r.substring(10);
+
+
+
 			if (ins.equals("LDR")) {
 				ins = "000001";
 			} else if (ins.equals("STR")) {
@@ -1082,12 +1075,104 @@ public class UI {
 				ins = "000011";
 			} else if (ins.equals("LDX")) {
 				ins = "101001";
-			} else if (ins.equals("STX")){
+			} else if (ins.equals("STX")) {
 				ins = "101010";
+
+			} else if (ins.equals("HLT")) {
+				ins = "000000";
+
+			} else {
+				ins = "000000";
+			}
+
+			if (reg.equals("r0")) {
+				reg = "00";
+
+			} else if (reg.equals("r1")) {
+				reg = "01";
+			} else if (reg.equals("r2")) {
+				reg = "10";
+			} else if (reg.equals("r3")) {
+				reg = "11";
+			}
+
+			if (ireg.equals("x1")) {
+				ireg = "01";
+			} else if (ireg.equals("x2")) {
+				ireg = "10";
+			} else if (ireg.equals("x3")) {
+				ireg = "11";
+			}
+			
+			str = ins + reg + ireg +  indirectAdd +mem ;
+			
+		} else if(ins1.equals("JZ")) {
+			
+			//Transfer instructions
+			reg = r.substring(3, 5);
+			ireg = r.substring(6, 8);
+			mem = r.substring(10, 15);
+			indirectAdd = r.substring(9);
+			
+			if(ins1.equals("JZ")) {
+				ins1 = "001010";
+			}
+			
+			
+			if (reg.equals("r0")) {
+				reg = "00";
+
+			} else if (reg.equals("r1")) {
+				reg = "01";
+			} else if (reg.equals("r2")) {
+				reg = "10";
+			} else if (reg.equals("r3")) {
+				reg = "11";
+			}
+
+			if (ireg.equals("x1")) {
+				ireg = "01";
+			} else if (ireg.equals("x2")) {
+				ireg = "10";
+			} else if (ireg.equals("x3")) {
+				ireg = "11";
+			}
+			
+			str = ins1 + reg + ireg +  indirectAdd +mem ;
+
+		}
+		
+		else if ( ins.equals("JNE") || ins.equals("JCC") || ins.equals("JMA")
+				|| ins.equals("JSR	") || ins.equals("RFS") || ins.equals("SOB") || ins.equals("JGE")) {
+
+			reg = r.substring(4, 6);
+			ireg = r.substring(7, 9);
+			mem = r.substring(11, 16);
+			indirectAdd = r.substring(10);
+
+
+
+			if (ins.equals("JNE")) {
+				ins = "001011";
+			} else if (ins.equals("JCC")) {
+				ins = "001100";
+			} else if (ins.equals("JMA")) {
+				ins = "001101";
+			} else if (ins.equals("JSR")) {
+				ins = "001110";
+			} else if (ins.equals("RFS")) {
+				ins = "001111";
+			} else if (ins.equals("SOB")) {
+				ins = "010000";
+
+			} else if(ins.equals("JGE")){
+				ins = "010001";
+
 			} else if (ins.equals("HLT")){
 				ins = "00000";
 			}else {
 				ins = "00000";
+
 			}
 			
 
@@ -1101,22 +1186,257 @@ public class UI {
 			} else if (reg.equals("r3")) {
 				reg = "11";
 			}
-			
-			if(ireg.equals("x1")) {
+
+			if (ireg.equals("x1")) {
 				ireg = "01";
-			}else if(ireg.equals("x2")) {
+			} else if (ireg.equals("x2")) {
 				ireg = "10";
-			}else if(ireg.equals("x3")) {
+			} else if (ireg.equals("x3")) {
 				ireg = "11";
 			}
 			
-			if(length<15) {
-				str = ins + ireg + mem + indirectAdd;
-			}else {
-				str = ins + reg + ireg + mem + indirectAdd;
+			str = ins + reg + ireg +  indirectAdd +mem ;
+			
+		}
+		
+		else if (ins.equals("AMR") || ins.equals("SMR") ) {
+
+			//Arithmetic and logical instructions
+			reg = r.substring(4, 6);
+			ireg = r.substring(7, 9);
+			mem = r.substring(11, 16);
+			indirectAdd = r.substring(10);
+
+
+
+			if (ins.equals("AMR")) {
+				ins = "000100";
+			} else if (ins.equals("SMR")) {
+				ins = "000101";
+			}
+
+			if (reg.equals("r0")) {
+				reg = "00";
+
+			} else if (reg.equals("r1")) {
+				reg = "01";
+			} else if (reg.equals("r2")) {
+				reg = "10";
+			} else if (reg.equals("r3")) {
+				reg = "11";
+			}
+
+			if (ireg.equals("x1")) {
+				ireg = "01";
+			} else if (ireg.equals("x2")) {
+				ireg = "10";
+			} else if (ireg.equals("x3")) {
+				ireg = "11";
 			}
 			
+			
+			str = ins + reg + ireg +  indirectAdd +mem ;
+
+			
+			
+		}
+		else if (ins.equals("AIR") || ins.equals("SIR")) {
+
+			//Arithmetic and logical instructions
+			reg = r.substring(4, 6);
+			//ireg = r.substring(7, 9);
+			
+			String immed = r.substring(7,12);
+			String blacked = "000";
+			
+			if (reg.equals("r0")) {
+				reg = "00";
+			} else if (reg.equals("r1")) {
+				reg = "01";
+			} else if (reg.equals("r2")) {
+				reg = "10";
+			} else if (reg.equals("r3")) {
+				reg = "11";
+			}
+			
+			str = ins + reg + blacked;
+			
+		}
+		
+		else if (ins.equals("MLT") || ins.equals("DVD") || ins.equals("TRR") || ins.equals("AND") || ins.equals("ORR")) {
+			
+			
+			//Arithmetic part 2
+			//Instructions of the type MLT Rx,Ry
+			
+			reg = r.substring(4, 6);
+			reg2 = r.substring(7,9);
+			String blacked = "000000";
+			if(ins.equals("MLT")) {
+				ins = "010100";
+			}else if(ins.equals("DVD")) {
+				ins = "010101";
+			}else if(ins.equals("TRR")) {
+				ins = "010110";
+			}else if(ins.equals("AND")) {
+				ins = "010111";
+			}else if(ins.equals("ORR")) {
+				ins = "011000";
+			}
+			
+			if (reg.equals("r0")) {
+				reg = "00";
+
+			} else if (reg.equals("r1")) {
+				reg = "01";
+			} else if (reg.equals("r2")) {
+				reg = "10";
+			} else if (reg.equals("r3")) {
+				reg = "11";
+			}
+			
+			if (reg2.equals("r0")) {
+				reg2 = "00";
+
+			} else if (reg2.equals("r1")) {
+				reg2 = "01";
+			} else if (reg2.equals("r2")) {
+				reg2 = "10";
+			} else if (reg2.equals("r3")) {
+				reg2 = "11";
+			}
+			
+			str = ins + reg + reg2+ blacked;
+		}
+		
+		else if ( ins.equals("NOT")) {
+			
+			
+			//Arithmetic part 2
+			//Instructions of the type MLT Rx,Ry
+			
+			reg = r.substring(4, 6);
+			String blacked = "00000000";
+			ins = "011001";
+			
+			
+			if (reg.equals("r0")) {
+				reg = "00";
+
+			} else if (reg.equals("r1")) {
+				reg = "01";
+			} else if (reg.equals("r2")) {
+				reg = "10";
+			} else if (reg.equals("r3")) {
+				reg = "11";
+			}
+
+			
+			str = ins + reg + blacked;
+		}
+		
+		else if (ins.equals("SRC") || ins.equals("RRC")) {
+			// logical rotate
+			String count,R,LR,AL;
+			R = r.substring(5);
+			count = r.substring(7);
+			LR = r.substring(9);
+			AL = r.substring(11);
+			String blacked= "00";
+			if(ins.equals("SRC")) {
+				ins = "011111";
+			}else if(ins.equals("RRC")) {
+				ins = "100000";
+			}
+			
+			if(R.equals("0")) {
+				R = "00";
+			}else if(R.equals("1")) {
+				R = "01";
+			}else if(R.equals("2")) {
+				R = "10";
+			}else if(R.equals("3")) {
+				R = "11";
+			} 
+			
+			if(LR.equals("0")) {
+				LR = "00";
+			}else if(LR.equals("1")) {
+				LR = "01";
+			}
+			
+			if(AL.equals("0")) {
+				AL = "00";
+			}else if(AL.equals("1")) {
+				AL = "01";
+			}
+			int a = Integer.parseInt(count);
+			count = Integer.toBinaryString(a);
+			
+//			if(count.equals("1")){
+//				count = "00";
+//			}else if(count.equals("1")) {
+//				count = "01";
+//			}else if(count.equals("2")) {
+//				count = "10";
+//			}else if(count.equals("3")) {
+//				count = "11";
+//			} 
+			
+			str = ins + count + R + LR +AL+ blacked;
+		}
+		
+		
+		else if(ins.equals("OUT") || ins.equals("CHK")){
+			// I/O operation.
+			reg = r.substring(4, 6);
+			String DevId = r.substring(7,9);
+			if(ins.equals("OUT")) {
+				ins = "111110";
+			}else if(ins.equals("CHK")) {
+				ins = "111111";
+			}
+			
+			if (reg.equals("r0")) {
+				reg = "00";
+
+			} else if (reg.equals("r1")) {
+				reg = "01";
+			} else if (reg.equals("r2")) {
+				reg = "10";
+			} else if (reg.equals("r3")) {
+				reg = "11";
+			}
+			int a = Integer.parseInt(DevId);
+			DevId = Integer.toBinaryString(a);
+			String blacked = "000";
+			str = ins + reg + DevId + blacked;
+			
+		}
+		else if(ins1.equals("IN")) {
+			ins1 = "111101";
+			reg = r.substring(4, 6);
+			String DevId = r.substring(7,9);
+
+			if (reg.equals("r0")) {
+				reg = "00";
+
+			} else if (reg.equals("r1")) {
+				reg = "01";
+			} else if (reg.equals("r2")) {
+				reg = "10";
+			} else if (reg.equals("r3")) {
+				reg = "11";
+			}
+			int a = Integer.parseInt(DevId);
+			DevId = Integer.toBinaryString(a);
+			String blacked = "000";
+			str = ins1 + reg + DevId + blacked;
+			//commiting the code
+		}
+
 			int result = Integer.parseInt(str, 2);
 			memory[pc] = result;
+
 	}
 }
