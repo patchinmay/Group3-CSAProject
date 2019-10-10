@@ -1,6 +1,7 @@
 package function;
 
 import Components.CC;
+import userInterface.UI;
 
 /**
  * 
@@ -159,13 +160,19 @@ public class Tools {
 	    	int len = 0;
 	    	int result = 0;
 	    	len = complement.length();
-	    	for (int i = 0;i<len-1;i++)
-	    		if (complement.substring(i,i+1) == "1") {
-	    			result += 2^i; 
-	    		}
-	    	result +=1;
-	    	if (complement.substring(len-1, len)=="1") {
+	    	if (complement.substring(0, 1)=="1") {//negative
+	    		for (int i = 0;i<len-1;i++)
+		    		if (complement.substring(len-1-i,len-i) == "0") {
+		    			result += 2^i; 
+		    		}
+		    	result +=1;
 	    		result *=-1;
+	    	}
+	    	else {//Positive
+	    		for (int i = 0;i<len-1;i++)
+		    		if (complement.substring(len-1-i,len-i) == "1") {
+		    			result += 2^i; 
+		    		}
 	    	}
 	    	return result;
 	    }
@@ -195,6 +202,13 @@ public class Tools {
 	    		CC.cc[4] = 0;
 	    		result = value + 2^12;
 	    	}
+	    	else {
+	    		CC.cc[1] = 0;
+	    		CC.cc[2] = 0;
+	    		CC.cc[3] = 0;
+	    		CC.cc[4] = 0;
+	    	}
+	    	UI.cc.setValue(UI.CC_index);
 	    	return result;
 	    }	
 	    
@@ -217,6 +231,7 @@ public class Tools {
 	    		CC.cc[3] = 0;
 	    		CC.cc[4] = 0;
 			}
+			UI.cc.setValue(UI.CC_index);
 		}
 		
 		/**
@@ -230,9 +245,17 @@ public class Tools {
 	    		CC.cc[2] = 0;
 	    		CC.cc[3] = 1;
 	    		CC.cc[4] = 0;
+	    		UI.cc.setValue(UI.CC_index);
 	    		return false;
 			}
-			return true;
+			else {
+				CC.cc[1] = 0;
+	    		CC.cc[2] = 0;
+	    		CC.cc[3] = 0;
+	    		CC.cc[4] = 0;
+				UI.cc.setValue(UI.CC_index);
+				return true;
+			}
 		}
-
+		
 	}
