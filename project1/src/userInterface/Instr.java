@@ -679,32 +679,36 @@ public class Instr {
 		}
 	}
 
-	/*
-		*//**
-			 * Input Character To Register from Device, r = 0..3
-			 * input 61
-			 * @author Siyu
-			 * @param r
-			 * @param devid
-			 */
-	/*
-	 * public static void IN(int r,int devid) { 
-	 * UI.r[r].getValue(UI.devid[devid].getValue()); Refresh(UI.NewValue,
-	 * UI.OldValue); }
-	 * 
-	 *//**
-		 * Output Character to Device from Register, r = 0..3
-		 * output 62
-		 * @author Siyu
-		 * @param r
-		 * @param devid
-		 */
-	/*
-	 * public static void OUT(int r,int devid) { 
-	 * UI.devid[devid].getValue(UI.r[r].getValue()); Refresh(UI.NewValue,
-	 * UI.OldValue); }
-	 * 
-	 *//**
+	/**
+	 * Input Character To Register from Device, r = 0..3
+	 * input 61
+	 * @author Siyu
+	 * @param r
+	 * @param devid
+	 */
+	public static void IN(int r,int devid) { 
+	    UI.keyboardFlag = 1;
+//	    while(UI.keyboardFlag==1) {
+//	    }
+//	    UI.keyboardFlag = 1;
+	    UI.r[r].setValue(UI.Devids[devid].getValue(),UI.R0_index+r); 
+	    Refresh(UI.NewValue,UI.OldValue);
+	   }
+	
+	
+	/**
+	 * Output Character to Device from Register, r = 0..3
+	 * output 62
+	 * @author Siyu
+	 * @param r
+	 * @param devid
+	 */
+	  public static void OUT(int r,int devid) { 
+		  UI.Devids[devid].setValue(UI.r[r].getValue());
+		  UI.printerTextField.setText(Integer.toString(UI.Devids[devid].getValue()));
+		  Refresh(UI.NewValue,UI.OldValue); 
+	  }
+	 /**
 		 * Check Device Status to Register, r = 0..3, c(r) <- device status
 		 * check status 63
 		 * @author Siyu

@@ -22,6 +22,7 @@ import Components.MFR;
 import Components.PC;
 import Components.Register;
 import Components.Cache;
+import Components.Devid;
 import function.*;
 
 import javax.swing.JButton;
@@ -31,11 +32,13 @@ import javax.swing.JTextArea;
 
 public class UI {
 	
+	public static int keyboardFlag;
 	public static int memory[] = new int[2048];
 	//0 MAR / 1 PC / 2 MB / 3 MFR / 4 IR / 5 CC / 6 R0
 	//7 R1 / 8 R2 / 9 R3 / 10 IX1 / 11 IX2 / 12 IX3
 	public static int NewValue[] = new int[20];
 	public static int OldValue[] = new int[20];
+	public static Devid Devids[] = new Devid[32];
 	public static int MAR_index=0;
 	public static int PC_index=1;
 	public static int MBR_index=2;
@@ -86,6 +89,7 @@ public class UI {
 	private JButton RunInstr;
 	private JButton IPL;
 	private JButton Save;
+	private JButton KeyboardInput;
 	
 	public static PC pc = new PC();
 	public static MAR mar = new MAR();
@@ -99,6 +103,8 @@ public class UI {
 	public static JTextArea LogtextArea;
 	public static Cache cache = new Cache();
 	private JButton Singlestep;
+	public static JTextField keyboardTextField;
+	public static JTextField printerTextField;
 
 	/**
 	 * Launch the application.
@@ -128,6 +134,9 @@ public class UI {
 	 * Initial the data
 	 */
 	public static void initialData() {
+		for (int i = 0; i < Devids.length; i++) {
+			Devids[i] = new Devid();
+		}
 		for(int i=0;i<4;i++){
 		       ix[i]=new IX();
 		 }
@@ -414,9 +423,9 @@ public class UI {
 		IX3Store.setBounds(490, 308, 70, 29);
 		frame.getContentPane().add(IX3Store);
 		
-		JLabel lblInstruction = new JLabel("Instruction");
+		JLabel lblInstruction = new JLabel("CardReader");
 		lblInstruction.setHorizontalAlignment(SwingConstants.CENTER);
-		lblInstruction.setBounds(408, 344, 86, 16);
+		lblInstruction.setBounds(408, 354, 86, 16);
 		frame.getContentPane().add(lblInstruction);
 		
 		
@@ -432,7 +441,7 @@ public class UI {
 		
 		JLabel lblLog = new JLabel("Log");
 		lblLog.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLog.setBounds(722, 60, 61, 16);
+		lblLog.setBounds(720, 60, 61, 16);
 		frame.getContentPane().add(lblLog);
 		
 		Instr_textArea = new JTextArea();
@@ -474,8 +483,45 @@ public class UI {
 		Save.setBounds(207, 394, 70, 29);
 		frame.getContentPane().add(Save);
 		
+		JButton P1 = new JButton("P1");
+		P1.setBounds(53, 394, 70, 29);
+		frame.getContentPane().add(P1);
 		
+		keyboardTextField = new JTextField();
+		keyboardTextField.setBounds(623, 369, 130, 26);
+		frame.getContentPane().add(keyboardTextField);
+		keyboardTextField.setColumns(10);
 		
+		KeyboardInput = new JButton("input");
+		KeyboardInput.setBounds(753, 369, 61, 29);
+		frame.getContentPane().add(KeyboardInput);
+		
+		JLabel lblKeyboard = new JLabel("keyboard");
+		lblKeyboard.setBounds(653, 354, 61, 16);
+		frame.getContentPane().add(lblKeyboard);
+		
+		printerTextField = new JTextField();
+		printerTextField.setColumns(10);
+		printerTextField.setBounds(623, 417, 130, 125);
+		frame.getContentPane().add(printerTextField);
+		
+		JLabel lblPrinter = new JLabel("Printer");
+		lblPrinter.setBounds(664, 399, 61, 16);
+		frame.getContentPane().add(lblPrinter);
+		
+		KeyboardInput.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//get keyboard value, put it to keyboard(devid[0])
+				Devids[0].setValue(Integer.parseInt(keyboardTextField.getText()));
+				//change the keyboard flag
+				keyboardFlag = 0;
+				//clear the keyboard Textfield
+				keyboardTextField.setText("");
+				
+			}
+		});
 		
 		PCStore.addActionListener(new ActionListener() {
 			@Override
