@@ -688,10 +688,6 @@ public class Instr {
 	 * @param devid
 	 */
 	public static void IN(int r,int devid) { 
-	    UI.keyboardFlag = 1;
-//	    while(UI.keyboardFlag==1) {
-//	    }
-//	    UI.keyboardFlag = 1;
 	    UI.r[r].setValue(UI.Devids[devid].getValue(),UI.R0_index+r); 
 	    Refresh(UI.NewValue,UI.OldValue);
 	   }

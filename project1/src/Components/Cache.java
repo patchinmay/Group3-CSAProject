@@ -2,7 +2,7 @@ package Components;
 import userInterface.UI;
 
 public class Cache {
-	private int cache_array[][] = new int[16][6];
+	public int cache_array[][] = new int[16][6];
 	private int tag;
 	private int line;
 	private int column;
@@ -19,14 +19,16 @@ public class Cache {
 			if (cache_array[line][1] != tag){
 				// cache miss
 				setBacktoMemory(cache_array[line][1]*64+line*4);
+				cache_array[line][1] = tag;
 				getValueFromMemory(address-column);
 			}
-		}
-		
+		}		
 		else{//VD=0,cache miss
+			cache_array[line][0] = 1;
 			getValueFromMemory(address-column);
 		}
 	}
+
 	public void setValue (int address,int svalue){
 		searchData(address);
 		cache_array[line][column+2] = svalue;

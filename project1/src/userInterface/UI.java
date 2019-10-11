@@ -90,7 +90,7 @@ public class UI {
 	private JButton RunInstr;
 	private JButton IPL;
 	private JButton Save;
-	private JButton KeyboardInput;
+	private static JButton KeyboardInput;
 	
 	public static PC pc = new PC();
 	public static MAR mar = new MAR();
@@ -446,23 +446,24 @@ public class UI {
 		frame.getContentPane().add(lblLog);
 		
 		Instr_textArea = new JTextArea();
-		Instr_textArea.setText("LDR r0,00,11000,0\n" + 
-				"LDR r0,01,11000,0\n" + 
-				"LDR r1,00,11000,1\n" + 
-				"LDR r2,10,11000,1\n" + 
-				"STR r1,00,11000,0\n" + 
-				"STR r2,01,11000,0\n" + 
-				"STR r3,00,11000,1\n" + 
-				"STR r3,11,11001,1\n" + 
-				"LDA r1,00,11010,0\n" + 
-				"LDA r2,01,11001,0\n" + 
-				"LDA r3,00,11001,1\n" + 
-				"LDA r3,11,11001,1\n" + 
-				"LDX x1,11010,0\n" + 
-				"LDX x2,11010,1\n" + 
-				"STX x1,11011,0\n" + 
-				"STX x2,11100,1\n" + 
-				"HLT r0,00,00000,0");
+		
+//		Instr_textArea.setText("LDR r0,00,11000,0\n" + 
+//				"LDR r0,01,11000,0\n" + 
+//				"LDR r1,00,11000,1\n" + 
+//				"LDR r2,10,11000,1\n" + 
+//				"STR r1,00,11000,0\n" + 
+//				"STR r2,01,11000,0\n" + 
+//				"STR r3,00,11000,1\n" + 
+//				"STR r3,11,11001,1\n" + 
+//				"LDA r1,00,11010,0\n" + 
+//				"LDA r2,01,11001,0\n" + 
+//				"LDA r3,00,11001,1\n" + 
+//				"LDA r3,11,11001,1\n" + 
+//				"LDX x1,11010,0\n" + 
+//				"LDX x2,11010,1\n" + 
+//				"STX x1,11011,0\n" + 
+//				"STX x2,11100,1\n" + 
+//				"HLT r0,00,00000,0");
 		Instr_textArea.setBounds(330, 372, 264, 170);
 		frame.getContentPane().add(Instr_textArea);
 		//set the textArea could not be edited before click IPL button
@@ -510,19 +511,6 @@ public class UI {
 		lblPrinter.setBounds(664, 399, 61, 16);
 		frame.getContentPane().add(lblPrinter);
 		
-		KeyboardInput.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//get keyboard value, put it to keyboard(devid[0])
-				Devids[0].setValue(Integer.parseInt(keyboardTextField.getText()));
-				//change the keyboard flag
-				keyboardFlag = 0;
-				//clear the keyboard Textfield
-				keyboardTextField.setText("");
-				
-			}
-		});
 		
 		PCStore.addActionListener(new ActionListener() {
 			@Override
@@ -755,7 +743,9 @@ public class UI {
 //				3. execute the first instr.
 //				4. the value of PC should be plus one - [PC]+1
 				String addString = PC_textField.getText();
+				System.out.println("String"+addString);
 				int add = Integer.parseInt(addString);
+				System.out.println(add);
 				singleExecute(add);
 			}
 		});
@@ -780,6 +770,20 @@ public class UI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				run();
+			}
+		});
+		
+		KeyboardInput.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//get keyboard value, put it to keyboard(devid[0])
+				Devids[0].setValue(Integer.parseInt(keyboardTextField.getText()));
+				Instr.IN(0, 0);
+				Instr.OUT(0, 1);
+				//change the keyboard flag
+				//clear the keyboard Textfield
+				keyboardTextField.setText("");
 			}
 		});
 	}
@@ -807,7 +811,9 @@ public class UI {
     	MAR_textField.setText(Integer.toString(address));
     	mar.setValue(address, MAR_index);
     	//value is the instr.
-    	int value = memory[address];
+    	//int value = memory[address];
+    	int value = cache.returnValue(address);
+    	System.out.println("cache value"+value);
     	//put the instr. to the mbr & ir
     	MBR_textField.setText(Integer.toString(value));
     	mbr.setValue(value, MBR_index);
@@ -1048,11 +1054,13 @@ public class UI {
 			//61 -- IN
 			r = array[1];
 			DevID = array[2];
+			Instr.IN(r, DevID);
 			break;
 		case 62:
 			//62 -- OUT
 			r = array[1];
 			DevID = array[2];
+			Instr.OUT(r, DevID);
 			break;
 		case 63:
 			//63 -- CHK
@@ -1462,8 +1470,8 @@ public class UI {
 		}
 		else if(ins1.equals("IN")) {
 			ins1 = "111101";
-			reg = r.substring(4, 6);
-			String DevId = r.substring(7,9);
+			reg = r.substring(3, 5);
+			String DevId = r.substring(6,11);
 
 			if (reg.equals("r0")) {
 				reg = "00";
@@ -1475,15 +1483,19 @@ public class UI {
 			} else if (reg.equals("r3")) {
 				reg = "11";
 			}
-			int a = Integer.parseInt(DevId);
-			DevId = Integer.toBinaryString(a);
+			//int a = Integer.parseInt(DevId);
+			//DevId = Integer.toBinaryString(a);
 			String blacked = "000";
-			str = ins1 + reg + DevId + blacked;
+			str = ins1 + reg + blacked + DevId ;
 			//commiting the code
 		}
 
 			int result = Integer.parseInt(str, 2);
-			memory[pc] = result;
+			//memory[pc] = result;
+			cache.setValue(pc, result);
+			System.out.println("---"+cache.returnValue(pc));
+			System.out.println(cache.cache_array);
 
 	}
+	
 }
