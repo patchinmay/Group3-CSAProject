@@ -446,7 +446,7 @@ public class UI {
 		frame.getContentPane().add(lblLog);
 		
 		Instr_textArea = new JTextArea();
-		
+		Instr_textArea.setText("LDR r0,00,0,11000\n"+"LDR r0,01,0,11000");
 //		Instr_textArea.setText("LDR r0,00,11000,0\n" + 
 //				"LDR r0,01,11000,0\n" + 
 //				"LDR r1,00,11000,1\n" + 
@@ -725,6 +725,7 @@ public class UI {
 		    	String PCAddress = PC_textField.getText();
 		    	//get the instr.s in the textarea
 		    	String instrs = Instr_textArea.getText();
+		    	
 		    	//split the instr.s and store them into the memory
 		    	StoreInstr(instrs, PCAddress);
 			}
@@ -745,9 +746,7 @@ public class UI {
 //				3. execute the first instr.
 //				4. the value of PC should be plus one - [PC]+1
 				String addString = PC_textField.getText();
-				System.out.println("String"+addString);
 				int add = Integer.parseInt(addString);
-				System.out.println(add);
 				singleExecute(add);
 			}
 		});
@@ -815,7 +814,7 @@ public class UI {
     	//value is the instr.
     	//int value = memory[address];
     	int value = cache.returnValue(address);
-    	System.out.println("cache value"+value);
+    	
     	//put the instr. to the mbr & ir
     	MBR_textField.setText(Integer.toString(value));
     	mbr.setValue(value, MBR_index);
@@ -1097,6 +1096,7 @@ public class UI {
 		for (String line : lines) {
 			//System.out.println("contents in the line " + line);
 			ReadInputBox(line, pc);
+			
 			pc= pc+1;
 		}
 
@@ -1121,8 +1121,6 @@ public class UI {
 			ireg = r.substring(7, 9);
 			indirectAdd = r.substring(10,11);
 			mem = r.substring(12,17);
-
-
 
 			if (ins.equals("LDR")) {
 				ins = "000001";
@@ -1495,9 +1493,7 @@ public class UI {
 			int result = Integer.parseInt(str, 2);
 			//memory[pc] = result;
 			cache.setValue(pc, result);
-			System.out.println("---"+cache.returnValue(pc));
-			System.out.println(cache.cache_array);
-
+			
 	}
 	
 }

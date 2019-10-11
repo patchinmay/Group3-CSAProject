@@ -42,7 +42,7 @@ public class Tools {
 			   }
 			   
 			  }
-			  System.out.println(sum);
+	
 			  return sum;
 			 }
 		

@@ -172,17 +172,6 @@ public class Instr {
 	 * @param address
 	 */
 	public static void LDR(int r, int ix, int i, int address) {
-		// Get OpCode, R, IX, I, Address
-		// analysis the Effective function first
-		// determine using the indrect addressing
-		if (i == 0) {
-			// determine using the index register
-			if (ix <= 3 && ix >= 1) {
-				address = UI.ix[ix].getValue() + address;
-			}
-		} else {
-			// indirect addressing
-		}
 
 		// 2. get ea
 		int value = 0;
