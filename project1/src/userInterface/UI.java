@@ -686,7 +686,8 @@ public class UI {
 				String addrString = Addr_textField.getText();
 				if(addrString != null) {
 					int addr = Integer.parseInt(addrString);
-					int value = memory[addr];
+					//int value = memory[addr];
+					int value = cache.returnValue(addr);
 					String valueString = Integer.toString(value);
 					Value_textField.setText(valueString);
 				}
@@ -706,7 +707,8 @@ public class UI {
 				if(addrString != null && valueString != null) {
 					int add = Integer.parseInt(addrString);
 					int value = Integer.parseInt(valueString);
-					memory[add] = value;
+					//memory[add] = value;
+					cache.setValue(add, value);
 				}
 			}
 		});
