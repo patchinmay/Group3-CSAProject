@@ -58,8 +58,8 @@ public class Tools {
 				int[] array = new int[5];
 				int R = instruction % 1024 / 256;
 				int IX = instruction % 256 / 64;
-				int address = instruction % 64 / 2;
-				int I = instruction % 2;
+				int I = instruction % 64 / 32;
+				int address = instruction % 32;
 				array[0] = OpCode;
 				array[1] = R;
 				array[2] = IX;

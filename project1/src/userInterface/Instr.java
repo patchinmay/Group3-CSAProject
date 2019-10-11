@@ -186,6 +186,7 @@ public class Instr {
 
 		// 2. get ea
 		int value = 0;
+		int a;
 		value = effectiveAddress.EA(address, ix, i);
 		// 3. Put data to the specified [Register]
 		UI.r[0].setValue(value, UI.R0_index);

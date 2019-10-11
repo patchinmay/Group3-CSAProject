@@ -5,6 +5,7 @@ package userInterface;
  * 
  */
 import java.awt.EventQueue;
+import java.awt.Menu;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -1108,8 +1109,8 @@ public class UI {
 			//ins = r.substring(0, 3);
 			reg = r.substring(4, 6);
 			ireg = r.substring(7, 9);
-			mem = r.substring(11, 16);
-			indirectAdd = r.substring(10);
+			indirectAdd = r.substring(10,11);
+			mem = r.substring(12,17);
 
 
 
@@ -1142,13 +1143,13 @@ public class UI {
 				reg = "11";
 			}
 
-			if (ireg.equals("x1")) {
-				ireg = "01";
-			} else if (ireg.equals("x2")) {
-				ireg = "10";
-			} else if (ireg.equals("x3")) {
-				ireg = "11";
-			}
+//			if (ireg.equals("x1")) {
+//				ireg = "01";
+//			} else if (ireg.equals("x2")) {
+//				ireg = "10";
+//			} else if (ireg.equals("x3")) {
+//				ireg = "11";
+//			}
 			
 			str = ins + reg + ireg +  indirectAdd +mem ;
 			

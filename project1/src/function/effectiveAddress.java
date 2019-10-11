@@ -16,8 +16,10 @@ public class effectiveAddress {
 
 	    while(i+1 != 0){//get the ea
 	        //1.Set MAR=address
-	        UI.mar.setValue(address, UI.MAR_index); 
-	        //2.get data from the cache
+	        UI.mar.setValue(address, UI.MAR_index);
+	        //2.1 decode the address first -- Oct10 by jesse
+	        UI.cache.decodeAddress(address);
+	        //2.2 get data from the cache
 	        value = UI.cache.returnValue(address);
 	        //3.set data to MBR
 	        UI.mbr.setValue(value, UI.MBR_index);
