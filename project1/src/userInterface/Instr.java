@@ -253,6 +253,8 @@ public class Instr {
 		int value = UI.cache.returnValue(eaddress);
 		// put the value into index register
 		UI.ix[ix].setValue(value, UI.IX1_index + ix - 1);
+		UI.mar.setValue(eaddress, UI.MAR_index);
+		UI.mbr.setValue(value, UI.MBR_index);
 		System.out.println();
 		// refresh the screen
 		Refresh(UI.NewValue, UI.OldValue);
@@ -432,7 +434,10 @@ public class Instr {
 	public static void AND(int rx, int ry) {
 		int rxValue = UI.r[rx].getValue();
 		int ryValue = UI.r[ry].getValue();
+		System.out.println("and rx"+rxValue);
+		System.out.println("and ry"+ryValue);
 		UI.r[rx].setValue(rxValue & ryValue, UI.R0_index + rx);
+		Refresh(UI.NewValue, UI.OldValue);
 	}
 	
 	/**
@@ -614,20 +619,26 @@ public class Instr {
 	/**
 	 * JSR instr. -- Jump and Save Return Address:
 	 * 
-	 * @author Yukang Li
+	 * @author Siyu
 	 * @param ix
 	 * @param i
 	 * @param address
 	 */
 	public static void JSR(int ix, int i, int address) {
+		int ea=0;
+		ea = effectiveAddress.EA(address, ix, i);
+		UI.r[3].setValue(UI.pc.getValue(),UI.R3_index);
+		UI.pc.setValue(ea, UI.PC_index);
 
 	}
 
 	/**
 	 * 
-	 * @author Yukang Li
+	 * @author Siyu
 	 */
 	public static void RFS() {
+		 //UI.r[0].setValue(immed, UI.R0_index);
+		  UI.pc.setValue(UI.r[3].getValue(), UI.PC_index);
 
 	}
 

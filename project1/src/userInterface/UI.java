@@ -1500,9 +1500,9 @@ public class UI {
 			str = ins1 + reg + blacked + DevId ;
 			//commiting the code
 		}
-			System.out.println(str);
+			System.out.println("xiehui"+str);
 			int result = Integer.parseInt(str, 2);
-			System.out.println(result);
+			//System.out.println(result);
 			//memory[pc] = result;
 			cache.setValue(pc, result);
 			

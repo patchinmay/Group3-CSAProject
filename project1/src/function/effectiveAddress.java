@@ -22,19 +22,7 @@ public class effectiveAddress {
 	    	
 	    }
 	    return EA;
-//	    System.out.println("EA = "+EA);
-//    	//1.Set MAR=address
-//    	UI.mar.setValue(EA, UI.MAR_index);
-//    	//2. get data
-//    	value = UI.cache.returnValue(EA);
-//    	//3.set data to MBR
-//    	UI.mbr.setValue(value, UI.MBR_index);
-//    	//4.fresh the screen
-//    	Instr.Refresh(UI.NewValue, UI.OldValue);
-//	   //return ea
-//	    return value;
-	    
-	    
+	    	    
 	    
 //	    int value = 0;
 //	    value = UI.ix[ix].getValue()+UI.cache.returnValue(address);
