@@ -148,6 +148,13 @@ public class UI {
 		ix[1].setValue(100, IX1_index);
 	    ix[2].setValue(200, IX2_index);
 	    ix[3].setValue(300, IX3_index);
+	    memory[200]=120;
+	    memory[325] =1325;
+	    memory[326] = 1326;
+	    memory[226] = 1026;
+	    memory[1326]=100;
+	    memory[128]=500;
+	    
 	    memory[1024] = 24;
 	    memory[1025] = 25;
 	    memory[1026] = 26;
@@ -446,24 +453,24 @@ public class UI {
 		frame.getContentPane().add(lblLog);
 		
 		Instr_textArea = new JTextArea();
-		Instr_textArea.setText("LDR r0,00,0,11000\n"+"LDR r0,01,0,11000");
-//		Instr_textArea.setText("LDR r0,00,11000,0\n" + 
-//				"LDR r0,01,11000,0\n" + 
-//				"LDR r1,00,11000,1\n" + 
-//				"LDR r2,10,11000,1\n" + 
-//				"STR r1,00,11000,0\n" + 
-//				"STR r2,01,11000,0\n" + 
-//				"STR r3,00,11000,1\n" + 
-//				"STR r3,11,11001,1\n" + 
-//				"LDA r1,00,11010,0\n" + 
-//				"LDA r2,01,11001,0\n" + 
-//				"LDA r3,00,11001,1\n" + 
-//				"LDA r3,11,11001,1\n" + 
-//				"LDX x1,11010,0\n" + 
-//				"LDX x2,11010,1\n" + 
-//				"STX x1,11011,0\n" + 
-//				"STX x2,11100,1\n" + 
-//				"HLT r0,00,00000,0");
+//		Instr_textArea.setText("LDR r0,00,0,11000\n"+"LDR r0,01,0,11000");
+		Instr_textArea.setText("LDR r0,00,0,11000\n" + 
+		"LDR r0,01,0,11000\n" + 
+		"LDR r1,00,1,11000\n" + 
+		"LDR r2,10,1,11000\n" + 
+		"STR r1,00,0,11000\n" + 
+		"STR r2,01,0,11000\n" + 
+		"STR r3,00,1,11000\n" + 
+		"STR r3,11,1,11001\n" + 
+		"LDA r1,00,0,11010\n" + 
+		"LDA r2,01,0,11001\n" + 
+		"LDA r3,00,1,11001\n" + 
+		"LDA r3,11,1,11001\n" + 
+		"LDX r1,10,0,11010\n" + 
+		"LDX r1,11,1,11010\n" + 
+		"STX r1,10,0,11011\n" + 
+		"STX r2,11,1,11100\n" + 
+		"HLT r0,00,0,00000");
 		Instr_textArea.setBounds(330, 372, 264, 170);
 		frame.getContentPane().add(Instr_textArea);
 		//set the textArea could not be edited before click IPL button
@@ -874,6 +881,7 @@ public class UI {
     	switch (opCode) {
 		case 1:
 			//01 -- LDR
+			//System.out.println(array[1]);
 			r = array[1];
 			ix = array[2];
 			i = array[3];
@@ -901,6 +909,9 @@ public class UI {
 			ix = array[2];
 			i = array[3];
 			address = array[4];
+			System.out.println("41 ix "+ix);
+			System.out.println("41 i "+i);
+			System.out.println("41 address "+address);
 			Instr.LDX(ix, i, address);
 			break;
 		case 42:
@@ -1489,8 +1500,9 @@ public class UI {
 			str = ins1 + reg + blacked + DevId ;
 			//commiting the code
 		}
-
+			System.out.println(str);
 			int result = Integer.parseInt(str, 2);
+			System.out.println(result);
 			//memory[pc] = result;
 			cache.setValue(pc, result);
 			

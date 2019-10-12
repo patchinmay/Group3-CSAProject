@@ -172,14 +172,19 @@ public class Instr {
 	 * @param address
 	 */
 	public static void LDR(int r, int ix, int i, int address) {
-
-		// 2. get ea
+		
 		int value = 0;
-		int a;
-		value = effectiveAddress.EA(address, ix, i);
-		// 3. Put data to the specified [Register]
-		UI.r[0].setValue(value, UI.R0_index);
-		// 4. Refresh all changed
+		int EA;
+		EA = effectiveAddress.EA(address, ix, i);
+		//1.Set MAR=address
+    	UI.mar.setValue(EA, UI.MAR_index);
+    	//2. get data
+    	value = UI.cache.returnValue(EA);
+    	//3.set data to MBR
+    	UI.mbr.setValue(value, UI.MBR_index);
+		//4. Put data to the specified [Register]
+		UI.r[r].setValue(value, UI.R0_index+r);
+		//5. Refresh all changed
 		Refresh(UI.NewValue, UI.OldValue);
 	}
 
@@ -197,7 +202,10 @@ public class Instr {
 		int eaddress = 0;
 		eaddress = effectiveAddress.EA(address, ix, i);
 		int value = UI.r[r].getValue();
-
+		
+		UI.mar.setValue(eaddress, UI.MAR_index);
+		UI.mbr.setValue(value, UI.MBR_index);
+		System.out.println(UI.mbr.getValue());
 		// Put data to the memory
 		// UI.memory[eaddress] = value;
 		UI.cache.setValue(eaddress, value);
@@ -218,10 +226,10 @@ public class Instr {
 		// get effective address
 		int eaddress = 0;
 		eaddress = effectiveAddress.EA(address, ix, i);
-		// get the value from cache
-		int value = UI.cache.returnValue(eaddress);
 		// put the value into register
-		UI.r[r].setValue(value, UI.R0_index + r);
+		UI.r[r].setValue(eaddress, UI.R0_index + r);
+		UI.mar.setValue(eaddress, UI.MAR_index);
+		//UI.mbr.setValue(value, UI.MBR_index);
 		// refresh the screen
 		Refresh(UI.NewValue, UI.OldValue);
 	}
@@ -235,6 +243,9 @@ public class Instr {
 	 * @param address
 	 */
 	public static void LDX(int ix, int i, int address) {
+		System.out.println("ix "+ix);
+		System.out.println("i "+i);
+		System.out.println("address "+ address);
 		// get effective address
 		int eaddress = 0;
 		eaddress = effectiveAddress.EA(address, ix, i);
@@ -242,6 +253,7 @@ public class Instr {
 		int value = UI.cache.returnValue(eaddress);
 		// put the value into index register
 		UI.ix[ix].setValue(value, UI.IX1_index + ix - 1);
+		System.out.println();
 		// refresh the screen
 		Refresh(UI.NewValue, UI.OldValue);
 	}

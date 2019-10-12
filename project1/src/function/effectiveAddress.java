@@ -12,27 +12,46 @@ import Components.*;
 public class effectiveAddress {
 	public static int EA(int address, int ix, int i){
 	    int value = 0;
-
-	    if (i==1){
-	    	address = address + UI.ix[ix].getValue();
-	    }
-
+	    int EA;
 	    
-	    while(i+1 != 0){//get the ea
-	        //1.Set MAR=address
-	        UI.mar.setValue(address, UI.MAR_index);
-	        //2 get data from the cache
-	        value = UI.cache.returnValue(address);
-	        //3.set data to MBR
-	        UI.mbr.setValue(value, UI.MBR_index);
-	        //4.fresh the screen
-	        Instr.Refresh(UI.NewValue, UI.OldValue);
-	        // if i ==0, end the loop
-	        i-=1;
-	        address = value;
+	    if(i==0) {
+	    	EA = UI.ix[ix].getValue()+address;
 	    }
-	   //return ea
-	   return value;
+	    else {
+	    	EA = UI.cache.returnValue(UI.ix[ix].getValue()+address);
+	    	
+	    }
+	    return EA;
+//	    System.out.println("EA = "+EA);
+//    	//1.Set MAR=address
+//    	UI.mar.setValue(EA, UI.MAR_index);
+//    	//2. get data
+//    	value = UI.cache.returnValue(EA);
+//    	//3.set data to MBR
+//    	UI.mbr.setValue(value, UI.MBR_index);
+//    	//4.fresh the screen
+//    	Instr.Refresh(UI.NewValue, UI.OldValue);
+//	   //return ea
+//	    return value;
+	    
+	    
+	    
+//	    int value = 0;
+//	    value = UI.ix[ix].getValue()+UI.cache.returnValue(address);
+//	    System.out.println(value);
+//	    while(i+1 !=0){
+//	    //1.Set MAR=address
+//        UI.mar.setValue(address, UI.MAR_index);
+//        //2. get data
+//	    value = UI.cache.returnValue(value);
+//	    //3.set data to MBR
+//	    UI.mbr.setValue(value, UI.MBR_index);
+//	    //4.fresh the screen
+//        Instr.Refresh(UI.NewValue, UI.OldValue);       
+//        i-=1;
+//	    }
+//	   //return ea
+//	   return value;
 
 	}
 }
