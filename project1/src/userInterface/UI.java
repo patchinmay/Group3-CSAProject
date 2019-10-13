@@ -1259,7 +1259,7 @@ public class UI {
 		}
 		
 		else if ( ins.equals("JNE") || ins.equals("JCC") || ins.equals("JMA")
-				|| ins.equals("JSR	") || ins.equals("RFS") || ins.equals("SOB") || ins.equals("JGE")) {
+				|| ins.equals("JSR") || ins.equals("RFS") || ins.equals("SOB") || ins.equals("JGE")) {
 
 			reg = r.substring(4, 6);
 			ireg = r.substring(7, 9);
