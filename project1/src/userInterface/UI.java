@@ -1484,7 +1484,7 @@ public class UI {
 			str = ins1 + reg + blacked + DevId ;
 			//commiting the code
 		}
-			System.out.println("xiehui"+str);
+			System.out.println(r.substring(0,3)+str);
 			int result = Integer.parseInt(str, 2);
 			//System.out.println(result);
 			//memory[pc] = result;
