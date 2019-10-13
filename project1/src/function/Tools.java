@@ -69,7 +69,7 @@ public class Tools {
 			}
 			else if(OpCode>=6 && OpCode <=7 ) {
 				int[] array = new int[3];
-				int imm = instruction/256;
+				int imm = instruction%256;
 				int R = instruction % 1024 / 256;
 				array[0] = OpCode;
 				array[1]=R;
@@ -196,13 +196,13 @@ public class Tools {
 	    public static int flow(int value) {
 	    	int result = 0;
 	    	result = value;
-	    	if (value >= ((Math.pow(2,11))-1)) {
+	    	if (value >= ((Math.pow(2,15))-1)) {
 	    		// overflow
 	    		CC.cc[1] = 1;
 	    		CC.cc[2] = 0;
 	    		CC.cc[3] = 0;
 	    		CC.cc[4] = 0;
-	    		result = value - (int)(Math.pow(2,12));
+	    		result = value - (int)(Math.pow(2,15));
 	    	}
 	    	else if (value <= -((Math.pow(2,11)))) {
 	    		//underflow
@@ -210,7 +210,7 @@ public class Tools {
 	    		CC.cc[2] = 1;
 	    		CC.cc[3] = 0;
 	    		CC.cc[4] = 0;
-	    		result = value + (int)(Math.pow(2,12));
+	    		result = value + (int)(Math.pow(2,15));
 	    	}
 	    	else {
 	    		CC.cc[1] = 0;
