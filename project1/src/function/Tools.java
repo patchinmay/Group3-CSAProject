@@ -186,21 +186,21 @@ public class Tools {
 	    public static int flow(int value) {
 	    	int result = 0;
 	    	result = value;
-	    	if (value >= (2^11-1)) {
+	    	if (value >= ((Math.pow(2,11))-1)) {
 	    		// overflow
 	    		CC.cc[1] = 1;
 	    		CC.cc[2] = 0;
 	    		CC.cc[3] = 0;
 	    		CC.cc[4] = 0;
-	    		result = value - 2^12;
+	    		result = value - (int)(Math.pow(2,12));
 	    	}
-	    	else if (value <= -(2^11)) {
+	    	else if (value <= -((Math.pow(2,11)))) {
 	    		//underflow
 	    		CC.cc[1] = 0;
 	    		CC.cc[2] = 1;
 	    		CC.cc[3] = 0;
 	    		CC.cc[4] = 0;
-	    		result = value + 2^12;
+	    		result = value + (int)(Math.pow(2,12));
 	    	}
 	    	else {
 	    		CC.cc[1] = 0;
