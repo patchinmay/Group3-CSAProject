@@ -1456,7 +1456,7 @@ public class UI {
 		else if(ins.equals("OUT") || ins.equals("CHK")){
 			// I/O operation.
 			reg = r.substring(4, 6);
-			String DevId = r.substring(7,9);
+			String DevId = r.substring(11,16);
 			if(ins.equals("OUT")) {
 				ins = "111110";
 			}else if(ins.equals("CHK")) {
@@ -1473,8 +1473,8 @@ public class UI {
 			} else if (reg.equals("r3")) {
 				reg = "11";
 			}
-			int a = Integer.parseInt(DevId);
-			DevId = Integer.toBinaryString(a);
+			//int a = Integer.parseInt(DevId);
+			//DevId = Integer.toBinaryString(a);
 			String blacked = "000";
 			str = ins + reg + DevId + blacked;
 			

@@ -204,7 +204,7 @@ public class Tools {
 	    		CC.cc[4] = 0;
 	    		result = value - (int)(Math.pow(2,15));
 	    	}
-	    	else if (value <= -((Math.pow(2,11)))) {
+	    	else if (value <= -((Math.pow(2,15)))) {
 	    		//underflow
 	    		CC.cc[1] = 0;
 	    		CC.cc[2] = 1;
