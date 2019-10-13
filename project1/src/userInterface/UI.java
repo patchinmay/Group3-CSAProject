@@ -1178,7 +1178,7 @@ public class UI {
 			reg = r.substring(3, 5);
 			ireg = r.substring(6, 8);
 			mem = r.substring(10, 15);
-			indirectAdd = r.substring(9);
+			indirectAdd = r.substring(9,10);
 			
 			if(ins1.equals("JZ")) {
 				ins1 = "001010";
@@ -1213,8 +1213,8 @@ public class UI {
 
 			reg = r.substring(4, 6);
 			ireg = r.substring(7, 9);
-			mem = r.substring(11, 16);
-			indirectAdd = r.substring(10);
+			mem = r.substring(12, 17);
+			indirectAdd = r.substring(10,11);
 
 
 
@@ -1271,7 +1271,7 @@ public class UI {
 			reg = r.substring(4, 6);
 			ireg = r.substring(7, 9);
 			mem = r.substring(11, 16);
-			indirectAdd = r.substring(10);
+			indirectAdd = r.substring(10,11);
 
 
 
@@ -1404,10 +1404,11 @@ public class UI {
 		else if (ins.equals("SRC") || ins.equals("RRC")) {
 			// logical rotate
 			String count,R,LR,AL;
-			R = r.substring(5);
-			count = r.substring(7);
-			LR = r.substring(9);
-			AL = r.substring(11);
+			R = r.substring(4,6);
+			count = r.substring(7,11);
+			AL = r.substring(12,13);
+			LR = r.substring(14);
+			
 			String blacked= "00";
 			if(ins.equals("SRC")) {
 				ins = "011111";
@@ -1415,41 +1416,19 @@ public class UI {
 				ins = "100000";
 			}
 			
-			if(R.equals("0")) {
+			if(R.equals("r0")) {
 				R = "00";
-			}else if(R.equals("1")) {
+			}else if(R.equals("r1")) {
 				R = "01";
-			}else if(R.equals("2")) {
+			}else if(R.equals("r2")) {
 				R = "10";
-			}else if(R.equals("3")) {
+			}else if(R.equals("r3")) {
 				R = "11";
 			} 
 			
-			if(LR.equals("0")) {
-				LR = "00";
-			}else if(LR.equals("1")) {
-				LR = "01";
-			}
+
 			
-			if(AL.equals("0")) {
-				AL = "00";
-			}else if(AL.equals("1")) {
-				AL = "01";
-			}
-			int a = Integer.parseInt(count);
-			count = Integer.toBinaryString(a);
-			
-//			if(count.equals("1")){
-//				count = "00";
-//			}else if(count.equals("1")) {
-//				count = "01";
-//			}else if(count.equals("2")) {
-//				count = "10";
-//			}else if(count.equals("3")) {
-//				count = "11";
-//			} 
-			
-			str = ins + count + R + LR +AL+ blacked;
+			str = ins + R + LR + AL + blacked + count;
 		}
 		
 		
