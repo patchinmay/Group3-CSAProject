@@ -1002,7 +1002,7 @@ public class UI {
 		case 06:
 			//06 -- AIR
 			r = array[1];
-			immed = array[4];
+			immed = array[2];
 			Instr.AIR(r, immed);
 			break;
 		case 07:

@@ -69,7 +69,7 @@ public class Tools {
 			}
 			else if(OpCode>=6 && OpCode <=7 ) {
 				int[] array = new int[3];
-				int imm = instruction/256;
+				int imm = instruction%256;
 				int R = instruction % 1024 / 256;
 				array[0] = OpCode;
 				array[1]=R;
