@@ -617,7 +617,7 @@ public class Instr {
 		// calculate the EA, then put into pc
 		int value = 0;
 		value = effectiveAddress.EA(address, ix, i);
-		UI.pc.setValue(value, UI.PC_index);
+		UI.pc.setValue(value-1, UI.PC_index);
 		// refresh to update UI
 		Refresh(UI.NewValue, UI.OldValue);
 	}
