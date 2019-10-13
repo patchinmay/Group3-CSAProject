@@ -144,7 +144,7 @@ public class UI {
 		for(int j=0;j<4;j++) {
 			r[j] = new Register();
 		}
-		pc.setValue(2000, PC_index);
+		pc.setValue(2018, PC_index);
 		ix[1].setValue(100, IX1_index);
 	    ix[2].setValue(200, IX2_index);
 	    ix[3].setValue(300, IX3_index);
@@ -189,6 +189,17 @@ public class UI {
 	    memory[124] = 100;
 	    memory[224] = 200;
 	    memory[324] = 300;
+	    
+	    memory[130] = 10000;
+	    memory[131] = -1;
+	    memory[129] = 10000;
+	    
+	    memory[1000] = 2026;
+	    memory[1001] = 2033;
+	    memory[1002] = 2038;
+	    memory[1003] = 2045;
+	    memory[1004] = 2050;
+	    memory[1005] = 2057;
 	}
 	
 	
@@ -1312,8 +1323,14 @@ public class UI {
 			reg = r.substring(4, 6);
 			//ireg = r.substring(7, 9);
 			
-			String immed = r.substring(7,12);
-			String blacked = "000";
+			String immed = r.substring(7);
+			//String blacked = "000";
+			
+			if(ins.equals("AIR")) {
+			    ins = "000110";
+			   }else if(ins.equals("SIR")) {
+			    ins = "000111";
+			   }
 			
 			if (reg.equals("r0")) {
 				reg = "00";
@@ -1325,7 +1342,7 @@ public class UI {
 				reg = "11";
 			}
 			
-			str = ins + reg + blacked;
+			str = ins + reg + immed;
 			
 		}
 		
@@ -1435,7 +1452,7 @@ public class UI {
 		else if(ins.equals("OUT") || ins.equals("CHK")){
 			// I/O operation.
 			reg = r.substring(4, 6);
-			String DevId = r.substring(7,9);
+			String DevId = r.substring(11,16);
 			if(ins.equals("OUT")) {
 				ins = "111110";
 			}else if(ins.equals("CHK")) {
@@ -1452,8 +1469,8 @@ public class UI {
 			} else if (reg.equals("r3")) {
 				reg = "11";
 			}
-			int a = Integer.parseInt(DevId);
-			DevId = Integer.toBinaryString(a);
+			//int a = Integer.parseInt(DevId);
+			//DevId = Integer.toBinaryString(a);
 			String blacked = "000";
 			str = ins + reg + DevId + blacked;
 			
