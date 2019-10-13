@@ -1270,7 +1270,7 @@ public class UI {
 			//Arithmetic and logical instructions
 			reg = r.substring(4, 6);
 			ireg = r.substring(7, 9);
-			mem = r.substring(11, 16);
+			mem = r.substring(12, 17);
 			indirectAdd = r.substring(10,11);
 
 
@@ -1312,8 +1312,14 @@ public class UI {
 			reg = r.substring(4, 6);
 			//ireg = r.substring(7, 9);
 			
-			String immed = r.substring(7,12);
-			String blacked = "000";
+			String immed = r.substring(7);
+			//String blacked = "000";
+			
+			if(ins.equals("AIR")) {
+				ins = "000110";
+			}else if(ins.equals("SIR")) {
+				ins = "000111";
+			}
 			
 			if (reg.equals("r0")) {
 				reg = "00";
@@ -1324,8 +1330,7 @@ public class UI {
 			} else if (reg.equals("r3")) {
 				reg = "11";
 			}
-			
-			str = ins + reg + blacked;
+			str = ins + reg + immed;
 			
 		}
 		
