@@ -205,7 +205,7 @@ public class Instr {
 		
 		UI.mar.setValue(eaddress, UI.MAR_index);
 		UI.mbr.setValue(value, UI.MBR_index);
-		System.out.println(UI.mbr.getValue());
+		//System.out.println(UI.mbr.getValue());
 		// Put data to the memory
 		// UI.memory[eaddress] = value;
 		UI.cache.setValue(eaddress, value);
@@ -243,9 +243,9 @@ public class Instr {
 	 * @param address
 	 */
 	public static void LDX(int ix, int i, int address) {
-		System.out.println("ix "+ix);
-		System.out.println("i "+i);
-		System.out.println("address "+ address);
+		//System.out.println("ix "+ix);
+		//System.out.println("i "+i);
+		//System.out.println("address "+ address);
 		// get effective address
 		int eaddress = 0;
 		eaddress = effectiveAddress.EA(address, ix, i);
@@ -255,7 +255,7 @@ public class Instr {
 		UI.ix[ix].setValue(value, UI.IX1_index + ix - 1);
 		UI.mar.setValue(eaddress, UI.MAR_index);
 		UI.mbr.setValue(value, UI.MBR_index);
-		System.out.println();
+		//System.out.println();
 		// refresh the screen
 		Refresh(UI.NewValue, UI.OldValue);
 	}
@@ -440,8 +440,8 @@ public class Instr {
 	public static void AND(int rx, int ry) {
 		int rxValue = UI.r[rx].getValue();
 		int ryValue = UI.r[ry].getValue();
-		System.out.println("and rx"+rxValue);
-		System.out.println("and ry"+ryValue);
+		//System.out.println("and rx"+rxValue);
+		//System.out.println("and ry"+ryValue);
 		UI.r[rx].setValue(rxValue & ryValue, UI.R0_index + rx);
 		Refresh(UI.NewValue, UI.OldValue);
 	}
@@ -690,7 +690,7 @@ public class Instr {
 			// calculate the EA, then put into pc
 			int value = 0;
 			value = effectiveAddress.EA(address, ix, i);
-			UI.pc.setValue(value, UI.PC_index);
+			UI.pc.setValue(value-1, UI.PC_index);
 		} else {
 			// if false, PC = PC + 1;
 			int nextInstr = UI.pc.getValue();
@@ -721,6 +721,7 @@ public class Instr {
 	  public static void OUT(int r,int devid) { 
 		  UI.Devids[devid].setValue(UI.r[r].getValue());
 		  UI.printerTextField.setText(Integer.toString(UI.Devids[devid].getValue()));
+		  System.out.println(Integer.toString(UI.Devids[devid].getValue()));
 		  Refresh(UI.NewValue,UI.OldValue); 
 	  }
 	 /**

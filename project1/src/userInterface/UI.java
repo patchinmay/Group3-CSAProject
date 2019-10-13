@@ -144,7 +144,7 @@ public class UI {
 		for(int j=0;j<4;j++) {
 			r[j] = new Register();
 		}
-		pc.setValue(2019, PC_index);
+		pc.setValue(2000, PC_index);
 		ix[1].setValue(100, IX1_index);
 	    ix[2].setValue(1000, IX2_index);
 	    ix[3].setValue(1100, IX3_index);
@@ -192,18 +192,52 @@ public class UI {
 	    memory[324] = 300;
 	    */
 // program 1	    
-	    memory[128] = 1000;
-	    memory[129] = 1000;
+	    memory[128] = 1000; //print num
+	    memory[129] = 1000; //difference
 	    memory[130] = 1000;
 	    memory[131] = -1;
 	    
-	    memory[1000] = 2028;
-	    memory[1001] = 2035;
-	    memory[1002] = 2042;
-	    memory[1003] = 2049;
-	    memory[1004] = 0;
-	    memory[1005] = 0;
-	    		
+	    memory[1000] = 2029-1;
+	    memory[1001] = 2036-1;
+	    memory[1002] = 2042-1; //2029+13*1
+	    memory[1003] = 2049-1; //2036+13*1
+	    memory[1004] = 2029+13*2-1;
+	    memory[1005] = 2036+13*2-1;
+	    memory[1006] = 2029+13*3-1;
+	    memory[1007] = 2036+13*3-1;
+	    memory[1008] = 2029+13*4-1;
+	    memory[1009] = 2036+13*4-1;
+	    memory[1010] = 2029+13*5-1;
+	    memory[1011] = 2036+13*5-1;
+	    memory[1012] = 2029+13*6-1;
+	    memory[1013] = 2036+13*6-1;
+	    memory[1014] = 2029+13*7-1;
+	    memory[1015] = 2036+13*7-1;
+	    memory[1016] = 2029+13*8-1;
+	    memory[1017] = 2036+13*8-1;
+	    memory[1018] = 2029+13*9-1;
+	    memory[1019] = 2036+13*9-1;
+	    memory[1020] = 2029+13*10-1;
+	    memory[1021] = 2036+13*10-1;
+	    memory[1022] = 2029+13*11-1;
+	    memory[1023] = 2036+13*11-1;
+	    memory[1024] = 2029+13*12-1;
+	    memory[1025] = 2036+13*12-1;
+	    memory[1026] = 2029+13*13-1;
+	    memory[1027] = 2036+13*13-1;
+	    memory[1028] = 2029+13*14-1;
+	    memory[1029] = 2036+13*14-1;
+	    memory[1030] = 2029+13*15-1;
+	    memory[1031] = 2036+13*15-1;
+	    memory[1100] = 2029+13*16-1;
+	    memory[1101] = 2036+13*16-1;
+	    memory[1102] = 2029+13*17-1;
+	    memory[1103] = 2036+13*17-1;
+	    memory[1104] = 2029+13*18-1;
+	    memory[1105] = 2036+13*18-1;
+	    memory[1106] = 2029+13*19-1;
+	    memory[1107] = 2036+13*19-1;//2283
+	       		
 	    
 	}
 	
