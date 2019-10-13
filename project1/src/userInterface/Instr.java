@@ -694,7 +694,7 @@ public class Instr {
 		} else {
 			// if false, PC = PC + 1;
 			int nextInstr = UI.pc.getValue();
-			UI.pc.setValue(nextInstr + 1, UI.PC_index);
+			UI.pc.setValue(nextInstr, UI.PC_index);
 		}
 	}
 

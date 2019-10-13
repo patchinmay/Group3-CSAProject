@@ -34,7 +34,7 @@ import javax.swing.JTextArea;
 public class UI {
 	
 	public static int keyboardFlag;
-	public static int memory[] = new int[2048];
+	public static int memory[] = new int[4096];
 	//0 MAR / 1 PC / 2 MB / 3 MFR / 4 IR / 5 CC / 6 R0
 	//7 R1 / 8 R2 / 9 R3 / 10 IX1 / 11 IX2 / 12 IX3
 	public static int NewValue[] = new int[20];
@@ -144,10 +144,11 @@ public class UI {
 		for(int j=0;j<4;j++) {
 			r[j] = new Register();
 		}
-		pc.setValue(2000, PC_index);
+		pc.setValue(2019, PC_index);
 		ix[1].setValue(100, IX1_index);
-	    ix[2].setValue(200, IX2_index);
-	    ix[3].setValue(300, IX3_index);
+	    ix[2].setValue(1000, IX2_index);
+	    ix[3].setValue(1100, IX3_index);
+	    /*
 	    memory[200]=120;
 	    memory[325] =1325;
 	    memory[326] = 1326;
@@ -173,7 +174,7 @@ public class UI {
 	 
 	    memory[1036] = 36;
 	    memory[1037] = 37;
-	    /*new test memory*/
+	    //new test memory
 	    memory[1124] = 124;
 	    memory[1224] = 224;
 	    memory[1325] = 325;
@@ -189,6 +190,21 @@ public class UI {
 	    memory[124] = 100;
 	    memory[224] = 200;
 	    memory[324] = 300;
+	    */
+// program 1	    
+	    memory[128] = 1000;
+	    memory[129] = 1000;
+	    memory[130] = 1000;
+	    memory[131] = -1;
+	    
+	    memory[1000] = 2028;
+	    memory[1001] = 2035;
+	    memory[1002] = 2042;
+	    memory[1003] = 2049;
+	    memory[1004] = 0;
+	    memory[1005] = 0;
+	    		
+	    
 	}
 	
 	
