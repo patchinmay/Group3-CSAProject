@@ -144,11 +144,7 @@ public class UI {
 		for(int j=0;j<4;j++) {
 			r[j] = new Register();
 		}
-<<<<<<< HEAD
-		pc.setValue(2018, PC_index);
-=======
 		pc.setValue(2019, PC_index);
->>>>>>> origin/master
 		ix[1].setValue(100, IX1_index);
 	    ix[2].setValue(1000, IX2_index);
 	    ix[3].setValue(1100, IX3_index);
@@ -194,19 +190,6 @@ public class UI {
 	    memory[124] = 100;
 	    memory[224] = 200;
 	    memory[324] = 300;
-<<<<<<< HEAD
-	    
-	    memory[130] = 10000;
-	    memory[131] = -1;
-	    memory[129] = 10000;
-	    
-	    memory[1000] = 2026;
-	    memory[1001] = 2033;
-	    memory[1002] = 2038;
-	    memory[1003] = 2045;
-	    memory[1004] = 2050;
-	    memory[1005] = 2057;
-=======
 	    */
 // program 1	    
 	    memory[128] = 1000;
@@ -222,7 +205,6 @@ public class UI {
 	    memory[1005] = 0;
 	    		
 	    
->>>>>>> origin/master
 	}
 	
 	
@@ -1350,17 +1332,10 @@ public class UI {
 			//String blacked = "000";
 			
 			if(ins.equals("AIR")) {
-<<<<<<< HEAD
-			    ins = "000110";
-			   }else if(ins.equals("SIR")) {
-			    ins = "000111";
-			   }
-=======
 				ins = "000110";
 			}else if(ins.equals("SIR")) {
 				ins = "000111";
 			}
->>>>>>> origin/master
 			
 			if (reg.equals("r0")) {
 				reg = "00";
@@ -1371,10 +1346,6 @@ public class UI {
 			} else if (reg.equals("r3")) {
 				reg = "11";
 			}
-<<<<<<< HEAD
-			
-=======
->>>>>>> origin/master
 			str = ins + reg + immed;
 			
 		}
@@ -1485,7 +1456,7 @@ public class UI {
 		else if(ins.equals("OUT") || ins.equals("CHK")){
 			// I/O operation.
 			reg = r.substring(4, 6);
-			String DevId = r.substring(11,16);
+			String DevId = r.substring(7,9);
 			if(ins.equals("OUT")) {
 				ins = "111110";
 			}else if(ins.equals("CHK")) {
@@ -1502,8 +1473,8 @@ public class UI {
 			} else if (reg.equals("r3")) {
 				reg = "11";
 			}
-			//int a = Integer.parseInt(DevId);
-			//DevId = Integer.toBinaryString(a);
+			int a = Integer.parseInt(DevId);
+			DevId = Integer.toBinaryString(a);
 			String blacked = "000";
 			str = ins + reg + DevId + blacked;
 			
