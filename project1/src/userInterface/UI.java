@@ -1270,7 +1270,7 @@ public class UI {
 			//Arithmetic and logical instructions
 			reg = r.substring(4, 6);
 			ireg = r.substring(7, 9);
-			mem = r.substring(11, 16);
+			mem = r.substring(12, 17);
 			indirectAdd = r.substring(10,11);
 
 
@@ -1479,7 +1479,7 @@ public class UI {
 			str = ins1 + reg + blacked + DevId ;
 			//commiting the code
 		}
-			System.out.println("xiehui"+str);
+			System.out.println(r.substring(0,3)+str);
 			int result = Integer.parseInt(str, 2);
 			//System.out.println(result);
 			//memory[pc] = result;

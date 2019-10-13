@@ -54,7 +54,7 @@ public class Tools {
 		public int[] decodeInstr(int instruction) {
 			//The format for LOAD/STORE, Transfer and some arithmetic and logical instructions
 			int OpCode = instruction/1024;
-			if((OpCode>=1 && OpCode<=3) || (OpCode>=41 && OpCode<=42) || (OpCode>=10 && OpCode<=17)) {
+			if((OpCode>=1 && OpCode<=5) || (OpCode>=41 && OpCode<=42) || (OpCode>=10 && OpCode<=17)) {
 				int[] array = new int[5];
 				int R = instruction % 1024 / 256;
 				int IX = instruction % 256 / 64;
@@ -66,7 +66,17 @@ public class Tools {
 				array[3] = I;
 				array[4] = address;
 				return array;
-			}//Certain arithmetic and logical instructions 
+			}
+			else if(OpCode>=6 && OpCode <=7 ) {
+				int[] array = new int[3];
+				int imm = instruction/256;
+				int R = instruction % 1024 / 256;
+				array[0] = OpCode;
+				array[1]=R;
+				array[2]=imm;
+				return array;
+			}
+			//Certain arithmetic and logical instructions 
 			else if(OpCode>=20 && OpCode<=25) {
 				int[] array = new int[3];
 				int Rx = instruction%1024/256;
