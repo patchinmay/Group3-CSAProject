@@ -489,9 +489,6 @@ public class Instr {
 			result = result << count;
 		} else {// right
 			if (al == 0) {// a
-				int bias = 0;
-				bias = (1 << count) - 1;
-				result += bias;
 				result = result >>> count;
 			} else {// l
 				result = result >> count;
@@ -548,11 +545,11 @@ public class Instr {
 			// calculate the EA, then put into pc
 			int value = 0;
 			value = effectiveAddress.EA(address, ix, i);
-			UI.pc.setValue(value, UI.PC_index);
+			UI.pc.setValue(value-1, UI.PC_index);
 		} else {
 			// if false, PC = PC + 1;
 			int nextInstr = UI.pc.getValue();
-			UI.pc.setValue(nextInstr + 1, UI.PC_index);
+			UI.pc.setValue(nextInstr + 1-1, UI.PC_index);
 		}
 	}
 
@@ -571,11 +568,11 @@ public class Instr {
 			// calculate the EA, then put into pc
 			int value = 0;
 			value = effectiveAddress.EA(address, ix, i);
-			UI.pc.setValue(value, UI.PC_index);
+			UI.pc.setValue(value-1, UI.PC_index);
 		} else {
 			// if false, PC = PC + 1;
 			int nextInstr = UI.pc.getValue();
-			UI.pc.setValue(nextInstr + 1, UI.PC_index);
+			UI.pc.setValue(nextInstr + 1-1, UI.PC_index);
 		}
 		Refresh(UI.NewValue, UI.OldValue);
 	}
@@ -596,11 +593,11 @@ public class Instr {
 			// calculate the EA, then put into pc
 			int value = 0;
 			value = effectiveAddress.EA(address, ix, i);
-			UI.pc.setValue(value, UI.PC_index);
+			UI.pc.setValue(value-1, UI.PC_index);
 		} else {
 			// if false, PC = PC + 1;
 			int nextInstr = UI.pc.getValue();
-			UI.pc.setValue(nextInstr + 1, UI.PC_index);
+			UI.pc.setValue(nextInstr + 1-1, UI.PC_index);
 		}
 		Refresh(UI.NewValue, UI.OldValue);
 	}
@@ -634,7 +631,7 @@ public class Instr {
 		int ea=0;
 		ea = effectiveAddress.EA(address, ix, i);
 		UI.r[3].setValue(UI.pc.getValue(),UI.R3_index);
-		UI.pc.setValue(ea, UI.PC_index);
+		UI.pc.setValue(ea-1, UI.PC_index);
 
 	}
 
@@ -644,7 +641,7 @@ public class Instr {
 	 */
 	public static void RFS() {
 		 //UI.r[0].setValue(immed, UI.R0_index);
-		  UI.pc.setValue(UI.r[3].getValue(), UI.PC_index);
+		  UI.pc.setValue(UI.r[3].getValue()-1, UI.PC_index);
 
 	}
 
@@ -667,11 +664,11 @@ public class Instr {
 			// calculate the EA, then put into pc
 			int EA = 0;
 			EA = effectiveAddress.EA(address, ix, i);
-			UI.pc.setValue(EA, UI.PC_index);
+			UI.pc.setValue(EA-1, UI.PC_index);
 		} else {
 			// if false, PC = PC + 1;
 			int nextInstr = UI.pc.getValue();
-			UI.pc.setValue(nextInstr + 1, UI.PC_index);
+			UI.pc.setValue(nextInstr + 1-1, UI.PC_index);
 		}
 	}
 
