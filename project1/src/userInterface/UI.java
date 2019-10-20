@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
 
 import Components.CC;
 import Components.IR;
@@ -33,6 +34,7 @@ import javax.swing.JTextArea;
 
 public class UI {
 	
+	public static int p1Result;
 	public static int keyboardFlag;
 	public static int memory[] = new int[4096];
 	//0 MAR / 1 PC / 2 MB / 3 MFR / 4 IR / 5 CC / 6 R0
@@ -90,6 +92,7 @@ public class UI {
 	private JButton RunInstr;
 	private JButton IPL;
 	private JButton Save;
+	private JButton P1;
 	private static JButton KeyboardInput;
 	
 	public static PC pc = new PC();
@@ -504,23 +507,7 @@ public class UI {
 		
 		Instr_textArea = new JTextArea();
 //		Instr_textArea.setText("LDR r0,00,0,11000\n"+"LDR r0,01,0,11000");
-		Instr_textArea.setText("LDR r0,00,0,11000\n" + 
-		"LDR r0,01,0,11000\n" + 
-		"LDR r1,00,1,11000\n" + 
-		"LDR r2,10,1,11000\n" + 
-		"STR r1,00,0,11000\n" + 
-		"STR r2,01,0,11000\n" + 
-		"STR r3,00,1,11000\n" + 
-		"STR r3,11,1,11001\n" + 
-		"LDA r1,00,0,11010\n" + 
-		"LDA r2,01,0,11001\n" + 
-		"LDA r3,00,1,11001\n" + 
-		"LDA r3,11,1,11001\n" + 
-		"LDX r1,10,0,11010\n" + 
-		"LDX r1,11,1,11010\n" + 
-		"STX r1,10,0,11011\n" + 
-		"STX r2,11,1,11100\n" + 
-		"HLT r0,00,0,00000");
+		Instr_textArea.setText("");
 		Instr_textArea.setBounds(330, 372, 264, 170);
 		frame.getContentPane().add(Instr_textArea);
 		//set the textArea could not be edited before click IPL button
@@ -542,31 +529,42 @@ public class UI {
 		Save.setBounds(207, 394, 70, 29);
 		frame.getContentPane().add(Save);
 		
-		JButton P1 = new JButton("P1");
+		P1 = new JButton("P1");
 		P1.setBounds(53, 394, 70, 29);
 		frame.getContentPane().add(P1);
 		
 		keyboardTextField = new JTextField();
-		keyboardTextField.setBounds(623, 369, 130, 26);
+		keyboardTextField.setBounds(623, 369, 256, 68);
 		frame.getContentPane().add(keyboardTextField);
 		keyboardTextField.setColumns(10);
 		
 		KeyboardInput = new JButton("input");
-		KeyboardInput.setBounds(753, 369, 61, 29);
+		KeyboardInput.setBounds(891, 390, 61, 29);
 		frame.getContentPane().add(KeyboardInput);
 		
 		JLabel lblKeyboard = new JLabel("keyboard");
-		lblKeyboard.setBounds(653, 354, 61, 16);
+		lblKeyboard.setBounds(720, 354, 61, 16);
 		frame.getContentPane().add(lblKeyboard);
 		
 		printerTextField = new JTextField();
 		printerTextField.setColumns(10);
-		printerTextField.setBounds(623, 417, 130, 125);
+		printerTextField.setBounds(623, 460, 260, 82);
 		frame.getContentPane().add(printerTextField);
 		
 		JLabel lblPrinter = new JLabel("Printer");
-		lblPrinter.setBounds(664, 399, 61, 16);
+		lblPrinter.setBounds(726, 448, 55, 16);
 		frame.getContentPane().add(lblPrinter);
+		
+		P1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				run();
+				r[0].setValue(p1Result, R0_index);
+				Instr.Refresh(NewValue, OldValue);
+				printerTextField.setText(Integer.toString(p1Result));
+			}
+		});
 		
 		
 		PCStore.addActionListener(new ActionListener() {
@@ -836,11 +834,38 @@ public class UI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//get keyboard value, put it to keyboard(devid[0])
-				Devids[0].setValue(Integer.parseInt(keyboardTextField.getText()));
-				Instr.IN(0, 0);
-				Instr.OUT(0, 1);
+			    //Devids[0].setValue(Integer.parseInt(keyboardTextField.getText()));
+			    String input = keyboardTextField.getText();
+			    String[] lines = input.split(" ");
+			    
+			    for (int i = 0, add=10; i < lines.length; i++,add++) {
+			     System.out.println("add "+add+" value "+lines[i]);
+			     String string = lines[i];
+			     UI.cache.setValue(add, Integer.parseInt(string));
+			    }
+			    //calculate the minimum number in the array 
+			    int index = 0;
+			    int temp = Integer.parseInt(lines[20]) - Integer.parseInt(lines[0]);
+			    for (int i = 1; i < lines.length-1; i++) {
+					int diff = Integer.parseInt(lines[20]) - Integer.parseInt(lines[i]);
+					if(diff <0) {
+						diff = diff*-1;
+					}
+					if(diff <= temp) {
+						temp = diff;
+						index = i;
+					}
+				}
+			    System.out.println(lines[index]);
+			    p1Result = Integer.parseInt(lines[index]);
+			    UI.r[0].setValue(Integer.parseInt(lines[20]), UI.R0_index);
+//			    Instr.Refresh(UI.NewValue,UI.OldValue);
+//				Instr.IN(0, 0);
+//				Instr.OUT(0, 1);
 				//change the keyboard flag
 				//clear the keyboard Textfield
+				
+				
 				keyboardTextField.setText("");
 			}
 		});
