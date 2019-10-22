@@ -717,7 +717,7 @@ public class Instr {
 	 */
 	  public static void OUT(int r,int devid) { 
 		  UI.Devids[devid].setValue(UI.r[r].getValue());
-		  UI.printerTextField.setText(Integer.toString(UI.Devids[devid].getValue()));
+		  UI.printerTextArea.setText(Integer.toString(UI.Devids[devid].getValue()));
 		  System.out.println(Integer.toString(UI.Devids[devid].getValue()));
 		  Refresh(UI.NewValue,UI.OldValue); 
 	  }
