@@ -99,8 +99,6 @@ public class UI {
 	private JButton P1;
 	private JButton btnChooseFile;
 	private static JButton KeyboardInput;
-	private static JButton save;
-	private static JFileChooser jfc;
 	
 	public static PC pc = new PC();
 	public static MAR mar = new MAR();
