@@ -6,12 +6,15 @@ package userInterface;
  */
 import java.awt.EventQueue;
 import java.awt.Menu;
+import java.awt.TextArea;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.JFileChooser;
 
 import org.omg.CORBA.PRIVATE_MEMBER;
 
@@ -29,6 +32,7 @@ import function.*;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 
@@ -93,7 +97,10 @@ public class UI {
 	private JButton IPL;
 	private JButton Save;
 	private JButton P1;
+	private JButton btnChooseFile;
 	private static JButton KeyboardInput;
+	private static JButton save;
+	private static JFileChooser jfc;
 	
 	public static PC pc = new PC();
 	public static MAR mar = new MAR();
@@ -249,6 +256,7 @@ public class UI {
 	 * Initialize the contents of the frame.
 	 */
 	public void initialize() {
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100,1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -554,6 +562,24 @@ public class UI {
 		JLabel lblPrinter = new JLabel("Printer");
 		lblPrinter.setBounds(726, 448, 55, 16);
 		frame.getContentPane().add(lblPrinter);
+		
+		btnChooseFile = new JButton("Choose File");
+		btnChooseFile.setBounds(53, 476, 117, 29);
+		frame.getContentPane().add(btnChooseFile);
+		
+		btnChooseFile.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				OpenFile of = new OpenFile();
+				try {
+					of.PickMe();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		
 		P1.addActionListener(new ActionListener() {
 			
@@ -1566,5 +1592,4 @@ public class UI {
 			cache.setValue(pc, result);
 			
 	}
-	
 }
