@@ -26,10 +26,19 @@ public class OpenFile {
 				UI.printerTextArea.append(value+"\n");
 		        char[] chars = value.toCharArray();
 		        //store each char into the memory
+		        //a~z is 97~122 and the range of A~Z is 65~90
 		        for (int j = 0; j < chars.length; j++) {
 		        	System.out.println(i+" "+chars[j]);
-		        	UI.cache.setValue(i++,(int)chars[j]);
+		        	if(chars[j] == '.' || chars[j]== '!' || chars[j] == '?' ) {
+		        		UI.memory[i++] = -3;
+		        	}else if((int)chars[j] < 65 || (int)chars[j] > 122 || 
+		        			((int)chars[j] > 90 && (int)chars[j] < 97)){
+		        		UI.memory[i++] = -2;
+		        	}else {
+		        		UI.memory[i++] = chars[j];
+		        	}
 				}
+		        UI.memory[i] = -1;
 			}
 			
 			UI.printerTextArea.append("please input one word into keyboard used to search.");

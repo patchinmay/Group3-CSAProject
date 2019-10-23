@@ -152,101 +152,42 @@ public class UI {
 		for(int j=0;j<4;j++) {
 			r[j] = new Register();
 		}
-		pc.setValue(2000, PC_index);
+		pc.setValue(2001, PC_index);
 		ix[1].setValue(100, IX1_index);
 	    ix[2].setValue(1000, IX2_index);
-	    ix[3].setValue(1100, IX3_index);
-	    /*
-	    memory[200]=120;
-	    memory[325] =1325;
-	    memory[326] = 1326;
-	    memory[226] = 1026;
-	    memory[1326]=100;
-	    memory[128]=500;
-	    
-	    memory[1024] = 24;
-	    memory[1025] = 25;
-	    memory[1026] = 26;
-	 
-	    memory[1028] = 28;
-	    memory[1029] = 29;
-	 
-	    memory[1030] = 30;
-	    memory[1031] = 31;
-	 
-	    memory[1032] = 32;
-	    memory[1033] = 33;
-	 
-	    memory[1034] = 34;
-	    memory[1035] = 35;
-	 
-	    memory[1036] = 36;
-	    memory[1037] = 37;
-	    //new test memory
-	    memory[1124] = 124;
-	    memory[1224] = 224;
-	    memory[1325] = 325;
+	    ix[3].setValue(200, IX3_index);
+	    //program 2
+	    memory[100] = 10;
+	    memory[101] = 1000; // pointer sentences start from 1000
+	    memory[102] = 0; // letter of S
+	    memory[103]=1000; // pointer of the first letter in s
+	    memory[104]=1000; // pointer of the first letter in s+1
+	    memory[105] =0; // pointer of the letter in W
 
-	    memory[24] = 1024;
-	    memory[25] = 1025;
-	    memory[26] = 1026;
-	    memory[30] = 1030;
-	    memory[34] = 1034;
-	    memory[36] = 1036;
-	    memory[37] = 1037;
-
-	    memory[124] = 100;
-	    memory[224] = 200;
-	    memory[324] = 300;
-	    */
-// program 1	    
-	    memory[128] = 1000; //print num
-	    memory[129] = 1000; //difference
-	    memory[130] = 1000;
-	    memory[131] = -1;
+	    memory[126] = -1;
+	    memory[127] = 0;
+	    memory[128] = 1;// sentences number
+	    memory[129] = 1; //word number
+	    memory[130] =-2;//space
+	    memory[131] =-3;//period
 	    
-	    memory[1000] = 2029-1;
-	    memory[1001] = 2036-1;
-	    memory[1002] = 2042-1; //2029+13*1
-	    memory[1003] = 2049-1; //2036+13*1
-	    memory[1004] = 2029+13*2-1;
-	    memory[1005] = 2036+13*2-1;
-	    memory[1006] = 2029+13*3-1;
-	    memory[1007] = 2036+13*3-1;
-	    memory[1008] = 2029+13*4-1;
-	    memory[1009] = 2036+13*4-1;
-	    memory[1010] = 2029+13*5-1;
-	    memory[1011] = 2036+13*5-1;
-	    memory[1012] = 2029+13*6-1;
-	    memory[1013] = 2036+13*6-1;
-	    memory[1014] = 2029+13*7-1;
-	    memory[1015] = 2036+13*7-1;
-	    memory[1016] = 2029+13*8-1;
-	    memory[1017] = 2036+13*8-1;
-	    memory[1018] = 2029+13*9-1;
-	    memory[1019] = 2036+13*9-1;
-	    memory[1020] = 2029+13*10-1;
-	    memory[1021] = 2036+13*10-1;
-	    memory[1022] = 2029+13*11-1;
-	    memory[1023] = 2036+13*11-1;
-	    memory[1024] = 2029+13*12-1;
-	    memory[1025] = 2036+13*12-1;
-	    memory[1026] = 2029+13*13-1;
-	    memory[1027] = 2036+13*13-1;
-	    memory[1028] = 2029+13*14-1;
-	    memory[1029] = 2036+13*14-1;
-	    memory[1030] = 2029+13*15-1;
-	    memory[1031] = 2036+13*15-1;
-	    memory[1100] = 2029+13*16-1;
-	    memory[1101] = 2036+13*16-1;
-	    memory[1102] = 2029+13*17-1;
-	    memory[1103] = 2036+13*17-1;
-	    memory[1104] = 2029+13*18-1;
-	    memory[1105] = 2036+13*18-1;
-	    memory[1106] = 2029+13*19-1;
-	    memory[1107] = 2036+13*19-1;//2283
-	       		
-	    
+	    memory[200] = 2029;
+	    memory[201] = 2016;
+	    memory[202] = 2029; 
+	    memory[203] = 2001;
+	    memory[204] = 2020;
+	    memory[205] = 2029;
+	    memory[206] = 2029;
+	    memory[207] = 2005;
+	    memory[208] = 2005;
+	    memory[209] = 2029;
+	    memory[210] = 2037;
+	    memory[211] = 2059;
+	    memory[212] = 2044;
+	    memory[213] = 2037;
+	    memory[214] = 2053;
+	    memory[215] = 2029;
+	    memory[216] = 2001;
 	}
 	
 	
@@ -875,8 +816,9 @@ public class UI {
 			        //store each char into the memory
 			        for (int j = 0; j < chars.length; j++) {
 			        	System.out.println(i+" "+chars[j]);
-			        	UI.cache.setValue(i++,(int)chars[j]);
+			        	UI.memory[i++] = (int)chars[j];
 					}
+			        UI.memory[i]= -1; 
 				} else {
 					for (int i = 0, add = 10; i < lines.length; i++, add++) {
 						System.out.println("add " + add + " value " + lines[i]);
@@ -1241,7 +1183,8 @@ public class UI {
 		String ins, ins1, reg, ireg, mem, indirectAdd,reg2;
 		ins = r.substring(0, 3);
 		ins1 = r.substring(0, 2);
-		if (ins.equals("LDR") || ins.equals("STR") || ins.equals("LDX") || ins.equals("STX") || ins.equals("LDA")) {
+		if (ins.equals("LDR") || ins.equals("STR") || ins.equals("LDX") || ins.equals("STX") || ins.equals("LDA")
+				|| ins.equals("HLT")) {
 			//ins = r.substring(0, 3);
 			reg = r.substring(4, 6);
 			ireg = r.substring(7, 9);
