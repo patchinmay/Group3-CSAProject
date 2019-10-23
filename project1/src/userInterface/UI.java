@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.JFileChooser;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
+//import org.omg.CORBA.PRIVATE_MEMBER;
 
 import Components.CC;
 import Components.IR;
@@ -509,6 +509,18 @@ public class UI {
 		btnChooseFile = new JButton("Choose File");
 		btnChooseFile.setBounds(53, 476, 117, 29);
 		frame.getContentPane().add(btnChooseFile);
+		
+		JButton btnP2 = new JButton("P2");
+		btnP2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReadFileP2 p2 = new ReadFileP2();
+				p2.Read();
+				
+			}
+		});
+		
+		btnP2.setBounds(53, 435, 73, 29);
+		frame.getContentPane().add(btnP2);
 		
 		btnChooseFile.addActionListener(new ActionListener() {
 			
