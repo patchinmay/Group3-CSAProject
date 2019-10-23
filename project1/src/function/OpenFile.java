@@ -13,6 +13,7 @@ public class OpenFile {
 	StringBuilder sb = new StringBuilder();
 	
 	public void PickMe() throws Exception{
+		int test = 0;
 		if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
 			//get the file
 			File file = fileChooser.getSelectedFile();
