@@ -918,8 +918,9 @@ public class UI {
     	//execute the instr.s
     	Boolean status = true;
     	while (status) {
+    		iAddress = pc.getValue();
 			status = singleExecute(iAddress);
-			iAddress++;
+			//iAddress++;
 		}
     }
     
