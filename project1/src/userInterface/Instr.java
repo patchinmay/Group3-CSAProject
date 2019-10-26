@@ -717,6 +717,7 @@ public class Instr {
 	 */
 	  public static void OUT(int r,int devid) { 
 		  UI.Devids[devid].setValue(UI.r[r].getValue());
+		  UI.printerTextArea.append("\n");
 		  UI.printerTextArea.append(Integer.toString(UI.Devids[devid].getValue()));
 		  System.out.println(Integer.toString(UI.Devids[devid].getValue()));
 		  Refresh(UI.NewValue,UI.OldValue); 

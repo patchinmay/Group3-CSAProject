@@ -181,13 +181,14 @@ public class UI {
 	    memory[207] = 2005;
 	    memory[208] = 2005;
 	    memory[209] = 2029;
-	    memory[210] = 2037;
-	    memory[211] = 2059;
-	    memory[212] = 2044;
-	    memory[213] = 2037;
-	    memory[214] = 2053;
-	    memory[215] = 2029;
+	    memory[210] = 2038;
+	    memory[211] = 2061;
+	    memory[212] = 2045;
+	    memory[213] = 2038;
+	    memory[214] = 2057;
+	    memory[215] = 2034;
 	    memory[216] = 2001;
+
 	}
 	
 	
@@ -827,8 +828,15 @@ public class UI {
 					char[] chars = value.toCharArray();
 			        //store each char into the memory
 			        for (int j = 0; j < chars.length; j++) {
-			        	System.out.println(i+" "+chars[j]);
-			        	UI.memory[i++] = (int)chars[j];
+			        	if ((int)chars[j] <= 90 && (int)chars[j] >= 65) {
+				        	System.out.println(i+" "+chars[j]);
+				        	UI.memory[i++] = (int)chars[j]+32;	
+			        	}
+			        	else {
+			        		System.out.println(i+" "+chars[j]);
+				        	UI.memory[i++] = (int)chars[j];
+			        	}
+			        	
 					}
 			        UI.memory[i]= -1; 
 				} else {
@@ -918,8 +926,9 @@ public class UI {
     	//execute the instr.s
     	Boolean status = true;
     	while (status) {
+    		iAddress = pc.getValue();
 			status = singleExecute(iAddress);
-			iAddress++;
+			//iAddress++;
 		}
     }
     

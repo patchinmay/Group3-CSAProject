@@ -35,7 +35,10 @@ public class OpenFile {
 		        	}else if((int)chars[j] < 65 || (int)chars[j] > 122 || 
 		        			((int)chars[j] > 90 && (int)chars[j] < 97)){
 		        		UI.memory[i++] = -2;
-		        	}else {
+		        	}else if((int)chars[j] <= 90 && (int)chars[j] >= 65){
+		        		UI.memory[i++] = chars[j]+32;
+		        	}
+		        	else {
 		        		UI.memory[i++] = chars[j];
 		        	}
 				}
