@@ -515,7 +515,7 @@ public class UI {
 		btnP2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ReadFileP2 p2 = new ReadFileP2();
-				p2.Read();
+				p2.ReadP2();
 				
 			}
 		});

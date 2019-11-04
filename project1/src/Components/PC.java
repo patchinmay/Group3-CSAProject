@@ -16,6 +16,4 @@ public class PC extends Register{
 	public PC() {
 		super();
 	}
-	
-	
 }
