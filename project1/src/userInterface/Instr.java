@@ -1,6 +1,10 @@
 package userInterface;
 
 import function.effectiveAddress;
+
+import java.net.Inet4Address;
+import java.util.function.DoubleToLongFunction;
+
 import Components.CC;
 import function.Tools;
 import userInterface.UI;
@@ -733,5 +737,199 @@ public class Instr {
 			 * UI.r[r].getValue(UI.devid[devid].getStatus()); Refresh(UI.NewValue,
 			 * UI.OldValue); }
 			 */
+	  
+//	  public static void AMR(int r, int ix, int i, int address) {
+//			// get effective address
+//			int EA = effectiveAddress.EA(address, ix, i);
+//			// c(r) + c(EA)
+//			int rlt = UI.r[r].getValue() + UI.cache.returnValue(EA);
+//			rlt = Tools.flow(rlt);
+//			// set the value of r1
+//			UI.r[r].setValue(rlt, UI.R0_index + r);
+//			// refresh the UI
+//			Refresh(UI.NewValue, UI.OldValue);
+//		}
+	  //
+	  public static float FalseFloat2TureFloat(int num) {
+		  int s, exponet, mantissa;
+		  s = num/32768;
+		  if(s==1) s=-1;
+		  else s=1;
+		  exponet = num%32768/256;
+		  mantissa = num%256;
+//		  System.out.println((float) ((mantissa+256)*Math.pow(2,exponet-8)));
+//		  System.out.println(exponet);
+		  return (float) ((mantissa+256)*Math.pow(2,exponet-8));
+	  }
+	  
+	  public static int TrueFloat2FalseFloat(double d) {
+		  int s, exponet=0;
+		  double mantissa;
+		  if(d>=0) s=0;
+		  else s = 1;
+		  while(d>=2) {
+			  exponet++;
+			  d/=2;
+		  }
+		  mantissa = d-1;
+		  mantissa = mantissa*Math.pow(2, 8);
+		  double temp = Math.ceil(mantissa);
+		  int rlt = (int)temp+(exponet<<8)+(s<<15);
+		  System.out.println(rlt);
+		  return rlt;
+	  }
+	  /**
+	   * Floating Add Memory To Register
+		c(fr) <- c(fr) + c(EA)
+		c(fr) <- c(fr) + c(c(EA)), if I bit set
+		fr must be 0 or 1.
+		OVERFLOW may be set
+
+	   * @param fr
+	   * @param ix
+	   * @param i
+	   * @param address
+	   */
+	   public static void FADD(int fr, int ix, int i, int address) {
+		   	//get effective address
+			int EA = effectiveAddress.EA(address, ix, i);
+			int falseFloat = UI.fr[fr].getValue();
+			double trueFloat = FalseFloat2TureFloat(falseFloat);
+			double temp = trueFloat+(double)UI.cache.returnValue(EA);
+			int tempFalseInt = TrueFloat2FalseFloat(temp);
+			UI.fr[fr].setValue(tempFalseInt, UI.fr0_index+fr);
+			
+			// refresh the UI
+			Refresh(UI.NewValue, UI.OldValue);
+	   }
+	   
+	   /**
+	    * Floating Subtract Memory From Register
+		c(fr) <- c(fr) - c(EA)
+		c(fr) <- c(fr) - c(c(EA)), if I bit set
+		fr must be 0 or 1
+		UNDERFLOW may be set
+
+	    * @param fr
+	    * @param ix
+	    * @param i
+	    * @param address
+	    */
+	   public static void FSUB(int fr, int ix, int i, int address) {
+		   	//get effective address
+			int EA = effectiveAddress.EA(address, ix, i);
+			int falseFloat = UI.fr[fr].getValue();
+			double trueFloat = FalseFloat2TureFloat(falseFloat);
+			double temp = trueFloat-(double)UI.cache.returnValue(EA);
+			int tempFalseInt = TrueFloat2FalseFloat(temp);
+			UI.fr[fr].setValue(tempFalseInt, UI.fr0_index+fr);
+			
+			// refresh the UI
+			Refresh(UI.NewValue, UI.OldValue);
+	   }
+	   
+	   /**
+	    * Vector Add
+		fr contains the length of the vectors
+		c(EA) or c(c(EA)), if I bit set, is address of first vector
+		c(EA+1) or c(c(EA+1)), if I bit set, is address of the second vector
+		Let V1 be vector at address; Let V2 be vector at address+1
+		Then, V1[i] = V1[i]+ V2[i], i = 1, c(fr).
+
+	    * @param fr
+	    * @param ix
+	    * @param i
+	    * @param address
+	    */
+	   public static void VADD(int fr, int ix, int i, int address) {
+		   int EA1 = effectiveAddress.EA(address, ix, i);
+		   int length = UI.fr[fr].getValue();
+		   int EA2 = EA1+1;
+		   for(int j=0;j<length;j++) {
+			   UI.cache.setValue(EA1, UI.cache.returnValue(EA1)+UI.cache.returnValue(EA2));
+			   EA1++;
+			   EA2++;
+		   }
+	   }
+	   
+	   /**
+	    * Vector Subtract
+		fr contains the length of the vectors 
+		c(EA) or c(c(EA)), if I bit set is address of first vector
+		c(EA+1) or c(c(EA+1)), if I bit set is address of the second vector
+		Let V1 be vector at address; Let V2 be vector at address+1
+		Then, V1[i] = V1[i] - V2[i], i = 1, c(fr).
+
+	    * @param fr
+	    * @param ix
+	    * @param i
+	    * @param address
+	    */
+	   public static void VSUB(int fr, int ix, int i, int address) {
+		   int EA1 = effectiveAddress.EA(address, ix, i);
+		   int length = UI.fr[fr].getValue();
+		   int EA2 = EA1+1;
+		   for(int j=0;j<length;j++) {
+			   UI.cache.setValue(EA1, UI.cache.returnValue(EA1)-UI.cache.returnValue(EA2));
+			   EA1++;
+			   EA2++;
+		   }
+	   }
+	  
+	   /**
+	    * Convert to Fixed/FloatingPoint:
+		If F = 0, convert c(EA) to a fixed point number and store in r.
+		If F = 1, convert c(EA) to a floating point number and store in FR0.
+		The r register contains the value of F before the instruction is executed.
+
+	    * @param fr
+	    * @param ix
+	    * @param i
+	    * @param address
+	    */
+	   public static void CNVRT(int fr, int ix, int i, int address) {
+		   int F;
+		   int EA;
+		   EA = effectiveAddress.EA(address, ix, i);
+		   F = UI.fr[fr].getValue();
+		   int content = UI.cache.returnValue(EA);
+		   if(F==1) {
+			   UI.fr[0].setValue(content, UI.fr0_index);
+		   }
+	   }
+	   
+	   /**
+	    * Load Floating Register From Memory, fr = 0..1
+		fr <- c(EA), c(EA+1)
+		fr <- c(c(EA), c(EA)+1), if I bit set
+
+	    * @param fr
+	    * @param ix
+	    * @param i
+	    * @param address
+	    */
+	   public static void LDFR(int fr, int ix, int i, int address) {
+		   int EA = effectiveAddress.EA(address, ix, i);
+		   int content = UI.cache.returnValue(EA);
+		   UI.fr[fr].setValue(content, UI.fr0_index+fr);
+	   }
+	   
+	   /**
+	    * Store Floating Register To Memory, fr = 0..1
+		EA, EA+1 <- c(fr)
+		c(EA), c(EA)+1 <- c(fr), if I-bit set
+
+	    * @param fr
+	    * @param ix
+	    * @param i
+	    * @param address
+	    */
+	   public static void STFR(int fr, int ix, int i, int address) {
+		   int EA = effectiveAddress.EA(address, ix, i);
+		   int content = UI.fr[fr].getValue();
+		   UI.cache.setValue(EA, content);
+	   }
+	   
+	   
 
 }

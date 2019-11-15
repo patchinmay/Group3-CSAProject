@@ -59,6 +59,8 @@ public class UI {
 	public static int IX1_index=10;
 	public static int IX2_index=11;
 	public static int IX3_index=12;
+	public static int fr0_index=13;
+	public static int fr1_index=14;
 	private Tools tools = new Tools();
 
 	public JFrame frame;
@@ -114,11 +116,14 @@ public class UI {
 	private JButton Singlestep;
 	public static JTextField keyboardTextField;
 	public static JTextArea printerTextArea;
+	public static Register[] fr = new Register[2];
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		Instr.FalseFloat2TureFloat(65);
+		Instr.TrueFloat2FalseFloat(1.2539062);
 		initialData();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
