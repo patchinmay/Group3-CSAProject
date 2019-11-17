@@ -100,6 +100,9 @@ public class UI {
 	private JButton Save;
 	private JButton P1;
 	private JButton btnChooseFile;
+	private JButton P4;
+	private JButton FR0Store;
+	private JButton FR1Store;
 	private static JButton KeyboardInput;
 	
 	public static PC pc = new PC();
@@ -117,6 +120,8 @@ public class UI {
 	public static JTextField keyboardTextField;
 	public static JTextArea printerTextArea;
 	public static Register[] fr = new Register[2];
+	private JTextField FR0_textField;
+	private JTextField FR1_textField;
 
 	/**
 	 * Launch the application.
@@ -527,6 +532,40 @@ public class UI {
 		
 		btnP2.setBounds(53, 435, 73, 29);
 		frame.getContentPane().add(btnP2);
+		
+		P4 = new JButton("P4");
+		P4.setBounds(186, 476, 70, 29);
+		frame.getContentPane().add(P4);
+		
+		FR0_textField = new JTextField();
+		FR0_textField.setText(" ");
+		FR0_textField.setColumns(10);
+		FR0_textField.setBounds(91, 308, 130, 26);
+		frame.getContentPane().add(FR0_textField);
+		
+		FR1_textField = new JTextField();
+		FR1_textField.setText(" ");
+		FR1_textField.setColumns(10);
+		FR1_textField.setBounds(91, 349, 130, 26);
+		frame.getContentPane().add(FR1_textField);
+		
+		FR0Store = new JButton("Store");
+		FR0Store.setBounds(214, 308, 70, 29);
+		frame.getContentPane().add(FR0Store);
+		
+		FR1Store = new JButton("Store");
+		FR1Store.setBounds(214, 349, 70, 29);
+		frame.getContentPane().add(FR1Store);
+		
+		JLabel lblFr = new JLabel("FR0");
+		lblFr.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFr.setBounds(27, 313, 61, 16);
+		frame.getContentPane().add(lblFr);
+		
+		JLabel lblFr_1 = new JLabel("FR1");
+		lblFr_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFr_1.setBounds(27, 354, 61, 16);
+		frame.getContentPane().add(lblFr_1);
 		
 		btnChooseFile.addActionListener(new ActionListener() {
 			
@@ -1206,9 +1245,11 @@ public class UI {
 			// This string variable is used for scanning the values of each line from text
 			// area.
 		String str = "";
-		String ins, ins1, reg, ireg, mem, indirectAdd,reg2;
+		String ins, ins1, reg, freg, ireg, mem, indirectAdd,reg2,ins4,ins5;
 		ins = r.substring(0, 3);
 		ins1 = r.substring(0, 2);
+		ins4 = r.substring(0, 4);
+		ins5 = r.substring(0, 5);
 		if (ins.equals("LDR") || ins.equals("STR") || ins.equals("LDX") || ins.equals("STX") || ins.equals("LDA")
 				|| ins.equals("HLT")) {
 			//ins = r.substring(0, 3);
@@ -1567,6 +1608,53 @@ public class UI {
 			String blacked = "000";
 			str = ins1 + reg + blacked + DevId ;
 			//commiting the code
+		}
+		
+		//decode instr. for part 4
+		if(ins4.equals("FADD") || ins4.equals("FSUB") || ins4.equals("VADD") || ins4.equals("VSUB") || 
+				ins4.equals("LDFR") || ins4.equals("STFR")) {
+			//initialize parameters
+			freg = r.substring(5, 7);
+			ireg = r.substring(8, 9);
+			indirectAdd = r.substring(10,12);
+			mem = r.substring(13,18);
+			//decode opcode
+			if(ins4.equals("FADD")) 
+				ins4 = "100001";
+			else if(ins4.equals("FSUB"))
+				ins4 = "100010";
+			else if(ins4.equals("VADD"))
+				ins4 = "100011";
+			else if(ins4.equals("VSUB"))
+				ins4 = "100100";
+			else if(ins4.equals("LDFR"))
+				ins4 = "110010";
+			else if(ins4.equals("STFR"))
+				ins4 = "110011";
+			//decode floatRegister number
+			if (freg.equals("r0"))
+				freg = "00";
+			else if (freg.equals("r1"))
+				freg = "01";
+			//combine all parameters 
+			str = ins + freg + ireg +  indirectAdd +mem ;
+		}
+		
+		if(ins5.equals("CNVRT")) {
+			//initialize parameters
+			reg = r.substring(6, 8);
+			ireg = r.substring(9, 10);
+			indirectAdd = r.substring(11, 13);
+			mem = r.substring(14,19);
+			//decode opcode
+			ins5 = "100101";
+			//decode floatRegister number
+			if (reg.equals("r0"))
+				reg = "00";
+			else if (reg.equals("r1"))
+				reg = "01";
+			//combine all parameters 
+			str = ins + reg + ireg +  indirectAdd +mem ;
 		}
 			System.out.println(r.substring(0,3)+str);
 			int result = Integer.parseInt(str, 2);
