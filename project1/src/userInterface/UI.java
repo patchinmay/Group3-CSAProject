@@ -1671,8 +1671,8 @@ public class UI {
 				ins4.equals("LDFR") || ins4.equals("STFR")) {
 			//initialize parameters
 			freg = r.substring(5, 7);
-			ireg = r.substring(8, 9);
-			indirectAdd = r.substring(10,12);
+			ireg = r.substring(8, 10);
+			indirectAdd = r.substring(11,12);
 			mem = r.substring(13,18);
 			//decode opcode
 			if(ins4.equals("FADD")) 
@@ -1693,14 +1693,14 @@ public class UI {
 			else if (freg.equals("r1"))
 				freg = "01";
 			//combine all parameters 
-			str = ins + freg + ireg +  indirectAdd +mem ;
+			str = ins4 + freg + ireg +  indirectAdd +mem ;
 		}
 		
 		if(ins5.equals("CNVRT")) {
 			//initialize parameters
 			reg = r.substring(6, 8);
-			ireg = r.substring(9, 10);
-			indirectAdd = r.substring(11, 13);
+			ireg = r.substring(9, 11);
+			indirectAdd = r.substring(12, 13);
 			mem = r.substring(14,19);
 			//decode opcode
 			ins5 = "100101";
@@ -1710,7 +1710,7 @@ public class UI {
 			else if (reg.equals("r1"))
 				reg = "01";
 			//combine all parameters 
-			str = ins + reg + ireg +  indirectAdd +mem ;
+			str = ins5 + reg + ireg +  indirectAdd +mem ;
 		}
 			//System.out.println(r.substring(0,3)+str);
 			int result = Integer.parseInt(str, 2);
