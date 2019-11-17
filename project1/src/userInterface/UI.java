@@ -1201,13 +1201,69 @@ public class UI {
 			r = array[1];
 			DevID = array[2];
 			break;
-		case 36:
-			//36 -- TRAP
-			trapCode = array[1];
-			break;
+//		case 36:
+//			//36 -- TRAP
+//			trapCode = array[1];
+//			break;
 		case 00:
 			//00 -- HLT
 			status = 1;
+			break;
+		case 33:
+			//34 -- FADD
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.FADD(r, ix, i, address);
+			break;
+		case 34:
+			//34 -- FSUB
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.FSUB(r, ix, i, address);
+			break;
+		case 35:
+			//35 -- VADD
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.VADD(r, ix, i, address);
+			break;
+		case 36:
+			//36 -- VSUB
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.VSUB(r, ix, i, address);
+			break;
+		case 37:
+			//37 -- CNVRT
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.CNVRT(r, ix, i, address);
+			break;
+		case 50:
+			//50 -- LDFR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.LDFR(r, ix, i, address);
+			break;
+		case 51:
+			//51 -- STFR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.STFR(r, ix, i, address);
 			break;
 		default:
 			break;
@@ -1656,9 +1712,9 @@ public class UI {
 			//combine all parameters 
 			str = ins + reg + ireg +  indirectAdd +mem ;
 		}
-			System.out.println(r.substring(0,3)+str);
+			//System.out.println(r.substring(0,3)+str);
 			int result = Integer.parseInt(str, 2);
-			//System.out.println(result);
+			System.out.println("ok"+result);
 			//memory[pc] = result;
 			cache.setValue(pc, result);
 			
