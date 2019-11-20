@@ -166,6 +166,7 @@ public class UI {
 		ix[1].setValue(100, IX1_index);
 	    ix[2].setValue(1000, IX2_index);
 	    ix[3].setValue(200, IX3_index);
+	    //String[1000]='LDR ';
 	    //program 2
 	    memory[100] = 10;
 	    memory[101] = 1000; // pointer sentences start from 1000
@@ -201,6 +202,32 @@ public class UI {
 
 	}
 	
+	
+	public int f1(int address) {
+
+		MAR_textField.setText(Integer.toString(address));
+    	mar.setValue(address, MAR_index);
+    	//value is the instr.
+    	//int value = memory[address];
+    	int value = cache.returnValue(address);
+    	
+    	//put the instr. to the mbr & ir
+    	MBR_textField.setText(Integer.toString(value));
+    	mbr.setValue(value, MBR_index);
+    	IR_textField.setText(Integer.toString(value));
+    	ir.setValue(value, IR_index);
+    	//UI.LogtextArea.append("Value:" + value);
+    	return value;
+	}
+	public int f2(int instr) {
+		int rlt=0;
+		rlt = analysisInstr(instr);
+		
+		return rlt;
+	}
+	public void f3(int instr, int rlt) {
+		writeback(instr, rlt);
+	}
 	
 	/**
 	 * Initialize the contents of the frame.
@@ -592,6 +619,48 @@ public class UI {
 			}
 		});
 		
+		
+		P4.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int head=pc.getValue();
+				int tail = head+20;
+				int p1;
+				int p2;
+				int p3;
+				int instr = 0;
+				int rlt = 0;
+				for (int i=head;i<=tail;i++){
+					p1 = i;
+					p2 = i-1;
+					p3 = i-2;
+					
+					if(p3>=head && p3<=tail) {
+						f3(instr, rlt);
+					}
+					if(p2>=head) {
+						rlt = f2(instr);
+					}
+					if(p1>=head && p1<=tail) {
+						instr = f1(p1);
+					}
+//					if (p1 >= head){
+//						instr = f1(p1);
+//						
+//					}
+//					if (p2 >= head){
+//						rlt = f2(instr);
+//
+//					}
+//					if (p3 >= head){
+//						f3(instr,rlt);
+//
+//					}
+				}
+			}
+		});
+
 		
 		PCStore.addActionListener(new ActionListener() {
 			@Override
@@ -1215,7 +1284,8 @@ public class UI {
 			ix = array[2];
 			i = array[3];
 			address = array[4];
-			Instr.FADD(r, ix, i, address);
+			int rlt = Instr.FADD(r, ix, i, address);
+			//Instr.FADD2(r, rlt);
 			break;
 		case 34:
 			//34 -- FSUB
@@ -1264,6 +1334,297 @@ public class UI {
 			i = array[3];
 			address = array[4];
 			Instr.STFR(r, ix, i, address);
+			break;
+		default:
+			break;
+		}
+    	return status;
+    }
+    
+    public int writeback(int instr, int rlt) {
+    	//once face the HLT instr. change the status to 1;
+    	int status = 0;
+    	//array contain opCode, register, indexRegister, indirect, address
+    	int[] array = tools.decodeInstr(instr);
+    	int opCode = array[0];
+    	int r;
+    	int ix;
+    	int i;
+    	int address;
+    	int Rx;
+    	int Ry;
+    	int AL;
+    	int LR;
+    	int Count;
+    	int DevID;
+    	int cc;
+    	int immed;
+    	int trapCode;
+    	switch (opCode) {
+		case 1:
+			//01 -- LDR
+			//System.out.println(array[1]);
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.LDR(r, ix, i, address);
+			break;
+		case 2:
+			//02 -- STR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.STR(r, ix, i, address);
+			break;
+		case 3:
+			//03 -- LDA
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.LDA(r, ix, i, address);
+			break;
+		case 41:
+			//41 -- LDX
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			System.out.println("41 ix "+ix);
+			System.out.println("41 i "+i);
+			System.out.println("41 address "+address);
+			Instr.LDX(ix, i, address);
+			break;
+		case 42:
+			//42 -- STX
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.STX(ix, i, address);
+			break;
+		case 10:
+			//10 -- JZ
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JZ(r, ix, i, address);
+			break;
+		case 11:
+			//11 -- JNE
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JNE(r, ix, i, address);
+			break;
+		case 12:
+			//12 -- JCC
+			cc = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JCC(cc, ix, i, address);
+			break;
+		case 13:
+			//13 -- JMA
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JMA(ix, i, address);
+			break;
+		case 14:
+			//14 --  JSR
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JSR(ix, i, address);
+			break;
+		case 15:
+			//15 -- RFS
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.RFS();
+			break;
+		case 16:
+			//16 -- SOB
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.SOB(r, ix, i, address);
+			break;
+		case 17:
+			//17 -- JGE
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.JGE(r, ix, i, address);
+			break;
+		case 04:
+			//04 -- AMR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.AMR(r, ix, i, address);
+			break;
+		case 05:
+			//05 -- SMR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.SMR(r, ix, i, address);
+			break;
+		case 06:
+			//06 -- AIR
+			r = array[1];
+			immed = array[2];
+			Instr.AIR(r, immed);
+			break;
+		case 07:
+			//07 -- SIR
+			r = array[1];
+			immed = array[4];
+			Instr.SIR(r, immed);
+			break;
+		case 20:
+			//20 -- MLT
+			Rx = array[1];
+			Ry = array[2];
+			Instr.MLT(Rx, Ry);
+			break;
+		case 21:
+			//21 -- DVD
+			Rx = array[1];
+			Ry = array[2];
+			Instr.DVD(Rx, Ry);
+			break;
+		case 22:
+			//22 -- TRR
+			Rx = array[1];
+			Ry = array[2];
+			Instr.TRR(Rx, Ry);
+			break;
+		case 23:
+			//23 -- AND
+			Rx = array[1];
+			Ry = array[2];
+			Instr.AND(Rx, Ry);
+			break;
+		case 24:
+			//24 -- ORR
+			Rx = array[1];
+			Ry = array[2];
+			Instr.ORR(Rx, Ry);
+			break;
+		case 25:
+			//25 --NOT
+			Rx = array[1];
+			Instr.NOT(Rx);
+			break;
+		case 31:
+			//31 -- SRC
+			r = array[1];
+			AL = array[2];
+			LR = array[3];
+			Count = array[4];
+			Instr.SRC(r, Count, LR, AL);
+			break;
+		case 32:
+			//32 -- RRC
+			r = array[1];
+			AL = array[2];
+			LR = array[3];
+			Count = array[4];
+			Instr.RRC(r, Count, LR, AL);
+			break;
+		case 61:
+			//61 -- IN
+			r = array[1];
+			DevID = array[2];
+			Instr.IN(r, DevID);
+			break;
+		case 62:
+			//62 -- OUT
+			r = array[1];
+			DevID = array[2];
+			Instr.OUT(r, DevID);
+			break;
+		case 63:
+			//63 -- CHK
+			r = array[1];
+			DevID = array[2];
+			break;
+//		case 36:
+//			//36 -- TRAP
+//			trapCode = array[1];
+//			break;
+		case 00:
+			//00 -- HLT
+			status = 1;
+			break;
+		case 33:
+			//34 -- FADD
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			//int rlt = Instr.FADD(r, ix, i, address);
+			Instr.FADD2(r, rlt);
+			break;
+		case 34:
+			//34 -- FSUB
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.FSUB2(r, rlt);
+			break;
+		case 35:
+			//35 -- VADD
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.VADD2(r, rlt);
+			break;
+		case 36:
+			//36 -- VSUB
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.VSUB2(r,rlt);
+			break;
+		case 37:
+			//37 -- CNVRT
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.CNVRT2(r,rlt);
+			break;
+		case 50:
+			//50 -- LDFR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.LDFR2(r,rlt);
+			break;
+		case 51:
+			//51 -- STFR
+			r = array[1];
+			ix = array[2];
+			i = array[3];
+			address = array[4];
+			Instr.STFR2(r,rlt);
 			break;
 		default:
 			break;

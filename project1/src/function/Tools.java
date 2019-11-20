@@ -54,6 +54,7 @@ public class Tools {
 		public int[] decodeInstr(int instruction) {
 			//The format for LOAD/STORE, Transfer and some arithmetic and logical instructions
 			int OpCode = instruction/1024;
+			System.out.println("OpCode"+OpCode);
 			if((OpCode>=1 && OpCode<=5) || (OpCode>=41 && OpCode<=42) || (OpCode>=10 && OpCode<=17) || (OpCode>=33 && OpCode<=37) ||(OpCode>=50 && OpCode<=51)) {
 				int[] array = new int[5];
 				int R = instruction % 1024 / 256;

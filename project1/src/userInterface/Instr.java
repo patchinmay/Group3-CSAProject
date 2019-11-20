@@ -778,6 +778,10 @@ public class Instr {
 		  System.out.println(rlt);
 		  return rlt;
 	  }
+	  
+	  
+	  
+	  
 	  /**
 	   * Floating Add Memory To Register
 		c(fr) <- c(fr) + c(EA)
@@ -790,15 +794,18 @@ public class Instr {
 	   * @param i
 	   * @param address
 	   */
-	   public static void FADD(int fr, int ix, int i, int address) {
+	   public static int FADD(int fr, int ix, int i, int address) {
 		   	//get effective address
 			int EA = effectiveAddress.EA(address, ix, i);
 			int falseFloat = UI.fr[fr].getValue();
 			double trueFloat = FalseFloat2TureFloat(falseFloat);
 			double temp = trueFloat+(double)UI.cache.returnValue(EA);
 			int tempFalseInt = TrueFloat2FalseFloat(temp);
+			return tempFalseInt;
+	   }
+	   
+	   public static void FADD2(int fr, int tempFalseInt) {
 			UI.fr[fr].setValue(tempFalseInt, UI.fr0_index+fr);
-			
 			// refresh the UI
 			Refresh(UI.NewValue, UI.OldValue);
 	   }
@@ -815,14 +822,17 @@ public class Instr {
 	    * @param i
 	    * @param address
 	    */
-	   public static void FSUB(int fr, int ix, int i, int address) {
+	   public static int FSUB(int fr, int ix, int i, int address) {
 		   	//get effective address
 			int EA = effectiveAddress.EA(address, ix, i);
 			int falseFloat = UI.fr[fr].getValue();
 			double trueFloat = FalseFloat2TureFloat(falseFloat);
 			double temp = trueFloat-(double)UI.cache.returnValue(EA);
 			int tempFalseInt = TrueFloat2FalseFloat(temp);
-			UI.fr[fr].setValue(tempFalseInt, UI.fr0_index+fr);
+			return tempFalseInt;
+	   }
+	   public static void FSUB2(int fr, int rlt){
+			UI.fr[fr].setValue(rlt, UI.fr0_index+fr);
 			
 			// refresh the UI
 			Refresh(UI.NewValue, UI.OldValue);
@@ -841,10 +851,14 @@ public class Instr {
 	    * @param i
 	    * @param address
 	    */
-	   public static void VADD(int fr, int ix, int i, int address) {
+	   public static int VADD(int fr, int ix, int i, int address) {
 		   int EA1 = effectiveAddress.EA(address, ix, i);
+		   return EA1;
+	   }
+	   public static void VADD2(Integer fr, int rlt){
+		   int EA1 = rlt;
+		   int EA2 = EA1 +1;
 		   int length = UI.fr[fr].getValue();
-		   int EA2 = EA1+1;
 		   for(int j=0;j<length;j++) {
 			   UI.cache.setValue(EA1, UI.cache.returnValue(EA1)+UI.cache.returnValue(EA2));
 			   EA1++;
@@ -865,10 +879,14 @@ public class Instr {
 	    * @param i
 	    * @param address
 	    */
-	   public static void VSUB(int fr, int ix, int i, int address) {
+	   public static int VSUB(int fr, int ix, int i, int address) {
 		   int EA1 = effectiveAddress.EA(address, ix, i);
+		   return EA1;   
+	   }
+	   public static void VSUB2(int fr, int rlt){
+		   int EA1 = rlt;
+		   int EA2 = EA1 +1;
 		   int length = UI.fr[fr].getValue();
-		   int EA2 = EA1+1;
 		   for(int j=0;j<length;j++) {
 			   UI.cache.setValue(EA1, UI.cache.returnValue(EA1)-UI.cache.returnValue(EA2));
 			   EA1++;
@@ -887,12 +905,15 @@ public class Instr {
 	    * @param i
 	    * @param address
 	    */
-	   public static void CNVRT(int fr, int ix, int i, int address) {
-		   int F;
+	   public static int CNVRT(int fr, int ix, int i, int address) {
 		   int EA;
 		   EA = effectiveAddress.EA(address, ix, i);
+		   return EA;
+	   }
+	   public static void CNVRT2(int fr, int rlt){
+		   int F;
 		   F = UI.fr[fr].getValue();
-		   int content = UI.cache.returnValue(EA);
+		   int content = UI.cache.returnValue(rlt);
 		   if(F==1) {
 			   UI.fr[0].setValue(content, UI.fr0_index);
 		   }
@@ -908,9 +929,13 @@ public class Instr {
 	    * @param i
 	    * @param address
 	    */
-	   public static void LDFR(int fr, int ix, int i, int address) {
+	   public static int LDFR(int fr, int ix, int i, int address) {
 		   int EA = effectiveAddress.EA(address, ix, i);
 		   int content = UI.cache.returnValue(EA);
+		   return content;
+	   }
+	   public static void LDFR2 (int fr, int rlt){
+		   int content = rlt;
 		   UI.fr[fr].setValue(content, UI.fr0_index+fr);
 	   }
 	   
@@ -924,12 +949,14 @@ public class Instr {
 	    * @param i
 	    * @param address
 	    */
-	   public static void STFR(int fr, int ix, int i, int address) {
+	   public static int STFR(int fr, int ix, int i, int address) {
 		   int EA = effectiveAddress.EA(address, ix, i);
+		   return EA;
+	   }
+	   public static void STFR2(int fr, int rlt){
+		   int EA = rlt;
 		   int content = UI.fr[fr].getValue();
 		   UI.cache.setValue(EA, content);
-	   }
-	   
-	   
+	   }   
 
 }
