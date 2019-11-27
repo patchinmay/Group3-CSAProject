@@ -799,8 +799,11 @@ public class Instr {
 			int EA = effectiveAddress.EA(address, ix, i);
 			int falseFloat = UI.fr[fr].getValue();
 			double trueFloat = FalseFloat2TureFloat(falseFloat);
+			System.out.print(trueFloat);
 			double temp = trueFloat+(double)UI.cache.returnValue(EA);
+			System.out.print(temp);
 			int tempFalseInt = TrueFloat2FalseFloat(temp);
+			System.out.print(tempFalseInt);
 			return tempFalseInt;
 	   }
 	   

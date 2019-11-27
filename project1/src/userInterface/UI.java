@@ -162,6 +162,8 @@ public class UI {
 		for(int j=0;j<4;j++) {
 			r[j] = new Register();
 		}
+		fr[0] = new Register();
+		fr[1] = new Register();
 		pc.setValue(2001, PC_index);
 		ix[1].setValue(100, IX1_index);
 	    ix[2].setValue(1000, IX2_index);
@@ -565,13 +567,13 @@ public class UI {
 		frame.getContentPane().add(P4);
 		
 		FR0_textField = new JTextField();
-		FR0_textField.setText(" ");
+		FR0_textField.setText("");
 		FR0_textField.setColumns(10);
 		FR0_textField.setBounds(91, 308, 130, 26);
 		frame.getContentPane().add(FR0_textField);
 		
 		FR1_textField = new JTextField();
-		FR1_textField.setText(" ");
+		FR1_textField.setText("");
 		FR1_textField.setColumns(10);
 		FR1_textField.setBounds(91, 349, 130, 26);
 		frame.getContentPane().add(FR1_textField);
@@ -626,9 +628,13 @@ public class UI {
 			public void actionPerformed(ActionEvent e) {
 				int head=pc.getValue();
 				int tail = head+20;
+				
 				int p1;
+				
 				int p2;
+				
 				int p3;
+				
 				int instr = 0;
 				int rlt = 0;
 				for (int i=head;i<=tail;i++){
@@ -735,6 +741,34 @@ public class UI {
 					cc.setValue(value,CC_index);
 					CC_textField.setText(Integer.toString(cc.getValue()));
 				}
+			}
+		});
+		
+		FR0Store.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String fr0String = FR0_textField.getText();
+				if(fr0String != null) {
+					int value = Integer.parseInt(fr0String);
+					fr[0].setValue(value, fr0_index);
+					FR0_textField.setText(Integer.toString(fr[0].getValue()));
+				}
+				
+			}
+		});
+		
+		FR1Store.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String fr1String = FR1_textField.getText();
+				if(fr1String != null) {
+					int value = Integer.parseInt(fr1String);
+					fr[1].setValue(value, fr1_index);
+					FR1_textField.setText(Integer.toString(fr[1].getValue()));
+				}
+				
 			}
 		});
 		
