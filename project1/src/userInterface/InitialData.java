@@ -6,7 +6,10 @@ import userInterface.UI;
 
 public class InitialData {
 	
+	//private UI ui = new UI();
+	
 	public void InitialP4() {
+		// set initial data
 		UI.r[0].setValue(320, UI.R0_index);
 		UI.r[1].setValue(320, UI.R1_index);
 		UI.memory[0] = 0;
@@ -23,12 +26,6 @@ public class InitialData {
 		UI.memory[22] = 202;
 	}
 	
-	public void InitialP2() {
-		
-	}
 	
-	public void InitialP3() {
-		
-	}
 
 }

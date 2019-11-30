@@ -39,6 +39,7 @@ import javax.swing.JTextArea;
 
 public class UI {
 	
+	public InitialData iData;
 	public static int p1Result;
 	public static int keyboardFlag;
 	public static int memory[] = new int[4096];
@@ -396,6 +397,7 @@ public class UI {
 		RunInstr = new JButton("Run");
 		RunInstr.setBounds(125, 435, 70, 29);
 		frame.getContentPane().add(RunInstr);
+		RunInstr.setEnabled(false);
 		
 		Addr_textField = new JTextField();
 		Addr_textField.setColumns(10);
@@ -517,14 +519,17 @@ public class UI {
 		Singlestep = new JButton("SingleStep");
 		Singlestep.setBounds(201, 435, 99, 29);
 		frame.getContentPane().add(Singlestep);
+		Singlestep.setEnabled(false);
 		
 		Save = new JButton("Save");
 		Save.setBounds(207, 394, 70, 29);
 		frame.getContentPane().add(Save);
+		Save.setEnabled(false);
 		
 		P1 = new JButton("P1");
 		P1.setBounds(53, 394, 70, 29);
 		frame.getContentPane().add(P1);
+		P1.setEnabled(false);
 		
 		keyboardTextField = new JTextField();
 		keyboardTextField.setBounds(623, 369, 256, 68);
@@ -552,25 +557,31 @@ public class UI {
 		lblPrinter.setBounds(1054, 60, 61, 16);
 		frame.getContentPane().add(lblPrinter);
 		
-		btnChooseFile = new JButton("Choose File");
+		btnChooseFile = new JButton("P3");
 		btnChooseFile.setBounds(53, 476, 117, 29);
 		frame.getContentPane().add(btnChooseFile);
+		btnChooseFile.setEnabled(false);
 		
 		JButton btnP2 = new JButton("P2");
 		btnP2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ReadFileP2 p2 = new ReadFileP2();
 				p2.ReadP2();
-				
+				run();
+				r[0].setValue(p1Result, R0_index);
+				Instr.Refresh(NewValue, OldValue);
+				printerTextArea.setText(Integer.toString(p1Result));
 			}
 		});
 		
 		btnP2.setBounds(53, 435, 73, 29);
 		frame.getContentPane().add(btnP2);
+		btnP2.setEnabled(false);
 		
 		P4 = new JButton("P4");
 		P4.setBounds(186, 476, 70, 29);
 		frame.getContentPane().add(P4);
+		P4.setEnabled(false);
 		
 		FR0_textField = new JTextField();
 		FR0_textField.setText("");
@@ -621,12 +632,82 @@ public class UI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				OpenFile of = new OpenFile();
+				UI.Instr_textArea.setText("LDR r0,01,0,00000\n" + 
+						"STR r0,01,0,00101\n" + 
+						"LDR r0,01,0,00100\n" + 
+						"STR r0,01,0,00011\n" + 
+						"LDR r0,01,1,00101\n" + 
+						"JGE r0,11,1,00001\n" + 
+						"LDR r1,01,1,00011\n" + 
+						"STR r1,01,0,00010\n" + 
+						"LDR r0,01,0,00010\n" + 
+						"JGE r0,11,1,00010\n" + 
+						"LDR r1,01,0,11100\n" + 
+						"OUT r1,000,00001\n" + 
+						"LDR r1,01,0,11101\n" + 
+						"OUT r1,000,00001\n" + 
+						"JMA r0,11,1,00011\n" + 
+						"LDR r1,01,1,00011\n" + 
+						"STR r1,01,0,00010\n" + 
+						"JGE r0,11,1,00100\n" + 
+						"JMA r0,11,1,00101\n" + 
+						"SMR r0,01,0,00010\n" + 
+						"JNE r0,11,1,00110\n" + 
+						"LDR r0,01,0,00101\n" + 
+						"AIR r0,00000001\n" + 
+						"STR r0,01,0,00101\n" + 
+						"LDR r0,01,0,00011\n" + 
+						"AIR r0,00000001\n" + 
+						"STR r0,01,0,00011\n" + 
+						"JMA r0,11,1,01000\n" + 
+						"LDR r0,01,0,00100\n" + 
+						"AIR r0,00000001\n" + 
+						"STR r0,01,0,00100\n" + 
+						"LDR r0,01,1,00100\n" + 
+						"JGE r0,11,1,01001\n" + 
+						"LDR r0,01,1,00100\n" + 
+						"SMR r0,01,0,11010\n" + 
+						"JNE r0,11,1,01010\n" + 
+						"JMA r0,11,1,01011\n" + 
+						"LDR r0,01,1,00100\n" + 
+						"SMR r0,01,0,11110\n" + 
+						"JNE r0,11,1,01100\n" + 
+						"LDR r0,01,0,00100\n" + 
+						"AIR r0,00000001\n" + 
+						"STR r0,01,0,00100\n" + 
+						"JMA r0,11,1,01101\n" + 
+						"LDR r0,01,1,00100\n" + 
+						"SMR r0,01,0,11111\n" + 
+						"JNE r0,11,1,01110\n" + 
+						"LDR r0,01,0,11100\n" + 
+						"AIR r0,00000001\n" + 
+						"STR r0,01,0,11100\n" + 
+						"LDR r0,01,0,11011\n" + 
+						"STR r0,01,0,11101\n" + 
+						"LDR r0,01,0,00100\n" + 
+						"AIR r0,00000001\n" + 
+						"STR r0,01,0,00100\n" + 
+						"JMA r0,11,1,01111\n" + 
+						"LDR r0,01,0,11101\n" + 
+						"AIR r0,00000001\n" + 
+						"STR r0,01,0,11101\n" + 
+						"JMA r0,11,1,10000\n" + 
+						"HLT r0,00,0,00000\n");
+				// store instructions into memory
+				//get the address to store the first instruction 
+		    	String PCAddress = PC_textField.getText();
+		    	//get the instr.s in the textarea
+		    	String instrs = Instr_textArea.getText();
+		    	
+		    	//split the instr.s and store them into the memory
+		    	StoreInstr(instrs, PCAddress);
 				try {
 					of.PickMe();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
 			}
 		});
 		
@@ -634,10 +715,30 @@ public class UI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				run();
-				r[0].setValue(p1Result, R0_index);
-				Instr.Refresh(NewValue, OldValue);
-				printerTextArea.setText(Integer.toString(p1Result));
+				UI.Instr_textArea.setText("LDR r0,00,0,11000\n" + 
+						"LDR r0,01,0,11000\n" + 
+						"LDR r1,00,0,11000\n" + 
+						"LDR r2,10,0,11000\n" + 
+						"STR r1,00,0,11000\n" + 
+						"STR r2,01,0,11000\n" + 
+						"STR r3,00,1,11000\n" + 
+						"STR r3,11,1,11001 \n" + 
+						"LDA r1,00,0,11010\n" + 
+						"LDA r2,01,0,11001 \n" + 
+						"LDA r3,00,1,11001\n" + 
+						"LDA r3,11,1,11001 \n" + 
+						"LDX r1,10,0,11010\n" + 
+						"LDX r1,11,1,11010 \n" + 
+						"STX r1,10,0,11011\n" + 
+						"STX r2,11,1,11100 \n" + 
+						"HLT r0,00,0,00000\n" + 
+						"");
+				String PCAddress = PC_textField.getText();
+		    	//get the instr.s in the textarea
+		    	String instrs = Instr_textArea.getText();
+		    	
+		    	//split the instr.s and store them into the memory
+		    	StoreInstr(instrs, PCAddress);
 			}
 		});
 		
@@ -646,8 +747,31 @@ public class UI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				UI.Instr_textArea.setText("FADD r1,00,0,00000\n" + 
+						"FADD r0,00,1,00001\n" + 
+						"FSUB r0,00,0,00010\n" + 
+						"FSUB r1,00,1,00001\n" + 
+						"LDFR r0,00,0,00110\n" + 
+						"VADD r0,00,0,00011\n" + 
+						"VSUB r0,00,0,00011\n" + 
+						"LDFR r0,00,0,00010\n" + 
+						"CNVRT r0,00,0,00000\n" + 
+						"LDFR r0,00,0,00001\n");
+				
+				// store instructions into memory
+				//get the address to store the first instruction 
+		    	String PCAddress = PC_textField.getText();
+		    	//get the instr.s in the textarea
+		    	String instrs = Instr_textArea.getText();
+		    	
+		    	//split the instr.s and store them into the memory
+		    	StoreInstr(instrs, PCAddress);
+				//set initial data
 				InitialData p4 = new InitialData();
 				p4.InitialP4();
+				
+		    	
+				//start p4 running process
 				int head=pc.getValue();
 				int tail = head+9;
 				
@@ -691,18 +815,6 @@ public class UI {
 						instr = f1(p1);
 					}
 					pipelineTextArea.append("------------------------------\n");
-//					if (p1 >= head){
-//						instr = f1(p1);
-//						
-//					}
-//					if (p2 >= head){
-//						rlt = f2(instr);
-//
-//					}
-//					if (p3 >= head){
-//						f3(instr,rlt);
-//
-//					}
 				}
 			}
 		});
@@ -983,7 +1095,14 @@ public class UI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				P1.setEnabled(true);
+				btnP2.setEnabled(true);
+				btnChooseFile.setEnabled(true);
+				P4.setEnabled(true);
+				Save.setEnabled(true);
+				RunInstr.setEnabled(true);
 				Instr_textArea.setEditable(true);
+				Singlestep.setEnabled(true);
 			}
 		});
 		
@@ -1054,7 +1173,7 @@ public class UI {
 					// change the keyboard flag
 					// clear the keyboard Textfield
 
-					keyboardTextField.setText("");
+					//keyboardTextField.setText("");
 				}
 			}
 		});
@@ -1117,6 +1236,10 @@ public class UI {
 			status = singleExecute(iAddress);
 			//iAddress++;
 		}
+//    	System.out.println(printerTextArea.getText());
+//    	if(printerTextArea.getText() == "") {
+//    		printerTextArea.append(Integer.toString(p1Result));
+//    	}
     }
     
     /**
