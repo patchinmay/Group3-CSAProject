@@ -775,7 +775,7 @@ public class Instr {
 		  mantissa = mantissa*Math.pow(2, 8);
 		  double temp = Math.ceil(mantissa);
 		  int rlt = (int)temp+(exponet<<8)+(s<<15);
-		  System.out.println(rlt);
+		  //System.out.println(rlt);
 		  return rlt;
 	  }
 	  

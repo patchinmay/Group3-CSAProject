@@ -30,6 +30,7 @@ import Components.Cache;
 import Components.Devid;
 import function.*;
 
+import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -41,6 +42,7 @@ public class UI {
 	public static int p1Result;
 	public static int keyboardFlag;
 	public static int memory[] = new int[4096];
+	public static String[] memory2 = new String[4096];
 	//0 MAR / 1 PC / 2 MB / 3 MFR / 4 IR / 5 CC / 6 R0
 	//7 R1 / 8 R2 / 9 R3 / 10 IX1 / 11 IX2 / 12 IX3
 	public static int NewValue[] = new int[20];
@@ -122,6 +124,7 @@ public class UI {
 	public static Register[] fr = new Register[2];
 	private JTextField FR0_textField;
 	private JTextField FR1_textField;
+	private JTextArea pipelineTextArea;
 
 	/**
 	 * Launch the application.
@@ -218,17 +221,20 @@ public class UI {
     	mbr.setValue(value, MBR_index);
     	IR_textField.setText(Integer.toString(value));
     	ir.setValue(value, IR_index);
+    	pipelineTextArea.append(memory2[address] + " is decoding\n");
+    	System.out.println(memory2[address] + " is decoding");
     	//UI.LogtextArea.append("Value:" + value);
     	return value;
 	}
-	public int f2(int instr) {
+	public int f2(int instr, int address) {
 		int rlt=0;
 		rlt = analysisInstr(instr);
-		
+		pipelineTextArea.append(memory2[address] + " is executing\n");
 		return rlt;
 	}
-	public void f3(int instr, int rlt) {
+	public void f3(int instr, int rlt, int address) {
 		writeback(instr, rlt);
+		pipelineTextArea.append(memory2[address] + " is writing back\n");
 	}
 	
 	/**
@@ -596,6 +602,20 @@ public class UI {
 		lblFr_1.setBounds(27, 354, 61, 16);
 		frame.getContentPane().add(lblFr_1);
 		
+		pipelineTextArea = new JTextArea();
+		pipelineTextArea.setText("");
+		pipelineTextArea.setBounds(950, 368, 260, 185);
+		frame.getContentPane().add(pipelineTextArea);
+		
+		JScrollPane pipelineJScrollPane = new JScrollPane(pipelineTextArea);
+		pipelineJScrollPane.setBounds(950, 368, 260, 185);
+		frame.getContentPane().add(pipelineJScrollPane);
+		
+		JLabel lblPipeline = new JLabel("pipeline");
+		lblPipeline.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPipeline.setBounds(1054, 348, 61, 16);
+		frame.getContentPane().add(lblPipeline);
+		
 		btnChooseFile.addActionListener(new ActionListener() {
 			
 			@Override
@@ -626,8 +646,10 @@ public class UI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				InitialData p4 = new InitialData();
+				p4.InitialP4();
 				int head=pc.getValue();
-				int tail = head+20;
+				int tail = head+9;
 				
 				int p1;
 				
@@ -643,14 +665,32 @@ public class UI {
 					p3 = i-2;
 					
 					if(p3>=head && p3<=tail) {
-						f3(instr, rlt);
+						f3(instr, rlt, p3);
 					}
 					if(p2>=head) {
-						rlt = f2(instr);
+						if(p3 > 2000) {
+							String i2 = memory2[p2];
+							String[] array2 = i2.split(" |,");
+							String i3 = memory2[p3];
+							String[] array3 = i3.split(" |,");
+							if(array2[1].equals(array3[1])) {
+								pipelineTextArea.append(memory2[p2] + " is bubbled\n" );
+								pipelineTextArea.append(memory2[p1] + " is bubbled\n" );
+								pipelineTextArea.append("------------------------------\n");
+								rlt = f2(instr, p2);
+								//i += 1;
+							}else {
+								rlt = f2(instr, p2);
+							}
+						}else {
+							rlt = f2(instr, p2);
+						}
+						
 					}
 					if(p1>=head && p1<=tail) {
 						instr = f1(p1);
 					}
+					pipelineTextArea.append("------------------------------\n");
 //					if (p1 >= head){
 //						instr = f1(p1);
 //						
@@ -1695,6 +1735,7 @@ public class UI {
 			//String r = "";
 			// This string variable is used for scanning the values of each line from text
 			// area.
+		memory2[pc]= r; 
 		String str = "";
 		String ins, ins1, reg, freg, ireg, mem, indirectAdd,reg2,ins4,ins5;
 		ins = r.substring(0, 3);
@@ -2109,7 +2150,7 @@ public class UI {
 		}
 			//System.out.println(r.substring(0,3)+str);
 			int result = Integer.parseInt(str, 2);
-			System.out.println("ok"+result);
+			//System.out.println("ok"+result);
 			//memory[pc] = result;
 			cache.setValue(pc, result);
 			
